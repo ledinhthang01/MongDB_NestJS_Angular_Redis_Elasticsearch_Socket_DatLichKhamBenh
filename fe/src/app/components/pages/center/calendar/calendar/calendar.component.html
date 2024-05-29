@@ -1,0 +1,10 @@
+<div>
+  <app-list [data]="schedules"></app-list>
+
+  <div class="mx-auto pt-5 w-f pagination">
+    <app-pagination
+      [totalItems]="total"
+      (select)="onSelected($event)"
+    ></app-pagination>
+  </div>
+</div>

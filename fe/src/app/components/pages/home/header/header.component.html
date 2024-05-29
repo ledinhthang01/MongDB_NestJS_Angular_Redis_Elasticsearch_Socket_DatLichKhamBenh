@@ -1,0 +1,48 @@
+<div style="height: fit-content; background: rgb(230, 233, 255)" class="w-100">
+  <div class="d-flex row col-xl-11 mx-auto">
+    <div class="d-flex" style="width: 15%">
+      <div class="w-50">
+        <img
+          style="width: 65%"
+          class="float-end"
+          src="../../../../assets/Data/logowebsite.png"
+          alt=""
+        />
+      </div>
+      <div class="w-25 my-auto fs-3 fst-italic fw-light">Shield</div>
+    </div>
+    <div class="d-flex gap-5 my-auto" style="width: 85%">
+      <a
+        routerLink="/"
+        routerLinkActive="selected-link"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="fw-bold text-center"
+        >Home</a
+      >
+      <a
+        routerLink="news"
+        routerLinkActive="selected-link"
+        class="fw-bold text-center"
+        >Medical News</a
+      >
+      <a
+        routerLink="search"
+        routerLinkActive="selected-link"
+        class="fw-bold text-center"
+        >Search</a
+      >
+      <a
+        routerLink="booking"
+        routerLinkActive="selected-link"
+        class="fw-bold text-center"
+        >My Booking</a
+      >
+      <a
+        routerLink="/info-user"
+        [ngClass]="{ 'selected-link': isActive(['/info-user', '/auth']) }"
+        class="fw-bold text-center"
+        >My Infor</a
+      >
+    </div>
+  </div>
+</div>

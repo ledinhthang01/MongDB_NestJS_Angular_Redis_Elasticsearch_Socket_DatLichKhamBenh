@@ -1,0 +1,10 @@
+.parent {
+    position: relative;
+
+    .child {
+        position: absolute;
+        left: 10%;
+        bottom: 0;
+        background-color: rgba(240, 248, 255, 0.8);
+    }
+}

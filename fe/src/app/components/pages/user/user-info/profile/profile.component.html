@@ -1,0 +1,55 @@
+<div class="row w-100">
+    <div class="col-10 col-lg-6 border border-2 border-info-subtle rounded mt-5 mx-auto"  style="background-color: var(--bg)">
+        <div class="row mt-5 w-100">
+            <div *ngIf="data && data.data" class="col-8 col-lg-5 d-flex flex-column align-items-center mx-auto gap-4">
+                <img class="rounded w-50 mx-auto" [src]="data.data.avatar" loading="lazy" alt="">
+                <button
+                    class="btn btn-info d-flex gap-2 text-white mx-auto"><span>Choose</span><mat-icon>cloud_upload</mat-icon></button>
+            </div>
+            <div class="col-8 col-lg-7 fs-5 ps-5 mx-auto">
+                <div *ngIf="data && data.data && data.data.name" class="d-flex gap-3 my-2">
+                    <div class="fw-semibold">Name: </div>
+                    <div>{{ data.data.name }}</div>
+                </div>
+                <div *ngIf="data && data.data && data.data.email" class="d-flex gap-3 my-2">
+                    <div class="fw-semibold">Email: </div>
+                    <div>{{ data.data.email }}</div>
+                </div>
+                <div *ngIf="data && data.data && data.data.gender" class="d-flex gap-3 my-2">
+                    <div class="fw-semibold">Gender: </div>
+                    <div>{{ data.data.gender }}</div>
+                </div>
+                <div *ngIf="data && data.data && data.data.dateOfBirth" class="d-flex gap-3 my-2">
+                    <div class="fw-semibold">Date of birth: </div>
+                    <div>{{ date }}</div>
+                </div>
+                <div *ngIf="data && data.data && data.data.phoneNumber" class="d-flex gap-3 my-2">
+                    <div class="fw-semibold">Phone number: </div>
+                    <div>{{ data.data.phoneNumber }}</div>
+                </div>
+                <div *ngIf="data && data.data && data.data.address" class="d-flex gap-3 my-2">
+                    <div class="fw-semibold">Address: </div>
+                    <div>{{ data.data.address }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row my-5 d-flex flex-column">
+            <div class="col-6 col-md-5 col-lg-4 btn btn-danger rounded-pill d-flex justify-content-center gap-3 my-3 mx-auto">
+                <div class="">Change your info</div>
+                <mat-icon>track_changes</mat-icon>
+            </div>
+
+            <div class="col-6 col-md-5 col-lg-4 btn btn-danger rounded-pill d-flex justify-content-center gap-3 my-3 mx-auto">
+                <div class="">Change your password</div>
+                <mat-icon> vpn_key</mat-icon>
+            </div>
+
+            <div (click)="logout()"
+                class="col-6 col-md-5 col-lg-4 btn btn-danger rounded-pill d-flex justify-content-center gap-3 my-3 mx-auto">
+                <div class="">Sign out</div>
+                <mat-icon class="">keyboard_arrow_right</mat-icon>
+            </div>
+        </div>
+    </div>
+</div>

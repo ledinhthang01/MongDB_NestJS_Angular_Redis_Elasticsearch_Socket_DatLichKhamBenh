@@ -1,0 +1,114 @@
+<div class="w-50 mx-auto mt-3 bg-light">
+    <div class="d-flex p-3 border-bottom border-2 border-success">
+        <img class="w-25" src="../../../../assets/Data/4.jpg" alt="">
+        <div class="w-75 mx-3">
+            <div class="fw-bold fs-4 text-success">SCHEDULE MEDICAL EXAMINATION</div>
+            <div class="fs-5 text-info">Pho giao su, tien si, bac si chuyen khoa II Lorem, ipsum dolor sit amet
+                consectetur
+                adipisicing elit.
+            </div>
+            <div>18:00 - 18:30 - Wednesday - 12/12/2023</div>
+        </div>
+    </div>
+
+    <form [formGroup]="formSubmit" (ngSubmit)="Submit()" name="Submit">
+        <div class="input-box w-75 mx-auto py-3">
+            <div class="input-field">
+                <input type="text" class="input" id="email" formControlName="name" required="" autocomplete="off">
+                <label for="name">Full name</label>
+                <div class="error-list text-danger warning1" *ngIf="fcSubmit['name'].errors && isSubmitted">
+                    <div *ngIf="fcSubmit['name'].errors['required']" class="textWarning">*Cannot be left
+                        blank
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-field">
+                <input type="text" class="input" id="email" formControlName="email" required="" autocomplete="off">
+                <label for="email">Email</label>
+                <div class="error-list text-danger warning1" *ngIf="fcSubmit['email'].errors && isSubmitted">
+                    <div *ngIf="fcSubmit['email'].errors['required']" class="textWarning">*Cannot be left
+                        blank
+                    </div>
+                    <div *ngIf="fcSubmit['email'].errors['email']" class="textWarning">*Incorrect Email
+                        format
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-field">
+                <input type="text" class="input" id="address" formControlName="address" required="" autocomplete="off">
+                <label for="address">Address</label>
+                <div class="error-list text-danger warning1" *ngIf="fcSubmit['address'].errors && isSubmitted">
+                    <div *ngIf="fcSubmit['address'].errors['required']" class="textWarning">*Cannot be left
+                        blank
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-field">
+                <input type="text" class="input" id="phone" formControlName="phone" required="" autocomplete="off">
+                <label for="phone">Phone number</label>
+                <div class="error-list text-danger" *ngIf="fcSubmit['phone'].errors && isSubmitted">
+                    <div *ngIf="fcSubmit['phone'].errors['required']" class="textWarning">*Cannot
+                        be
+                        left blank</div>
+                    <div *ngIf="fcSubmit['phone'].errors['minlength']" class="textWarning">
+                        **Password
+                        must
+                        be longer
+                        than 9 characters
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-evenly w-100">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" (change)="onChange($event)" value="male"
+                        name="flexRadioDefault" id="flexRadioDefault1" checked>
+                    <label class="form-check-label" for="flexRadioDefault1">
+                        Male
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" (change)="onChange($event)" value="female"
+                        name="flexRadioDefault" id="flexRadioDefault2">
+                    <label class="form-check-label" for="flexRadioDefault2">
+                        Female
+                    </label>
+                </div>
+            </div>
+
+            <div>
+                <div class="row px-4 mt-2">
+                    <div class="col-10 col-md-4 mt-2">Date of birth</div>
+                    <div class="col-10 col-md-4 form-group mb-3">
+                        <input type="text" placeholder="Datepicker" formControlName="dateOfBirth" class="form-control"
+                            [bsConfig]="bsConfig" bsDatepicker>
+                    </div>
+                </div>
+                <div class="error-list text-danger px-4" *ngIf="fcSubmit['dateOfBirth'].errors && isSubmitted">
+                    <div *ngIf="fcSubmit['dateOfBirth'].errors['required']" class="textWarning">*Cannot
+                        be
+                        left blank</div>
+                </div>
+            </div>
+
+
+            <div class="input-field mb-5">
+                <input type="text" class="input" id="reason" formControlName="reason" required="" autocomplete="off">
+                <label for="reason">Medical examination reason</label>
+                <div class="error-list text-danger warning1" *ngIf="fcSubmit['reason'].errors && isSubmitted">
+                    <div *ngIf="fcSubmit['reason'].errors['required']" class="textWarning">*Cannot be left
+                        blank
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-field">
+                <input type="submit" class="submit btn btn-primary" value="Sign In">
+            </div>
+        </div>
+    </form>
+</div>

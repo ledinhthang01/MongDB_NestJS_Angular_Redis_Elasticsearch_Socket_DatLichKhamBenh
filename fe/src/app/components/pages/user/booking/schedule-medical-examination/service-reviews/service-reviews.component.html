@@ -1,0 +1,73 @@
+<div class="mt-5 w-75 mx-auto mx-5">
+  <div class="d-flex py-2">
+    <div>
+      <img
+        class="m-2 rounded"
+        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPsO3-gVJHd4kMChyF88cbEQltAdHqXD3i_3w0-aQ3PsBE6_kXtlE6xRFNx8B_Pxop3TI&usqp=CAU"
+        alt=""
+      />
+    </div>
+    <div class="d-flex flex-column justify-content-center mx-2">
+      <div class="">
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aspernatur
+        incidunt iure quos accusamus quidem, autem necessitatibus ullam
+        molestias sunt at?
+      </div>
+      <div class="ms-3 detail">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque
+        necessitatibus deseruntt repellendus a blanditiis esse officiis quia
+        nostrum, quisquam eligendi.
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center">
+    <div class="review-text mx-3 fs-5 fw-bold">Review:</div>
+    <div class="d-flex gap-3 align-items-center">
+      <rating
+        [(ngModel)]="rate"
+        [max]="max"
+        (onHover)="hoveringOver($event)"
+        class="star-rate"
+      ></rating>
+      <span
+        class="label fs-5"
+        [ngStyle]="{ display: overStar ? 'inline' : 'none' }"
+        >{{ percent }}</span
+      >
+    </div>
+  </div>
+
+  <div [formGroup]="myGroup" class="">
+    <div class="fs-5 mx-3 fw-bold">Quality service:</div>
+    <div class="my-4">
+      <div
+        class="error-list text-danger warning1"
+        *ngIf="fc['review'].errors && isSubmitted"
+      >
+        <div *ngIf="fc['review'].errors['required']" class="textWarning">
+          *Cannot be left blank
+        </div>
+      </div>
+      <textarea
+        class="form-control mb-4"
+        rows="10"
+        name=""
+        id=""
+        placeholder="Type here"
+        formControlName="review"
+      ></textarea>
+    </div>
+  </div>
+
+  <div class="row d-flex justify-content-center gap-5 my-5">
+    <button type="button" class="btn btn-primary col-4 col-md-2">Back</button>
+    <button
+      type="button"
+      class="btn btn-success col-4 col-md-2"
+      (click)="Submit()"
+    >
+      Complete
+    </button>
+  </div>
+</div>

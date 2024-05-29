@@ -1,0 +1,14 @@
+<div class="general d-flex">
+  <div class="general-first">
+    <app-chat-list (dataChat)="onChatSelected($event)"></app-chat-list>
+  </div>
+  <div class="mx-auto flex-center fs-2 fw-bold" *ngIf="!dataChat; else data">
+    Click on an item to start chatting
+  </div>
+</div>
+
+<ng-template #data>
+  <div class="general-second">
+    <app-detail-chat [dataChat]="dataChat"></app-detail-chat>
+  </div>
+</ng-template>

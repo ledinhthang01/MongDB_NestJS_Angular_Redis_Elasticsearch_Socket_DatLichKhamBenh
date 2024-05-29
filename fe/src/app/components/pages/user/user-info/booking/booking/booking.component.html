@@ -1,0 +1,61 @@
+<div *ngIf="data && data.data && data.data.length !== 0; else empty" class="mt-5 row w-100 d-flex flex-column">
+    <div *ngFor="let item of data.data"
+        class="mb-4 border rounded border-2 border-info-subtle col-10 col-lg-6 mx-auto" style="background-color: var(--bg)">
+        <div class="row pt-3 d-flex justify-content-center">
+            <div class="col-8 col-lg-4 d-flex align-items-center">
+                <img class="w-50 rounded mx-auto" src="http://localhost:3002/ImagesUpload/avatardefault.jpg" alt="">
+            </div>
+            <div class="col-8 col-md-8">
+                <div class="d-flex gap-2">
+                    <div class="d-flex gap-2 my-auto mt-1">
+                        <div *ngIf="data && item && item.academic" class="text-capitalize">{{ item.academic }}
+                        </div>
+                        <div *ngIf="data && item && item.degree" class="text-capitalize">{{ item.degree }}:</div>
+                    </div>
+                    <div *ngIf="data && item && item.nameDoctor" class="text-capitalize fw-bold fs-5 my-auto">{{
+                        item.nameDoctor
+                        }}
+                    </div>
+                </div>
+
+                <div *ngIf="data && item && item.specialties" class="d-flex my-1 gap-2">
+                    <div class="mt-1">Specialties: </div>
+                    <div class="text-capitalize fs-5">{{ item.specialties }}</div>
+                </div>
+
+                <div *ngIf="data && item && item.nameCenter" class="d-flex gap-2">
+                    <div class="mt-1">Hospital: </div>
+                    <div class="text-capitalize fs-5">{{ item.nameCenter }}</div>
+                </div>
+
+                <div *ngIf="data && item" class="d-flex my-1 gap-2">
+                    <div>Date: </div>
+                    <div *ngIf="item.time">{{ item.time }}</div>
+                    <div *ngIf="item.date">{{ item.date }}</div>
+                </div>
+
+                <div *ngIf="data && item && item.address" class="d-flex gap-2">
+                    <div class="mt-1">Addres: </div>
+                    <div class="text-capitalize fs-5">{{ item.address }}</div>
+                </div>
+
+            </div>
+        </div>
+        <div class="border-top border-primary-subtle border border-1 my-3"></div>
+
+        <div *ngIf="data && item && item.price"
+            class="d-flex justify-content-end pe-5 my-1 gap-2 text-danger fs-5 fw-bold">
+            <div>Price: </div>
+            <div>{{ item.price | currency }}</div>
+        </div>
+
+        <div class="my-3 d-flex justify-content-center gap-5">
+            <button class="btn btn-info px-4 text-light fs-5 fw-bold">Message</button>
+            <button class="btn btn-danger px-4 text-light fs-5 fw-bold">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<ng-template #empty>
+    <p class="text-center text-uppercase fs-4 my-5">You have no schedule!</p>
+</ng-template>

@@ -1,0 +1,100 @@
+.form {
+  position: relative;
+
+  &-input {
+    box-sizing: border-box;
+
+    &-field {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      padding: 0 10px 0 10px;
+
+      &-input {
+        height: 40px;
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+        outline: none;
+        margin-bottom: 20px;
+        color: #40414a;
+      }
+
+      .textWarning {
+        font-size: 15px;
+        margin-top: -10px;
+      }
+    }
+  }
+
+  .list {
+    max-height: 20vh;
+
+    .item {
+      cursor: pointer;
+
+      .name {
+        width: 98%;
+        color: black;
+
+        .truncated-text {
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          max-width: 90%;
+        }
+      }
+    }
+  }
+
+  .list-member {
+    max-height: 11vh;
+
+    &-child {
+      width: 80%;
+
+      .item {
+        width: 20%;
+
+        .truncated-text {
+          width: 72%;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          max-width: 72%;
+        }
+      }
+    }
+  }
+
+  &-btn {
+    button {
+      width: 20%;
+    }
+  }
+}
+
+
+.form-input .form-input-field label {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  pointer-events: none;
+  transition: 0.5s;
+}
+
+.form-input-field input:focus~label {
+  top: -10px;
+  font-size: 13px;
+}
+
+.form-input-field input:valid~label {
+  top: -10px;
+  font-size: 13px;
+  color: #5d5076;
+}
+
+.form-input-field .input:focus,
+.form-input-field .input:valid {
+  border-bottom: 1px solid #743ae1;
+}

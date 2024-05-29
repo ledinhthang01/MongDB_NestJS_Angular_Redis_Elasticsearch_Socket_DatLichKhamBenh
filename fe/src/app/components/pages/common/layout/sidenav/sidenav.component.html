@@ -1,0 +1,34 @@
+<mat-nav-list>
+  <a routerLink="/" class="flex-center">
+    <img src="../../../../assets/Data/logowebsite.png" alt="Company Logo" />
+  </a>
+  <mat-divider
+    class="my-3 border border-top border-1 border-light"
+  ></mat-divider>
+
+  <ng-container *ngFor="let item of data">
+    <ng-template [ngIf]="item.name === 'Dashboard'">
+      <a
+        class="item mx-auto rounded text-light"
+        mat-list-item
+        routerLinkActive="list-item-active"
+        [routerLink]="item.link"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <mat-icon class="mb-2">{{ item.icon }}</mat-icon>
+        <span>{{ item.name }}</span>
+      </a>
+    </ng-template>
+    <ng-template [ngIf]="item.name !== 'Dashboard'">
+      <a
+        class="item mx-auto rounded text-light"
+        mat-list-item
+        routerLinkActive="list-item-active"
+        [routerLink]="item.link"
+      >
+        <mat-icon class="mb-1">{{ item.icon }}</mat-icon>
+        <span>{{ item.name }}</span>
+      </a>
+    </ng-template>
+  </ng-container>
+</mat-nav-list>

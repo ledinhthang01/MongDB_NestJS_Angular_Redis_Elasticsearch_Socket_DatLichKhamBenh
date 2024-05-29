@@ -1,0 +1,125 @@
+<!-- <form [formGroup]="formSignUp" (ngSubmit)="signUp()" class=""> -->
+<form [formGroup]="formSignUp" class="">
+    <div class="">
+        <div class="mt-4">
+            <h1 class="w-f mx-auto fw-bold">Sign Up</h1>
+        </div>
+        <div class="">
+            <div class="signup mt-2">
+                <div class="signup-inputbox">
+                    <div class="signup-inputbox-field">
+                        <input type="text" class="signup-inputbox-field-input" formControlName="name" required=""
+                            autocomplete="off">
+                        <label>Full name</label>
+                        <div class="error-list text-danger" *ngIf="fcSignUp['name'].errors && isSubmittSignUp">
+                            <div *ngIf="fcSignUp['name'].errors['required']" class="signup-inputbox-field-warning">
+                                *Cannot
+                                be
+                                left blank
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="signup mt-2">
+                <div class="signup-inputbox">
+                    <div class="signup-inputbox-field">
+                        <input type="text" class="signup-inputbox-field-input" formControlName="email" required=""
+                            autocomplete="off">
+                        <label>Email</label>
+                        <div class="error-list text-danger" *ngIf="fcSignUp['email'].errors && isSubmittSignUp">
+                            <div *ngIf="fcSignUp['email'].errors['required']" class="signup-inputbox-field-warning">
+                                *Cannot be
+                                left blank</div>
+                            <div *ngIf="fcSignUp['email'].errors['email']" class="signup-inputbox-field-warning">
+                                *Incorrect
+                                Email
+                                format
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="signup mt-2">
+                <div class="signup-inputbox">
+                    <div class="signup-inputbox-field">
+                        <input type="text" class="signup-inputbox-field-input" formControlName="address" required=""
+                            autocomplete="off">
+                        <label>Address</label>
+                        <div class="error-list text-danger" *ngIf="fcSignUp['address'].errors && isSubmittSignUp">
+                            <div *ngIf="fcSignUp['address'].errors['required']" class="signup-inputbox-field-warning">
+                                *Cannot
+                                be
+                                left blank</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="signup mt-2">
+                <div class="signup-inputbox">
+                    <div class="signup-inputbox-field">
+                        <input type="text" class="signup-inputbox-field-input" formControlName="phoneNumber" required=""
+                            autocomplete="off">
+                        <label>Phone Number</label>
+                        <div class="error-list text-danger" *ngIf="fcSignUp['phoneNumber'].errors && isSubmittSignUp">
+                            <div *ngIf="fcSignUp['phoneNumber'].errors['required']"
+                                class="signup-inputbox-field-warning">
+                                *Cannot
+                                be
+                                left blank</div>
+                            <div *ngIf="fcSignUp['phoneNumber'].errors['minlength']"
+                                class="signup-inputbox-field-warning">
+                                Phone number
+                                must
+                                be longer
+                                than 9 characters
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-center gap-4 mt-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" (change)="onChange($event)" value="male"
+                        name="flexRadioDefault" id="flexRadioDefault1" checked>
+                    <label class="form-check-label" for="flexRadioDefault1">
+                        Male
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" (change)="onChange($event)" value="female"
+                        name="flexRadioDefault" id="flexRadioDefault2">
+                    <label class="form-check-label" for="flexRadioDefault2">
+                        Female
+                    </label>
+                </div>
+            </div>
+
+            <div class="ms-5 mt-3">
+                <div class="d-flex gap-5 px-5 mt-2">
+                    <div class="mt-2">Date of birth</div>
+                    <div class="col-xs-12 col-12 col-md-4 form-group mb-3">
+                        <input type="text" placeholder="Datepicker" formControlName="dateOfBirth" form
+                            class="form-control" bsDatepicker [bsConfig]="bsConfig">
+                    </div>
+                </div>
+                <div class="error-list text-danger px-5" *ngIf="fcSignUp['dateOfBirth'].errors && isSubmittSignUp">
+                    <div *ngIf="fcSignUp['dateOfBirth'].errors['required']" class="signup-inputbox-field-warning">
+                        *Cannot
+                        be
+                        left blank</div>
+                </div>
+            </div>
+
+        </div>
+        <div class="mt-5 flex-center">
+            <button type="button" class="btn btn-primary fw-bold" (click)="signUp()">Sign Up</button>
+        </div>
+
+    </div>
+</form>

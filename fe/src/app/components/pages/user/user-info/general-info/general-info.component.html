@@ -1,0 +1,14 @@
+<div>
+    <div class="d-flex justify-content-around pt-5 fs-5 w-50 mx-auto">
+        <a routerLink="/info-user"  routerLinkActive="selected-link" class="px-4 py-1" [routerLinkActiveOptions]="{exact: true}">
+            Profile
+        </a>
+        <a routerLink="booking"  routerLinkActive="selected-link" class="px-4 py-1">
+            Booking
+        </a>
+        <a routerLink="examined"  routerLinkActive="selected-link" class="px-4 py-1">
+            Examined
+        </a>
+    </div>
+    <router-outlet></router-outlet>
+</div>

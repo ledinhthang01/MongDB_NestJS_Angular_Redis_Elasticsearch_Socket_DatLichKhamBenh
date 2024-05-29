@@ -1,0 +1,100 @@
+<div>
+  <div class="">
+    <div class="fs-3 w-f fw-bold my-2">Create group chat</div>
+  </div>
+  <div [formGroup]="form" class="form">
+    <div class="form-input w-75 mx-auto">
+      <div class="form-input-field">
+        <input
+          type="text"
+          class="form-input-field-input"
+          id="name"
+          formControlName="name"
+          [(ngModel)]="name"
+          required=""
+          autocomplete="off"
+          [value]="name"
+        />
+        <label for="name">Name group</label>
+        <div
+          class="error-list text-danger"
+          *ngIf="fc['name'].errors && isSubmitted"
+        >
+          <div *ngIf="fc['name'].errors['required']" class="textWarning">
+            *Cannot be left blank
+          </div>
+        </div>
+      </div>
+
+      <div class="form-input-field">
+        <input
+          type="text"
+          class="form-input-field-input"
+          [formControl]="searchControl"
+          id="member"
+          required=""
+          autocomplete="off"
+        />
+        <label for="email">Find memeber</label>
+      </div>
+    </div>
+
+    <!--  -->
+
+    <div class="overflow-auto">
+      <div class="list mx-auto w-75" *ngIf="data">
+        <div
+          *ngFor="let item of data"
+          class="item mx-auto my-2 py-1 rounded d-flex"
+          style="background-color: rgba(0, 150, 150, 0.1)"
+          (click)="addMember(item)"
+        >
+          <div class="w-25 flex-center">
+            <img
+              loading="lazy"
+              class="rounded-circle w-50"
+              [src]="item.avatar"
+              alt=""
+            />
+          </div>
+          <div class="d-flex w-75">
+            <div class="name d-flex flex-column gap-1">
+              <div class="text-start fw-bold truncated-text">
+                {{ item.name }}
+              </div>
+
+              <div class="text-start fst-italic truncated-text">
+                {{ item.email }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--  -->
+
+    <div class="list-member overflow-auto mt-3">
+      <div
+        class="list-member-child flex-wrap d-flex mx-auto justify-content-center"
+        *ngIf="member"
+      >
+        <div
+          class="item border rounded p-1 bg-info-subtle d-flex m-1"
+          *ngFor="let i of member"
+        >
+          <div class="truncated-text">
+            {{ i.name }}
+          </div>
+          <mat-icon (click)="removeMember(i)" style="cursor: pointer"
+            >cancel</mat-icon
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-btn mt-3 d-flex justify-content-center gap-5 w-100">
+    <button class="btn btn-primary fw-bold" (click)="confirm()">Submit</button>
+  </div>
+</div>

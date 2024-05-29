@@ -1,0 +1,35 @@
+<div>
+    <div>
+        <p class="text-center text-uppercase fs-1 my-3">work schedule </p>
+    </div>
+
+    <ejs-schedule #scheduleObj *ngIf="dataLoaded" class="mx-auto" style="scale: 0.8;" [readonly]="true"
+        [selectedDate]='selectedDate' [eventSettings]='eventSettings' [currentView]='currentView'>
+        <e-views>
+            <e-view option="Week" startHour="08:00" endHour="18:00"></e-view>
+            <e-view option="WorkWeek" startHour="08:00" endHour="18:00"></e-view>
+        </e-views>
+    </ejs-schedule>
+
+    <div class="d-flex justify-content-end pe-5">
+        <button type="button" (click)="showGallery()" class="btn btn-primary py-2 px-4 me-4">Register plan</button>
+    </div>
+    <div class="pb-4">
+        <p class="text-start fs-4 my-5 ps-5">Wait for confirm </p>
+    </div>
+
+    <div *ngIf="schedules && schedules.data.length !== 0; else empty">
+        <!-- list schedule -->
+        <app-list-plan [data]="schedules" [titles]="titles" (delete)="onScheduleDelete($event)"
+            (edit)="onScheduleSelected($event)"></app-list-plan>
+
+        <!-- Pagination -->
+        <div class="mx-auto pt-5" style="width: fit-content;">
+            <app-pagination [totalItems]="total" (select)="onSelected($event)"></app-pagination>
+        </div>
+    </div>
+</div>
+
+<ng-template #empty>
+    <p class="text-center text-uppercase fs-4 my-5">You have no schedule to wait!</p>
+</ng-template>

@@ -1,0 +1,134 @@
+<div>
+    <div>
+        <p class="text-center text-uppercase fs-3 my-3">schedule a medical examination</p>
+    </div>
+    <div>
+        <div class="row my-3 w-100">
+            <div class="col-6 col-lg-4 mx-auto">
+                <img *ngIf="data && data.doctor && data.doctor.avatar" loading="lazy" [src]="data.doctor.avatar"
+                    class="d-block mx-auto border rounded w-75" alt="data.doctor.name">
+            </div>
+            <div class="col-10 col-lg-8 mx-auto my-3">
+                <div class="">
+                    <div class="d-flex align-items-center my-auto gap-2">
+                        <span class="text-capitalize">{{ data && data.doctor && data.doctor.academic ?
+                            data.doctor.academic
+                            : '' }}
+                        </span>
+                        <span class="text-capitalize">{{ data && data.doctor && data.doctor.degree ?
+                            data.doctor.degree
+                            : ''
+                            }}: </span>
+                        <div class="text-capitalize fs-5 fw-bold"> {{ data && data.doctor && data.doctor.name ?
+                            data.doctor.name : ''
+                            }}
+                        </div>
+                    </div>
+                    <div>
+                        <div class="d-flex my-1 gap-2">
+                            <div>Specialties: </div>
+                            <div class="text-capitalize">{{ data && data.doctor && data.doctor.specialties ?
+                                data.doctor.specialties : ''}}</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="d-flex my-1 gap-2">
+                            <div>University: </div>
+                            <div class="text-capitalize">{{ data && data.doctor && data.doctor.university ?
+                                data.doctor.university : ''}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <div class="d-flex my-1 gap-2">
+                            <div>Hospital: </div>
+                            <div class="text-capitalize">{{ data && data.center && data.center.name ?
+                                data.center.name : ''}}</div>
+                        </div>
+                        <div class="d-flex my-1 gap-2">
+                            <div>Address: </div>
+                            <div class="text-capitalize">{{ data && data.center && data.center.address ?
+                                data.center.address : ''}}</div>
+                        </div>
+                        <div class="d-flex my-1 gap-2">
+                            <div>Phone number: </div>
+                            <div class="text-capitalize">{{ data && data.center && data.center.phoneNumber ?
+                                data.center.phoneNumber : ''}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="border rounded m-3 py-3">
+            <div>
+                <p class="text-capitalize fs-5 mb-2 ms-5">Schedule</p>
+            </div>
+            <div>
+                <div class="d-flex gap-2 my-1 ms-5">
+                    <div>Time: </div>
+                    <div class="text-capitalize fw-bold">{{ data && data.schedule && data.schedule.time ?
+                        data.schedule.time
+                        : '' }},
+                    </div>
+                    <div class="text-capitalize fw-bold">{{ data && data.schedule && data.schedule.type ?
+                        data.schedule.type
+                        : '' }},
+                    </div>
+                    <div class="text-capitalize fw-bold">{{ data && data.schedule && data.schedule.date ?
+                        date
+                        : '' | date
+                        }}</div>
+                </div>
+                <div class="ms-5">
+                    <div class="d-flex my-1 gap-2">
+                        <div>Address: </div>
+                        <div>
+                            <div class="text-capitalize">{{ data && data.center && data.center.name ?
+                                data.center.name : ''}}</div>
+                            <div class="text-capitalize">{{ data && data.center && data.center.address ?
+                                data.center.address : ''}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="border rounded m-3 py-3">
+            <div>
+                <p class="text-capitalize fs-5 mb-2 ms-5">Your Info</p>
+            </div>
+            <div class="ms-5">
+                <div class="d-flex my-1 gap-2">
+                    <div>Name: </div>
+                    <div *ngIf="user" class="text-capitalize">{{ user && user.data && user.data.name ?
+                        user.data.name : ''}}</div>
+                </div>
+                <div class="d-flex my-1 gap-2">
+                    <div>Phone number: </div>
+                    <div *ngIf="user" class="text-capitalize">{{ user && user.data && user.data.phoneNumber ?
+                        user.data.phoneNumber : ''}}</div>
+                </div>
+                <div class="d-flex my-1 gap-2">
+                    <div>Address: </div>
+                    <div *ngIf="user" class="text-capitalize">{{ user && user.data && user.data.address ?
+                        user.data.address : ''}}</div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="d-flex justify-content-end me-5" *ngIf="data && data.schedule && data.schedule.price">
+            <div class="d-flex my-1 gap-2">
+                <div class="text-capitalize fs-5 fw-bold text-danger">Price: </div>
+                <div>
+                    <div class="fs-5 fw-bold text-danger">{{ 
+                        data.schedule.price | currency }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="my-3 flex-center">
+            <button (click)="booking()" class="btn btn-primary px-4 py-2 text-light fw-bold">Submit</button>
+        </div>
+    </div>
+</div>

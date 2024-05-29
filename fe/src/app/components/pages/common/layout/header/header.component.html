@@ -1,0 +1,26 @@
+<mat-toolbar>
+    <mat-toolbar-row class="justify-content-between pe-5">
+        <div></div>
+        <div class="">
+            <ul class="my-auto">
+                <li>
+                    <button mat-button [matMenuTriggerFor]="menu" class="flex-center">
+                        <img [src]="avatar" alt="" class="p-2" />
+                        {{ name }}
+                        <mat-icon class="icon ml-1">keyboard_arrow_down</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <button (click)="logout()" mat-menu-item>
+                            <mat-icon>exit_to_app</mat-icon>
+                            Sign out
+                        </button>
+                        <button mat-menu-item>
+                            <mat-icon>track_changes</mat-icon>
+                            Change info
+                        </button>
+                    </mat-menu>
+                </li>
+            </ul>
+        </div>
+    </mat-toolbar-row>
+</mat-toolbar>

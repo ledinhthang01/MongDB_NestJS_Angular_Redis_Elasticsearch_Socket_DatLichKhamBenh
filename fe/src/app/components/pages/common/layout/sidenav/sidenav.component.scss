@@ -1,0 +1,27 @@
+:host {
+    img {
+        width: 35%;
+    }
+    .mat-icon {
+        color: #ffffff;
+        vertical-align: middle;
+        margin-right: 1rem;
+    }
+
+    .item {
+        width: 95%;
+    }
+
+    .list-item-active {
+        color: white !important;
+
+        ::ng-deep {
+            background: #0d6efd !important;
+        }
+    }
+
+    span {
+        color: #f2f5f7;
+    }
+
+}

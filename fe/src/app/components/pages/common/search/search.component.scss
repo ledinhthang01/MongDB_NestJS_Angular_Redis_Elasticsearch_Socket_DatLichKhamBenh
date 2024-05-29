@@ -1,0 +1,19 @@
+.form {
+    position: relative;
+
+    .form-select:focus {
+        box-shadow: none;
+        border: none;
+    }
+
+    .form-input {
+        text-indent: 33px;
+        border-radius: 10px;
+    }
+
+    .form-input:focus {
+        box-shadow: none;
+        border: none;
+    }
+
+}

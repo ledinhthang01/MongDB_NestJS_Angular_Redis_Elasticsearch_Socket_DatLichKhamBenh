@@ -1,0 +1,54 @@
+.form-control {
+  width: 85%;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border: none;
+}
+
+.form-icon {
+  scale: 1.3;
+  cursor: pointer;
+  right: 5%;
+  top: 20%;
+}
+
+.header {
+  height: 8vh;
+  background-color: rgba(51, 187, 187, 0);
+}
+
+.list {
+  height: 77vh;
+
+  .true-value {
+    display: flex;
+    justify-content: end;
+
+    .message {
+      justify-content: end;
+    }
+  }
+
+  .false-value {
+    display: flex;
+    justify-content: start;
+  }
+
+  img {
+    width: 4%;
+    height: 4%;
+  }
+}
+
+.send {
+  position: relative;
+
+  .typing {
+    position: absolute;
+    bottom: 60%;
+    left: 2%;
+    width: 6%;
+  }
+}

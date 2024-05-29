@@ -1,0 +1,190 @@
+<div>
+    <p class="text-center text-uppercase fs-1 my-5">Employee</p>
+    <div class="d-flex justify-content-center flex-column">
+        <form [formGroup]="form" class="add row mx-auto">
+            <div class="col-10 col-md-9 col-lg-8 row input-box mx-auto">
+                <div class="col-10 col-md-8 col-lg-5 mx-auto input-field">
+                    <input type="text" class="input" id="name" formControlName="name" [(ngModel)]="name" [value]="name"
+                        required="" autocomplete="off">
+                    <label for="name">Name</label>
+                    <div class="error-list text-danger" *ngIf="fc['name'].errors && isSubmitted">
+                        <div *ngIf="fc['name'].errors['required']" class="textWarning">*Cannot be
+                            left blank
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-10 col-md-8 col-lg-5 mx-auto input-field">
+                    <input type="text" class="input" id="email" formControlName="email" [(ngModel)]="email" required=""
+                        autocomplete="off" [value]="email">
+                    <label for="email">Email</label>
+                    <div class="error-list text-danger" *ngIf="fc['email'].errors && isSubmitted">
+                        <div *ngIf="fc['email'].errors['required']" class="textWarning">*Cannot be
+                            left blank
+                        </div>
+                        <div *ngIf="fc['email'].errors['email']" class="textWarning">*Incorrect Email
+                            format
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-10 col-md-8 col-lg-5 mx-auto d-flex justify-content-center gap-4 mt-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" (change)="onChangeGender($event)" value="male"
+                            name="flexRadioDefault1" id="flexRadioDefault1" [checked]="gender === 'male'">
+                        <label class="form-check-label" for="flexRadioDefault1">Male</label>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" (change)="onChangeGender($event)" value="female"
+                            name="flexRadioDefault1" id="flexRadioDefault2" [checked]="gender === 'female'">
+                        <label class="form-check-label" for="flexRadioDefault2">Female</label>
+                    </div>
+                </div>
+
+
+                <div class="col-10 col-md-8 col-lg-5 mx-auto">
+                    <div class="d-flex gap-5">
+                        <div class="mt-2">Date of birth</div>
+                        <div class="col-8 col-md-6 form-group mb-3">
+                            <input type="text" placeholder="Datepicker" [(ngModel)]="dateOfBirth" [bsConfig]="bsConfig"
+                                formControlName="dateOfBirth" [bsValue]="dateOfBirth" form class="form-control"
+                                bsDatepicker>
+                        </div>
+                    </div>
+                    <div class="error-list text-danger" *ngIf="fc['dateOfBirth'].errors && isSubmitted">
+                        <div *ngIf="fc['dateOfBirth'].errors['required']" class="textWarning">*Cannot
+                            be
+                            left blank</div>
+                    </div>
+                </div>
+
+                <div class="col-10 col-md-8 col-lg-5 mx-auto input-field">
+                    <input type="text" class="input" id="number" [(ngModel)]="phoneNumber" formControlName="phoneNumber"
+                        [value]="phoneNumber" required="" autocomplete="off">
+                    <label for="number">Phone Number</label>
+                    <div class="error-list text-danger" *ngIf="fc['phoneNumber'].errors && isSubmitted">
+                        <div *ngIf="fc['phoneNumber'].errors['required']" class="textWarning">*Cannot
+                            be
+                            left blank</div>
+                        <div *ngIf="fc['phoneNumber'].errors['minlength']" class="textWarning">
+                            Phone number
+                            must
+                            be longer
+                            than 9 characters
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-10 col-md-8 col-lg-5 mx-auto input-field">
+                    <input type="text" class="input" id="address" formControlName="address" [(ngModel)]="address"
+                        [value]="address" required="" autocomplete="off">
+                    <label for="address">Address</label>
+                    <div class="error-list text-danger" *ngIf="fc['address'].errors && isSubmitted">
+                        <div *ngIf="fc['address'].errors['required']" class="textWarning">*Cannot be
+                            left blank
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-10 col-md-8 col-lg-5 mx-auto input-field">
+                    <input type="text" class="input" id="nationality" formControlName="nationality"
+                        [(ngModel)]="nationality" [value]="nationality" required="" autocomplete="off">
+                    <label for="nationality">Nationality</label>
+                    <div class="error-list text-danger" *ngIf="fc['nationality'].errors && isSubmitted">
+                        <div *ngIf="fc['nationality'].errors['required']" class="textWarning">*Cannot be
+                            left blank
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-10 col-md-8 col-lg-5 mx-auto mt-3">
+                    <div class="d-flex gap-5">
+                        <div class="mt-2">Joining Date</div>
+                        <div class="col-8 col-md-6 form-group mb-3">
+                            <input type="text" placeholder="Datepicker" formControlName="joiningDate" form
+                                [bsConfig]="bsConfig" [(ngModel)]="joiningDate" [bsValue]="joiningDate"
+                                class=" form-control" bsDatepicker>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center gap-5 col-10 col-md-8 col-lg-5 mx-auto mt-3">
+                    <div>Active</div>
+                    <div class="d-flex justify-content-center gap-4 mt-1">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" (change)="onChangeActive($event)"
+                                value="active" name="flexRadioDefault2" id="flexRadioDefault3"
+                                [checked]="active === 'active'">
+                            <label class="form-check-label" for="flexRadioDefault3">
+                                Active
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" (change)="onChangeActive($event)"
+                                value="inactive" name="flexRadioDefault2" id="flexRadioDefault4"
+                                [checked]="active === 'inactive'">
+                            <label class="form-check-label" for="flexRadioDefault4">
+                                InActive
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <button *ngIf="btnEdit == false;else Edit" type="button" (click)="CreateNewEmployee()"
+            class="btn btn-primary mx-auto mt-4">Submit</button>
+        <ng-template #Edit>
+            <div class="d-flex justify-content-center gap-4">
+                <button type="button" class="btn btn-primary mt-4 px-4" (click)="EditInforEmployee()">Edit</button>
+                <button type="button" class="btn btn-danger mt-4" (click)="Cancel()">Cancel</button>
+            </div>
+        </ng-template>
+    </div>
+</div>
+
+<!-- filter -->
+<div class="mt-5 row w-75 mx-auto">
+    <div class="col-8 col-sm-5 col-lg-5 mx-auto">
+        <app-search [placeholder]="placeholderSearch" [searchString]="searchString"
+            (valueChange)="onValueChange($event)"></app-search>
+    </div>
+    <div class="col-8 col-sm-5 col-lg-3 d-flex align-items-center mx-auto gap-3" style="width: fit-content;">
+        <div class="d-flex align-items-center gap-3">
+            <div>Gender</div>
+            <select class="form-select" style="width: 150px;" aria-label="Default select example"
+                [(ngModel)]="selectGender">
+                <option value="" selected>Select</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+            <div>Active</div>
+            <select class="form-select" style="width: 150px;" aria-label="Default select example"
+                [(ngModel)]="selectActive">
+                <option value="" selected>Select</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+            </select>
+        </div>
+        <button type="button" class="btn btn-primary" style="height: fit-content;" (click)="filter()">Filter</button>
+        <button type="button" class="btn btn-danger" style="height: fit-content;" (click)="resetFilter()">Reset</button>
+    </div>
+</div>
+
+<div *ngIf="checkNull == false;else empty">
+    <!-- list employee -->
+    <app-list-employee [data]="listEmployee" [titles]="titles" (delete)="onEmployeeDelete($event)"
+        (edit)="onEmployeeSelected($event)"></app-list-employee>
+
+    <!-- Pagination -->
+    <div class="mx-auto mt-5" style="width: fit-content;">
+        <app-pagination [totalItems]="total" (select)="onSelected($event)"></app-pagination>
+    </div>
+</div>
+
+<ng-template #empty>
+    <app-no-matching></app-no-matching>
+</ng-template>

@@ -1,0 +1,10 @@
+<div action="">
+    <div class="row d-flex justify-content-center my-3">
+        <div class="">
+            <div class="form">
+                <input [(ngModel)]="inputValue" (ngModelChange)="valueChange.emit(inputValue)" [value]="searchString"
+                    type="text" class="form-control form-input border-0" [placeholder]="placeholder">
+            </div>
+        </div>
+    </div>
+</div>

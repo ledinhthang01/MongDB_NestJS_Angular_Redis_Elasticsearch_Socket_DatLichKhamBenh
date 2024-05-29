@@ -1,0 +1,35 @@
+<div class="">
+  <div class="form w-75 mx-auto mt-4">
+    <input
+      type="text"
+      [formControl]="searchControl"
+      class="form-control form-input border px-5 border-2 border-info"
+      placeholder="Search ..."
+    />
+    <mat-icon class="search" (click)="clear()">cancel</mat-icon>
+  </div>
+
+  <div class="list-search overflow-auto px-2 mt-4">
+    <div
+      *ngFor="let item of data"
+      (click)="accessChat(item._id)"
+      class="mx-auto my-2 py-2 rounded list-search-item w-75 d-flex"
+      style="background-color: rgba(0, 150, 150, 0.1)"
+    >
+      <div class="w-25 d-flex justify-content-center">
+        <img loading="lazy" class="rounded-circle" [src]="item.avatar" alt="" />
+      </div>
+      <div class="d-flex w-75">
+        <div class="list-search-item-name d-flex flex-column gap-1 w-100 px-2">
+          <div class="text-start fs-5 fw-bold truncated-text">
+            {{ item.name }}
+          </div>
+
+          <div class="text-start fs-6 fst-italic truncated-text">
+            {{ item.email }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

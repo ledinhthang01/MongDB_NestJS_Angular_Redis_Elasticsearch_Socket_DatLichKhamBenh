@@ -1,0 +1,482 @@
+<div>
+  <p class="text-center text-uppercase fs-1 my-5">Doctor</p>
+  <div class="d-flex justify-content-center flex-column">
+    <form [formGroup]="form" class="form">
+      <div class="row form-input flex-center w-100">
+        <div class="col-5 col-lg-3 my-2 mx-4 form-input-field">
+          <input
+            type="text"
+            class="form-input-field-input"
+            id="name"
+            formControlName="name"
+            [(ngModel)]="name"
+            [value]="name"
+            required=""
+            autocomplete="off"
+          />
+          <label for="name">Name</label>
+          <div
+            class="error-list text-danger"
+            *ngIf="fc['name'].errors && isSubmitted"
+          >
+            <div *ngIf="fc['name'].errors['required']" class="textWarning">
+              *Cannot be left blank
+            </div>
+          </div>
+        </div>
+
+        <div class="col-5 col-lg-3 my-2 mx-4 form-input-field">
+          <input
+            type="text"
+            class="form-input-field-input"
+            id="email"
+            formControlName="email"
+            [(ngModel)]="email"
+            required=""
+            autocomplete="off"
+            [value]="email"
+          />
+          <label for="email">Email</label>
+          <div
+            class="error-list text-danger"
+            *ngIf="fc['email'].errors && isSubmitted"
+          >
+            <div *ngIf="fc['email'].errors['required']" class="textWarning">
+              *Cannot be left blank
+            </div>
+            <div *ngIf="fc['email'].errors['email']" class="textWarning">
+              *Incorrect Email format
+            </div>
+          </div>
+        </div>
+
+        <div class="col-5 col-lg-3 my-2 mx-4 form-input-field">
+          <input
+            type="text"
+            class="form-input-field-input"
+            id="number"
+            [(ngModel)]="phoneNumber"
+            formControlName="phoneNumber"
+            [value]="phoneNumber"
+            required=""
+            autocomplete="off"
+          />
+          <label for="number">Phone Number</label>
+          <div
+            class="error-list text-danger"
+            *ngIf="fc['phoneNumber'].errors && isSubmitted"
+          >
+            <div
+              *ngIf="fc['phoneNumber'].errors['required']"
+              class="textWarning"
+            >
+              *Cannot be left blank
+            </div>
+            <div
+              *ngIf="fc['phoneNumber'].errors['minlength']"
+              class="textWarning"
+            >
+              Phone number must be longer than 9 characters
+            </div>
+          </div>
+        </div>
+
+        <div class="col-5 col-lg-3 mx-4 my-2">
+          <div class="d-flex align-items-center gap-5">
+            <div class="">Date of birth</div>
+            <div class="form-group">
+              <input
+                type="text"
+                placeholder="Datepicker"
+                [(ngModel)]="dateOfBirth"
+                [bsConfig]="bsConfig"
+                formControlName="dateOfBirth"
+                [bsValue]="dateOfBirth"
+                form
+                class="form-control"
+                bsDatepicker
+              />
+            </div>
+          </div>
+          <div
+            class="error-list text-danger"
+            *ngIf="fc['dateOfBirth'].errors && isSubmitted"
+          >
+            <div
+              *ngIf="fc['dateOfBirth'].errors['required']"
+              class="textWarning"
+            >
+              *Cannot be left blank
+            </div>
+          </div>
+        </div>
+
+        <div class="col-5 col-lg-3 mx-4 my-2">
+          <div class="d-flex align-items-center">
+            <div>Gender</div>
+            <select
+              class="form-select mx-auto"
+              formControlName="selectGender"
+              style="width: 60%"
+              aria-label="Default select example"
+            >
+              <option value="" selected>Select</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+          <div
+            class="error-list text-danger"
+            *ngIf="fc['selectGender'].errors && isSubmitted"
+          >
+            <div
+              *ngIf="fc['selectGender'].errors['required']"
+              class="textWarning"
+            >
+              *Cannot be left blank
+            </div>
+          </div>
+        </div>
+
+        <div class="col-5 col-lg-3 my-2 mx-4 form-input-field">
+          <input
+            type="text"
+            class="form-input-field-input"
+            id="address"
+            formControlName="address"
+            [(ngModel)]="address"
+            [value]="address"
+            required=""
+            autocomplete="off"
+          />
+          <label for="address">Address</label>
+          <div
+            class="error-list text-danger"
+            *ngIf="fc['address'].errors && isSubmitted"
+          >
+            <div *ngIf="fc['address'].errors['required']" class="textWarning">
+              *Cannot be left blank
+            </div>
+          </div>
+        </div>
+
+        <div class="col-5 col-lg-3 my-2 mx-4 form-input-field">
+          <input
+            type="text"
+            class="form-input-field-input"
+            id="nationality"
+            formControlName="nationality"
+            [(ngModel)]="nationality"
+            [value]="nationality"
+            required=""
+            autocomplete="off"
+          />
+          <label for="nationality">Nationality</label>
+          <div
+            class="error-list text-danger"
+            *ngIf="fc['nationality'].errors && isSubmitted"
+          >
+            <div
+              *ngIf="fc['nationality'].errors['required']"
+              class="textWarning"
+            >
+              *Cannot be left blank
+            </div>
+          </div>
+        </div>
+
+        <div class="col-5 col-lg-3 my-2 mx-4 form-input-field">
+          <input
+            type="text"
+            class="form-input-field-input"
+            id="university"
+            formControlName="university"
+            [(ngModel)]="university"
+            [value]="university"
+            required=""
+            autocomplete="off"
+          />
+          <label for="university">University</label>
+          <div
+            class="error-list text-danger"
+            *ngIf="fc['university'].errors && isSubmitted"
+          >
+            <div
+              *ngIf="fc['university'].errors['required']"
+              class="textWarning"
+            >
+              *Cannot be left blank
+            </div>
+          </div>
+        </div>
+
+        <div class="col-5 col-lg-3 mx-4 my-2">
+          <div class="d-flex align-items-center gap-5">
+            <div class="">Graduation Date</div>
+            <div class="form-group">
+              <input
+                type="text"
+                placeholder="Datepicker"
+                [(ngModel)]="graduationDate"
+                [bsConfig]="bsConfig"
+                formControlName="graduationDate"
+                [bsValue]="graduationDate"
+                form
+                class="form-control"
+                bsDatepicker
+              />
+            </div>
+          </div>
+          <div
+            class="error-list text-danger"
+            *ngIf="fc['graduationDate'].errors && isSubmitted"
+          >
+            <div
+              *ngIf="fc['graduationDate'].errors['required']"
+              class="textWarning"
+            >
+              *Cannot be left blank
+            </div>
+          </div>
+        </div>
+
+        <div class="col-5 col-lg-3 mx-4 my-2">
+          <div class="d-flex align-items-center">
+            <div>Degree</div>
+            <select
+              class="form-select mx-auto"
+              style="width: 60%"
+              formControlName="selectDegree"
+              aria-label="Default select example"
+            >
+              <option value="" selected>Select</option>
+              <option value="bachelor">The Bachelor of Medicine</option>
+              <option value="master">The Master of Medicine</option>
+              <option value="doctorOfMedicine">Doctor of Medicine</option>
+            </select>
+          </div>
+          <div
+            class="error-list text-danger"
+            *ngIf="fc['selectDegree'].errors && isSubmitted"
+          >
+            <div
+              *ngIf="fc['selectDegree'].errors['required']"
+              class="textWarning"
+            >
+              *Cannot be left blank
+            </div>
+          </div>
+        </div>
+
+        <div class="col-5 col-lg-3 mx-4 my-2">
+          <div class="d-flex align-items-center">
+            <div>Academic rank</div>
+            <select
+              class="form-select mx-auto"
+              formControlName="selectAcademic"
+              style="width: 60%"
+              aria-label="Default select example"
+            >
+              <option value="" selected>Select</option>
+              <option value="associateProfessor">Associate Professor</option>
+              <option value="professor">Professor</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-5 col-lg-3 mx-4 my-2">
+          <div class="d-flex align-items-center">
+            <div>Medical specialties</div>
+            <select
+              class="form-select mx-auto"
+              formControlName="selectSpecialties"
+              style="width: 60%"
+              aria-label="Default select example"
+            >
+              <option value="" selected>Select</option>
+              <option value="cardiology">Cardiology</option>
+              <option value="dietetics">Dietetics (and nutrition)</option>
+              <option value="endocrinology">Endocrinology</option>
+              <option value="gastroenterology">Gastroenterology</option>
+              <option value="gynecology">Gynecology</option>
+              <option value="neurology">Neurology</option>
+              <option value="oncology">Oncology</option>
+              <option value="ophthalmology">Ophthalmology</option>
+            </select>
+          </div>
+          <div
+            class="error-list text-danger"
+            *ngIf="fc['selectSpecialties'].errors && isSubmitted"
+          >
+            <div
+              *ngIf="fc['selectSpecialties'].errors['required']"
+              class="textWarning"
+            >
+              *Cannot be left blank
+            </div>
+          </div>
+        </div>
+
+        <div class="col-5 col-lg-3 mx-4 my-4">
+          <div class="d-flex align-items-center gap-5">
+            <div class="">Joining Date</div>
+            <div class="form-group">
+              <input
+                type="text"
+                placeholder="Datepicker"
+                formControlName="joiningDate"
+                form
+                [bsConfig]="bsConfig"
+                [(ngModel)]="joiningDate"
+                [bsValue]="joiningDate"
+                class="form-control"
+                bsDatepicker
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="col-5 col-lg-3 mx-4 my-4">
+          <div class="flex-center gap-4">
+            <div>Active</div>
+            <div class="d-flex justify-content-center gap-4 mt-1">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  (change)="onChangeActive($event)"
+                  value="active"
+                  name="flexRadioDefault2"
+                  id="flexRadioDefault3"
+                  [checked]="active === 'active'"
+                />
+                <label class="form-check-label" for="flexRadioDefault3">
+                  Active
+                </label>
+              </div>
+
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  (change)="onChangeActive($event)"
+                  value="inactive"
+                  name="flexRadioDefault2"
+                  id="flexRadioDefault4"
+                  [checked]="active === 'inactive'"
+                />
+                <label class="form-check-label" for="flexRadioDefault4">
+                  InActive
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div>
+      <div class="mx-auto" style="width: 80%">
+        <h5 class="">Describe</h5>
+      </div>
+
+      <form [formGroup]="editorForm" class="w-75 mx-auto">
+        <div class="editor">
+          <ngx-editor-menu [editor]="editor" [toolbar]="toolbar">
+          </ngx-editor-menu>
+          <ngx-editor [editor]="editor" formControlName="editorContent">
+          </ngx-editor>
+        </div>
+      </form>
+    </div>
+
+    <button
+      *ngIf="btnEdit == false; else Edit"
+      type="button"
+      (click)="CreateNewEmployee()"
+      class="btn btn-primary mx-auto mt-4"
+    >
+      Submit
+    </button>
+    <ng-template #Edit>
+      <div class="d-flex justify-content-center gap-4">
+        <button
+          type="button"
+          class="btn btn-primary mt-4 px-4"
+          (click)="EditInforDoctor()"
+        >
+          Edit
+        </button>
+        <button type="button" class="btn btn-danger mt-4" (click)="Cancel()">
+          Cancel
+        </button>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+<!-- filter -->
+<div class="mt-5 row w-75 mx-auto">
+  <div class="col-8 col-sm-5 col-lg-5 mx-auto">
+    <app-search
+      [placeholder]="placeholderSearch"
+      [searchString]="searchString"
+      (valueChange)="onValueChange($event)"
+    ></app-search>
+  </div>
+  <div
+    class="col-8 col-sm-5 col-lg-3 d-flex align-items-center mx-auto gap-3"
+    style="width: fit-content"
+  >
+    <div class="d-flex align-items-center gap-3">
+      <div>Active</div>
+      <select
+        class="form-select"
+        style="width: 150px"
+        aria-label="Default select example"
+        [(ngModel)]="selectActive"
+      >
+        <option value="" selected>Select</option>
+        <option value="active">Active</option>
+        <option value="inactive">Inactive</option>
+      </select>
+    </div>
+    <button
+      type="button"
+      class="btn btn-primary"
+      style="height: fit-content"
+      (click)="filter()"
+    >
+      Filter
+    </button>
+    <button
+      type="button"
+      class="btn btn-danger"
+      style="height: fit-content"
+      (click)="resetFilter()"
+    >
+      Reset
+    </button>
+  </div>
+</div>
+
+<div *ngIf="checkNull == false; else empty">
+  <!-- list dictor -->
+  <app-list-doctor
+    [data]="listDoctors"
+    [titles]="titles"
+    (delete)="onDoctorDelete($event)"
+    (edit)="onDoctorSelected($event)"
+  ></app-list-doctor>
+
+  <!-- Pagination -->
+  <div class="mx-auto mt-5 w-f">
+    <app-pagination
+      [totalItems]="total"
+      (select)="onSelected($event)"
+    ></app-pagination>
+  </div>
+</div>
+
+<ng-template #empty>
+  <app-no-matching></app-no-matching>
+</ng-template>

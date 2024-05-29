@@ -1,0 +1,46 @@
+.form {
+    position: relative;
+
+    .form-select:focus {
+        box-shadow: none;
+        border: none;
+    }
+
+    .form-input {
+        text-indent: 33px;
+        border-radius: 10px;
+    }
+
+    .form-input:focus {
+        box-shadow: none;
+        border: none;
+    }
+
+    .search {
+        position: absolute;
+        cursor: pointer;
+        right: 5%;
+        top: 20%;
+    }
+}
+
+.list-search {
+    height: 20vh;
+
+    &-item {
+        cursor: pointer;
+
+        img {
+            width: 60%;
+        }
+
+        &-name {
+            .truncated-text {
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                max-width: 95%;
+            }
+        }
+    }
+}

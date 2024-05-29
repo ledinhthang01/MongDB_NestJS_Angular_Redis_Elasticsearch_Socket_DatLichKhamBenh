@@ -1,0 +1,24 @@
+<div>
+    <table class="table table-striped w-75 mx-auto mt-3">
+        <thead>
+            <tr>
+                <th scope="col" *ngFor="let title of titles">{{ title | titlecase }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of data?.data; let i = index">
+                <th scope="row">{{ i + 1 }}</th>
+                <td>{{ item.name }}</td>
+                <td>{{ item.email }}</td>
+                <td class="text-capitalize">{{ item.address }}</td>
+                <td>{{ item.phoneNumber }}</td>
+                <td class="text-capitalize">{{ item.specialties }}</td>
+                <td class="text-capitalize">{{ item.active }}</td>
+                <td class="d-flex gap-4"><i class="bi bi-pencil-square" (click)="edit.emit(item)"
+                        style="cursor: pointer;"></i>
+                    <i class="bi bi-trash3" style="cursor: pointer;" (click)="showGallery(item)"></i>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,11 @@
+.text {
+    border-bottom: 3px rgb(39, 138, 196) solid;
+    width: fit-content;
+    position: relative;
+
+    &-underline {
+        position: absolute;
+        bottom: -5px;
+        border-bottom: 10px rgb(39, 138, 196) solid;
+    }
+}

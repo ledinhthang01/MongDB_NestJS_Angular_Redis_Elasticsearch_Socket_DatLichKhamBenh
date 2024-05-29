@@ -1,0 +1,57 @@
+<div class="mt-5" *ngIf="data && data.length !== 0; else empty">
+  <p class="text-center text-uppercase fs-2 my-5">
+    schedules are waiting to confirm
+  </p>
+  <table class="table table-striped mx-auto w-75" style="scale: 1.2">
+    <thead>
+      <tr>
+        <th scope="col">{{ "stt" | titlecase }}</th>
+        <th scope="col">
+          {{ "date start" | titlecase }}
+          <mat-icon
+            class="pt-1"
+            style="cursor: pointer"
+            (click)="sort(!swap, 'dateStart')"
+            >swap_vert</mat-icon
+          >
+        </th>
+        <th scope="col">
+          {{ "date end" | titlecase }}
+          <mat-icon
+            class="pt-1"
+            style="cursor: pointer"
+            (click)="sort(!swap, 'dateEnd')"
+            >swap_vert</mat-icon
+          >
+        </th>
+        <th scope="col">{{ "type" | titlecase }}</th>
+        <th scope="col">{{ "name" | titlecase }}</th>
+        <th scope="col">{{ "email" | titlecase }}</th>
+        <th scope="col">{{ "specialties" | titlecase }}</th>
+        <th scope="col">{{ "phoneNumber" | titlecase }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        (click)="showGallery(item)"
+        *ngFor="let item of data; let i = index"
+        style="cursor: pointer"
+      >
+        <th scope="row">{{ i + 1 }}</th>
+        <td scope="row">{{ item.dateStart | date : "fullDate" }}</td>
+        <td scope="row">{{ item.dateEnd | date : "fullDate" }}</td>
+        <td scope="row">{{ item.type | titlecase }}</td>
+        <td scope="row">{{ item.name | titlecase }}</td>
+        <td scope="row">{{ item.email }}</td>
+        <td scope="row">{{ item.specialties | titlecase }}</td>
+        <td scope="row">{{ item.phoneNumber }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #empty>
+  <p class="text-center text-uppercase fs-4 my-5">
+    You have no schedule to confirm!
+  </p>
+</ng-template>

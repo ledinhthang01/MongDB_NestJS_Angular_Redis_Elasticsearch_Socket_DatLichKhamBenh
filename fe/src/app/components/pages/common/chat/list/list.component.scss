@@ -1,0 +1,101 @@
+* {
+  .parent {
+    position: relative;
+    height: 93.3vh;
+
+    .control {
+      width: 30%;
+    }
+
+    .offcanvas {
+      position: absolute;
+
+      .list-search {
+        height: 75vh;
+
+        .row {
+          cursor: pointer;
+
+          img {
+            width: 80%;
+          }
+
+          .name {
+            width: 98%;
+            color: black;
+
+            .truncated-text {
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              max-width: 90%;
+            }
+          }
+
+          button {
+            outline: none;
+            border: 0;
+            background: transparent;
+          }
+        }
+      }
+
+      .form {
+        position: relative;
+
+        .form-select:focus {
+          box-shadow: none;
+          border: none;
+        }
+
+        .form-input {
+          text-indent: 33px;
+          border-radius: 10px;
+        }
+
+        .form-input:focus {
+          box-shadow: none;
+          border: none;
+        }
+
+        .search {
+          position: absolute;
+          cursor: pointer;
+          right: 5%;
+          top: 20%;
+        }
+      }
+    }
+
+
+
+    .list {
+      height: 85vh;
+
+      .row {
+        img {
+          width: 80%;
+        }
+
+        .name {
+          width: 98%;
+          color: black;
+          cursor: pointer;
+
+          .truncated-text {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            max-width: 90%;
+          }
+        }
+
+        button {
+          outline: none;
+          border: 0;
+          background: transparent;
+        }
+      }
+    }
+  }
+}

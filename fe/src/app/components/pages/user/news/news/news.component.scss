@@ -1,0 +1,37 @@
+.services {
+    border-bottom: 3px rgb(39, 138, 196) solid;
+    width: fit-content;
+    position: relative;
+
+    &-underline {
+        position: absolute;
+        bottom: -5px;
+        border-bottom: 10px rgb(39, 138, 196) solid;
+    }
+}
+
+.hotnews {
+    width: 85%;
+    position: relative;
+    .icon{
+        color: rgb(197, 1, 1);
+        position: absolute;
+        scale: 2;
+    }
+    &-shadow {
+        width: 40%;
+        margin: 20px;
+        -moz-box-shadow: 3px 3px 5px 0px #666;
+        -webkit-box-shadow: 3px 3px 5px 0px #666;
+        box-shadow: 3px 3px 5px 0px #666;
+
+        img {
+            height: 40vh;
+        }
+    }
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}

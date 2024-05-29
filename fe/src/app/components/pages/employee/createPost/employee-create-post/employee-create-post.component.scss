@@ -1,0 +1,26 @@
+:host ::ng-deep .ck-editor__editable_inline {
+    min-height: 500px;
+}
+
+.parents {
+    width: fit-content;
+    position: relative;
+    z-index: 1100;
+
+    .children {
+        position: absolute;
+        cursor: pointer;
+        padding: 0 6px;
+        top: 9px;
+        right: 9px;
+    }
+}
+
+label {
+    padding: 54px 58px;
+    cursor: pointer;
+
+    input {
+        height: 100px;
+    }
+}

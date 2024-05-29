@@ -1,0 +1,77 @@
+<div *ngIf="dataChat">
+  <div
+    class="header border-bottom d-flex justify-content-between align-items-center px-5"
+  >
+    <div class="h-100 d-flex align-items-center gap-3">
+      <img class="h-75 rounded-circle" [src]="dataChat.avatar" alt="" />
+      <div class="fw-bold fs-5">{{ dataChat.chatName }}</div>
+    </div>
+    <div *ngIf="dataChat.isGroupChat" style="cursor: pointer">
+      <div mat-button [matMenuTriggerFor]="menu">
+        <i class="bi bi-three-dots-vertical"></i>
+      </div>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="groupChatInfo(dataChat._id)">
+          Group chat info
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+
+  <div class="list overflow-auto p-3" *ngIf="messages">
+    <div
+      [class.true-value]="item.sender._id === idCurrent"
+      [class.false-value]="item.sender._id !== idCurrent"
+      *ngFor="let item of messages.data"
+      class="mb-3"
+    >
+      <div>
+        <div
+          *ngIf="item.chat.groupAdmin && item.sender._id !== idCurrent"
+          class="ms-5 fw-bold"
+        >
+          {{ item.sender.name }}
+        </div>
+        <div class="message d-flex gap-2">
+          <img
+            loading="lazy"
+            class="rounded-circle my-auto"
+            [src]="item.sender.avatar"
+            alt=""
+            [style.order]="item.sender._id === idCurrent ? '2' : '1'"
+          />
+          <span
+            class="rounded-5 bg-info-subtle text-break px-4 flex-center py-1"
+            [style.order]="item.sender._id === idCurrent ? '1' : '2'"
+            style="max-width: 75%"
+          >
+            {{ item.content }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div #scrollBottom></div>
+  </div>
+
+  <div class="send">
+    <div *ngIf="isTyping">
+      <img
+        src="../../../../../../assets/Data/typing.gif"
+        class="typing"
+        alt=""
+      />
+    </div>
+    <div class="flex-center gap-3 pt-3" [formGroup]="form" (ngSubmit)="send()">
+      <input
+        type="text"
+        formControlName="message"
+        (keydown)="onKeyUp($event)"
+        class="form-control border px-5 border-2 border-info"
+        placeholder="Aa ..."
+        (keydown)="keyFunction($event)"
+      />
+      <mat-icon (ngSubmit)="send()" class="form-icon">send</mat-icon>
+    </div>
+  </div>
+</div>

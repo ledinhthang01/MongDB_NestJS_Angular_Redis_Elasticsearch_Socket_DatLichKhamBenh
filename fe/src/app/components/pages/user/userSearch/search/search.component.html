@@ -1,0 +1,33 @@
+<form [formGroup]="myGroup" (submit)="search()" class="w-100">
+  <div class="row d-flex justify-content-center my-4 w-100">
+    <div class="col-8 col-xxl-5">
+      <div class="form">
+        <input
+          formControlName="searchString"
+          type="text"
+          class="form-control form-input border px-5 border-2 border-info fs-5"
+          placeholder="Search ..."
+        />
+        <mat-icon (click)="search()" class="search">search</mat-icon>
+      </div>
+    </div>
+  </div>
+</form>
+
+<div *ngIf="!data" class="w-75 mx-auto">
+  <p class="text-start fs-4 my-3">Find something</p>
+</div>
+
+<div *ngIf="data?.keyword && data.data.length === 0">
+  <app-no-matching></app-no-matching>
+</div>
+
+<div *ngIf="data?.keyword && data.data.length > 0" class="w-75 mx-auto">
+  <p class="text-start fs-4 my-3">
+    Search results for: <span class="fw-bold">{{ data.keyword }}</span>
+  </p>
+</div>
+
+<div *ngIf="data?.data">
+  <app-result-search [data]="data.data"></app-result-search>
+</div>

@@ -1,0 +1,83 @@
+<div class="">
+  <div class="my-5 d-flex justify-content-center">
+    <div class="">
+      <h2 class="services px-5 py-2 d-flex justify-content-center">
+        Medical news
+        <div class="services-underline w-25"></div>
+      </h2>
+    </div>
+  </div>
+
+  <div class="hotnews mx-auto">
+    <div class="row px-5" *ngIf="data && data.data">
+      <a
+        *ngFor="let i of data.data"
+        [routerLink]="['/news/detail-post/', i._id]"
+        class="col-sm-8 col-lg-5 text-dark mx-auto mb-5 rounded p-4 bg-white hotnews-shadow border-info"
+      >
+        <div class="icon">
+          <mat-icon>whatshot</mat-icon>
+        </div>
+        <div *ngIf="data && data.data && i.avatar">
+          <img loading="lazy" class="rounded w-100" [src]="i.avatar" alt="" />
+        </div>
+        <div>
+          <div
+            class="d-flex gap-2 m-2"
+            *ngIf="data && data.data && i.createTime"
+          >
+            <mat-icon class="mt-1">calendar_today</mat-icon>
+            <div class="flex-center fs-4">
+              {{ i.createTime | date : "dd/MM/yyyy" }}
+            </div>
+          </div>
+          <div class="px-3 py-1">
+            <div *ngIf="data && data.data && i.title">
+              <div class="fw-bold fs-3 text-start">{{ i.title }}</div>
+            </div>
+            <div *ngIf="screenWidth > 768">
+              <div class="fst-italic fs-4 text-start">{{ i.preview }}</div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="w-75 mx-auto my-5 w-f">
+      <a
+        *ngFor="let item of [1, 2, 3]"
+        href=""
+        class="row mx-auto flex-center my-3"
+      >
+        <div class="col-8 col-md-3">
+          <img
+            loading="lazy"
+            class="w-100 rounded mx-auto"
+            src="../../../../assets/Data/news6.jpg"
+            alt=""
+          />
+        </div>
+        <div class="col-12 col-md-9 mx-auto">
+          <div>
+            <div class="text-start fs-4 fw-bold">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum
+              ducimus consequatur ipsam iste iusto fugit.
+            </div>
+          </div>
+          <div class="d-flex gap-2 m-2">
+            <mat-icon class="mt-1">calendar_today</mat-icon>
+            <div class="mt-1 flex-center fs-6">11/05/2024</div>
+          </div>
+          <div *ngIf="screenWidth > 992">
+            <div class="text-start fs-5 fst-italic">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias
+              minus, dolor excepturi beatae optio nam sequi necessitatibus magni
+              delectus quibusdam ut repudiandae eum? Provident voluptatem
+              aliquam dolore animi, unde nobis?
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>

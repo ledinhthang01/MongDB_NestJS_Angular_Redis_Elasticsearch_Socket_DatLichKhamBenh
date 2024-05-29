@@ -1,0 +1,50 @@
+<div>
+  <table class="table table-striped mx-auto" style="scale: 1.2; width: 60%">
+    <thead>
+      <tr>
+        <th scope="col" class="ps-5">{{ "stt" | titlecase }}</th>
+        <th scope="col" class="ps-5">
+          {{ "date start" | titlecase }}
+          <mat-icon
+            class="pt-1"
+            style="cursor: pointer"
+            (click)="sort(!swap, 'dateStart')"
+            >swap_vert</mat-icon
+          >
+        </th>
+        <th scope="col" class="ps-5">
+          {{ "date end" | titlecase }}
+          <mat-icon
+            class="pt-1"
+            style="cursor: pointer"
+            (click)="sort(!swap, 'dateEnd')"
+            >swap_vert</mat-icon
+          >
+        </th>
+        <th scope="col" class="ps-5">{{ "type" | titlecase }}</th>
+        <th scope="col" class="ps-5"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of data?.data; let i = index">
+        <th class="ps-5" scope="row">{{ i + 1 }}</th>
+        <td class="ps-4">{{ item.dateStart | date : "fullDate" }}</td>
+        <td class="ps-4">{{ item.dateEnd | date : "fullDate" }}</td>
+        <td class="ps-5">{{ item.type | titlecase }}</td>
+        <td class="d-flex ps-5 gap-5">
+          <i
+            class="bi bi-pencil-square"
+            (click)="edit.emit(item)"
+            style="cursor: pointer"
+          ></i>
+          <!-- <i class="bi bi-trash3" style="cursor: pointer;" (click)="confirmDelete(item)"></i> -->
+          <i
+            class="bi bi-trash3"
+            style="cursor: pointer"
+            (click)="showGallery(item)"
+          ></i>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

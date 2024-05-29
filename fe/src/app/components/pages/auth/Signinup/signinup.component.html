@@ -1,0 +1,108 @@
+<form
+  [formGroup]="formSignIn"
+  (ngSubmit)="SignIn()"
+  name="SignIn"
+  class="wrapper"
+>
+  <div class="container main">
+    <div class="row">
+      <div class="col-md-6 side-image"></div>
+      <div class="col-md-6 right">
+        <div class="input-box">
+          <header>SIGN IN</header>
+          <div class="input-field add1">
+            <input
+              #inputEmail
+              type="text"
+              class="input"
+              id="email"
+              formControlName="email"
+              required=""
+              autocomplete="off"
+            />
+            <label for="email">Email</label>
+            <div
+              class="error-list text-danger"
+              *ngIf="fcSignIn['email'].errors && isSubmitted"
+            >
+              <div
+                *ngIf="fcSignIn['email'].errors['required']"
+                class="textWarning"
+              >
+                *Cannot be left blank
+              </div>
+              <div
+                *ngIf="fcSignIn['email'].errors['email']"
+                class="textWarning"
+              >
+                *Incorrect Email format
+              </div>
+            </div>
+          </div>
+          <div class="input-field add2">
+            <input
+              type="password"
+              class="input"
+              id="pass"
+              formControlName="password"
+              required=""
+            />
+            <label for="pass">Password</label>
+            <div
+              class="error-list text-danger warning2"
+              *ngIf="fcSignIn['password'].errors && isSubmitted"
+            >
+              <div
+                *ngIf="fcSignIn['password'].errors['required']"
+                class="textWarning"
+              >
+                *Cannot be left blank
+              </div>
+              <div
+                *ngIf="fcSignIn['password'].errors['minlength']"
+                class="textWarning"
+              >
+                *Password must be longer than 5 characters
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="mb-3 mx-2 forgot text-primary"
+            (click)="showFogotGallery()"
+          >
+            Forgotten password?
+          </div>
+
+          <div class="input-field">
+            <input type="submit" class="submit" value="Sign In" />
+          </div>
+          <div class="or mt-3">
+            <p class="mx-auto">or</p>
+          </div>
+          <a
+            href="{{ URL_SIGNIN }}"
+            name="signInGoogle"
+            class="google d-flex justify-content-center gap-2 border rounded py-2 mx-auto"
+          >
+            <img
+              class="logoGoogle"
+              src="../../../../assets/Data/logoGoogle.png"
+              alt=""
+            />
+            <span class="">SignIn with Google</span>
+          </a>
+
+          <div class="signin">
+            <span
+              >Not a member?
+              <a style="cursor: pointer" (click)="showGallery()"
+                >Sign up now</a
+              ></span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

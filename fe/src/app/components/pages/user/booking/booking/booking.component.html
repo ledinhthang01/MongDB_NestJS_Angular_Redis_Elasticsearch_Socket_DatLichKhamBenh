@@ -1,0 +1,11 @@
+<div *ngFor="let item of data;index as i" class="row justify-content-center my-3 w-75 mx-auto border border-2 border-info-subtle rounded"
+style="background-color: var(--bg)">
+    <app-listdoctor [id]="item.idDoctor" class="col-10 col-lg-5"></app-listdoctor>
+    <div class="col-10 col-lg-7">
+        <app-list-schedule [id]="item._id" [idDoctor]="item.idDoctor" (schedule)="onSchedule($event, i)"></app-list-schedule>
+        <div class="border-top border-2 border-primary-subtle px-3 mx-3">
+            <p class="fw-bold mt-2 text-secondary">Address</p>
+            <app-address class="" [idCenter]="item.idCenter"></app-address>
+        </div>
+    </div>
+</div>

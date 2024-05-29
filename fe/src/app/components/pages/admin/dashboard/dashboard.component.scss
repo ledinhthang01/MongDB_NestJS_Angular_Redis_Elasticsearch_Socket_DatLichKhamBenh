@@ -1,0 +1,25 @@
+.card {
+    margin-bottom: 20px;
+
+    &-body {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+        cursor: pointer;
+
+        &-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0;
+            color: #fff;
+        }
+
+        &-name {
+            font-size: 1.2rem;
+            margin: 0;
+            font-weight: 00;
+        }
+
+        i {
+            font-size: 3rem;
+        }
+    }
+}

@@ -1,0 +1,35 @@
+<div class="w-75 mx-auto my-5 w-f" *ngIf="data">
+  <a
+    [routerLink]="['/news/detail-post', item._id]"
+    *ngFor="let item of data"
+    href=""
+    class="row mx-auto flex-center my-3"
+  >
+    <div class="col-8 col-md-3" *ngIf="item.avatar">
+      <img
+        loading="lazy"
+        class="w-100 rounded mx-auto"
+        [src]="item.avatar"
+        alt=""
+      />
+    </div>
+    <div class="col-12 col-md-9 mx-auto">
+      <div>
+        <div class="text-start fs-4 fw-bold" *ngIf="item.title">
+          {{ item.title }}
+        </div>
+      </div>
+      <div class="d-flex gap-2 m-2" *ngIf="item.createTime">
+        <mat-icon class="mt-1">calendar_today</mat-icon>
+        <div class="mt-1 flex-center fs-6">
+          {{ item.createTime | date : "dd/MM/yyyy" }}
+        </div>
+      </div>
+      <div *ngIf="screenWidth > 992">
+        <div class="text-start fs-5 fst-italic" *ngIf="item.preview">
+          {{ item.preview }}
+        </div>
+      </div>
+    </div>
+  </a>
+</div>

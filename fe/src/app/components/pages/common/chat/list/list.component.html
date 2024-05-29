@@ -1,0 +1,85 @@
+<div class="border-end border-2">
+  <div class="parent h-100">
+    <div class="d-flex justify-content-around pt-3">
+      <div
+        class="control border border-2 border-info rounded flex-center"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#offcanvasScrolling"
+        aria-controls="offcanvasScrolling"
+        (click)="openGalleryAccessChat()"
+      >
+        Search ...
+      </div>
+
+      <div class="control">
+        <button
+          class="btn btn-danger flex-center gap-1 fw-bold me-2"
+          (click)="createGroupChat()"
+        >
+          <span>New Group</span>
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="list overflow-auto px-3 mt-3">
+      <div
+        *ngFor="let item of dataFetchChat"
+        class="mx-auto my-2 py-2 rounded row"
+        style="background-color: rgba(0, 150, 150, 0.1)"
+      >
+        <div
+          class="col-10 col-lg-3"
+          (click)="dataChat.emit(item)"
+          style="cursor: pointer"
+        >
+          <img
+            loading="lazy"
+            class="rounded-circle mx-auto"
+            [src]="item.avatar"
+            alt=""
+          />
+        </div>
+        <div *ngIf="screenWidth > 992" class="d-flex col-0 col-lg-9">
+          <div
+            (click)="dataChat.emit(item)"
+            class="name d-flex flex-column gap-1"
+          >
+            <div class="d-flex justify-content-between">
+              <div class="text-start fs-5 fw-bold truncated-text">
+                {{ item.chatName }}
+              </div>
+              <div class="d-flex align-items-end">
+                {{ item.updatedAt | date : "mediumDate" }}
+              </div>
+            </div>
+            <div
+              class="text-start fs-6 fst-italic truncated-text"
+              *ngIf="
+                item &&
+                item.latestMessage &&
+                item.latestMessage.content &&
+                item.latestMessage.sender.name
+              "
+            >
+              <span class="fw-bold text-capitalize"
+                >{{ item.latestMessage.sender.name }}:
+              </span>
+              {{ item.latestMessage.content }}
+            </div>
+          </div>
+          <div class="w-f">
+            <button mat-button class="flex-center" [matMenuTriggerFor]="menu">
+              <i class="bi bi-three-dots-vertical"></i>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="deleteChat(item._id)">
+                Delete
+              </button>
+            </mat-menu>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

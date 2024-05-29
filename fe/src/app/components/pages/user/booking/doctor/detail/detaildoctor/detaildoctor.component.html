@@ -1,0 +1,120 @@
+<div>
+    <div class="w-75 mx-auto">
+        <div class="">
+            <div class="text-dark" href="/detail-doctor">
+                <img src="../../../../assets/Data/4.jpg" class="d-block m-auto mt-3 border rounded w-50" alt="...">
+                <div class="row title d-flex justify-content-center mt-2">
+                    <p class="col-10 col-md-6 pt-1 text-center" style="width: fit-content;">Pho gia su, tien si, ba
+                        si:
+                    </p>
+                    <p class="col-10 col-md-6 fs-5 fw-bold text-center" style="width: fit-content;">Nguyen Tran Le
+                        Dang Hoang
+                        Minh
+                    </p>
+                </div>
+            </div>
+            <div class="w-75 mx-auto">
+                <p style="text-align: justify;" class="">Lorem ipsum dolor sit
+                    amet
+                    consectetur adipisicing elit.
+                    Corporis
+                    tenetur rem quidem eligendi quia
+                    officia eaque, officiis quo ab iste illum explicabo recusandae vitae ratione minima consequuntur
+                    repudiandae sit facilis ipsam exercitationem necessitatibus. Iste laborum dolorum quo incidunt.
+                    Possimus laborum fugiat, perferendis harum ipsam dolorem assumenda ea. Eaque alias esse perferendis
+                    maiores animi sunt ea commodi recusandae, magnam dicta beatae tempore dignissimos id modi vel quam
+                    inventore necessitatibus fugit facilis praesentium, iste ipsam nobis! Quam, nostrum reiciendis
+                    perferendis iure necessitatibus quod officiis a soluta voluptate dicta quo earum illo eos similique
+                    voluptates, corporis assumenda, aut numquam laboriosam! Aut, quos voluptates!</p>
+                <div class="d-flex gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" style="width: 3%; height: fit-content;"
+                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                    </svg>
+                    <p>Ho Chi Minh city</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row border-top border-2 border-success pt-3">
+            <div class="col-12 col-xl-6">
+                <div class="mb-2">
+                    <div class="w-25 my-3">
+                        <select class="form-select form-select-sm" aria-label=".form-select-sm example">
+                            <option selected>25/12</option>
+                            <option value="1">26/12</option>
+                            <option value="2">27/12</option>
+                            <option value="3">28/12</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-flex">
+                    <svg style="width: 4%; height: fit-content;" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
+                    </svg>
+                    <p class="">MEDICAL EXAMINATION SCHEDULE</p>
+                </div>
+                <div class="row mx-auto">
+                    <a href="" class="col-5 col-sm-4 mb-2 mx-auto" *ngFor="let time of times; let i = index">
+                        <div class="btn-group">
+                            <label class="btn btn-outline-primary d-flex gap-1"
+                                [class.selected]="i === selectedTimeIndex" (click)="selectTime(i)">
+                                <input type="radio" name="timeOptions" autocomplete="off" [value]="time"
+                                    [(ngModel)]="selectedTime">
+                                <span style="white-space: nowrap;"> {{ time }}</span>
+                            </label>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-12 col-xl-6">
+                <div class="">
+                    <p class="fw-bold text-secondary">ADDRESS</p>
+                    <div class="fw-bold">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Possimus,
+                        distinctio libero? Hic
+                        placeat inventore debitis totam, quidem numquam explicabo est.</div>
+                    <div class="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias modi culpa
+                        hic
+                        ad ducimus iure
+                        omnis accusantium deleniti libero fugiat!</div>
+                </div>
+                <div class="border-top border-2 border-success mt-3">
+                    <div class="d-flex gap-2 mt-3 mb-1">
+                        <div class="text-secondary fw-bold">PRICE: </div>
+                        <div>1 500 000</div>
+                    </div>
+                    <div class="" id="accordionExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header   w-25">
+                                <button class="accordion-button text-primary text-decoration-underline" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
+                                    aria-controls="collapseOne">
+                                    Detail
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse w-75"
+                                data-bs-parent="#accordionExample">
+                                <div class="accordion-body" style="text-align: justify;">
+                                    <strong>This is the first item's accordion body.</strong> It is shown by
+                                    default, until the collapse plugin adds the appropriate classes that we use to
+                                    style each element. These classes control the overall appearance, as well as the
+                                    showing and hiding via CSS transitions. You can modify any of this with custom
+                                    CSS or overriding our default variables. It's also worth noting that just about
+                                    any HTML can go within the <code>.accordion-body</code>, though the transition
+                                    does limit overflow.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-comment></app-comment>

@@ -1,0 +1,31 @@
+<div class="">
+    <div class="w-f my-4">
+        <h1 class="fw-bold" id="">Reset password</h1>
+    </div>
+    <div class="">
+        <div class="w-f mx-auto">Please enter your registered email to retrieve your password!</div>
+
+        <div [formGroup]="form" class="signup mt-4">
+            <div class="signup-inputbox">
+                <div class="signup-inputbox-field">
+                    <input type="text" class="signup-inputbox-field-input" formControlName="email" required=""
+                        autocomplete="off">
+                    <label>Email</label>
+                    <div class="error-list text-danger" *ngIf="fcForgot['email'].errors && isSubmitted">
+                        <div *ngIf="fcForgot['email'].errors['required']" class="signup-inputbox-field-warning">
+                            *Cannot be
+                            left blank</div>
+                        <div *ngIf="fcForgot['email'].errors['email']" class="signup-inputbox-field-warning">
+                            *Incorrect
+                            Email
+                            format
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-4 flex-center">
+        <button type="button" class="btn btn-primary" (click)="Submit()">Submit</button>
+    </div>
+</div>

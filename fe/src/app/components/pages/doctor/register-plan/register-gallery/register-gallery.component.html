@@ -1,0 +1,83 @@
+<div class="">
+  <div>
+    <p class="text-center fs-3 my-4">{{ title ? title : "Register plan" }}</p>
+  </div>
+
+  <form [formGroup]="form" class="mx-auto my-5 form">
+    <div class="flex-center gap-5">
+      <div class="mt-2">Choose day</div>
+      <div class="form-group">
+        <input
+          type="text"
+          placeholder="Datepicker"
+          formControlName="date"
+          class="form-control"
+          bsDaterangepicker
+          [minDate]="minDate"
+          [maxDate]="maxDate"
+          [bsConfig]="{ isAnimated: true, dateInputFormat: 'YYYY-MM-DD' }"
+          [ngModel]="[dateStart, dateEnd]"
+        />
+      </div>
+    </div>
+
+    <div
+      class="error-list text-danger"
+      *ngIf="fc['date'].errors && isSubmitted"
+    >
+      <div
+        *ngIf="fc['date'].errors['required']"
+        class="textWarning text-center"
+      >
+        *Cannot be left blank
+      </div>
+    </div>
+  </form>
+
+  <div class="mx-auto d-flex justify-content-center gap-5 my-2">
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="radio"
+        (change)="onChangeGender($event)"
+        value="morning"
+        name="flexRadioDefault1"
+        id="flexRadioDefault1"
+        [checked]="type === 'morning'"
+      />
+      <label class="form-check-label" for="flexRadioDefault1">Morning</label>
+    </div>
+
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="radio"
+        (change)="onChangeGender($event)"
+        value="afternoon"
+        name="flexRadioDefault1"
+        id="flexRadioDefault2"
+        [checked]="type === 'afternoon'"
+      />
+      <label class="form-check-label" for="flexRadioDefault2">Afternoon</label>
+    </div>
+
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="radio"
+        (change)="onChangeGender($event)"
+        value="allday"
+        name="flexRadioDefault1"
+        id="flexRadioDefault3"
+        [checked]="type === 'allday'"
+      />
+      <label class="form-check-label" for="flexRadioDefault3">All day</label>
+    </div>
+  </div>
+
+  <div class="flex-center my-4">
+    <button type="button" (click)="submit()" class="btn btn-primary mx-auto">
+      Submit
+    </button>
+  </div>
+</div>

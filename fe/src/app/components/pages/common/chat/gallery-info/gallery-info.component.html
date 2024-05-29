@@ -1,0 +1,107 @@
+<div>
+  <p class="text-center text-uppercase fs-4 my-2 border-bottom">
+    Chat group information
+  </p>
+
+  <div>
+    <form [formGroup]="form" class="nameGroup">
+      <p class="fs-5 fw-bold ms-5">Name</p>
+      <div class="d-flex align-items-center justify-content-center gap-5">
+        <input
+          type="text"
+          class="form-input-field-input w-50 fw-bold fs-5"
+          formControlName="name"
+          [(ngModel)]="groupName"
+          id="member"
+          required=""
+          autocomplete="off"
+        />
+        <div>
+          <button class="btn btn-danger" (click)="changeNameGroup()">
+            Change
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div *ngIf="allMember && allMember.data">
+    <div class="listMember overflow-auto">
+      <p class="my-2 fs-5 fw-bold ms-5">List member</p>
+      <div
+        *ngFor="let item of allMember.data"
+        class="flex-center w-75 mx-auto my-2"
+      >
+        <div class="" style="width: 15%">
+          <img
+            loading="lazy"
+            class="rounded-circle w-75 my-auto"
+            [src]="item.avatar"
+            alt=""
+          />
+        </div>
+        <div class="w-75 fw-bold text-capitalize">
+          {{ item.name }}
+        </div>
+        <div style="width: 10%; cursor: pointer">
+          <div mat-button class="flex-center" [matMenuTriggerFor]="menu">
+            <i class="bi bi-three-dots-vertical"></i>
+          </div>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="removeMember(item._id)">
+              Remove
+            </button>
+          </mat-menu>
+        </div>
+      </div>
+    </div>
+
+    <div class="form">
+      <p class="my-2 fs-5 fw-bold ms-5">Add member</p>
+      <div class="form-input w-75 mx-auto">
+        <div class="form-input-field">
+          <input
+            type="text"
+            class="form-input-field-input"
+            [formControl]="searchControl"
+            id="member"
+            required=""
+            autocomplete="off"
+          />
+          <label for="email">Find memeber</label>
+        </div>
+      </div>
+
+      <div class="overflow-auto">
+        <div class="list mx-auto w-75" *ngIf="data">
+          <div
+            *ngFor="let item of data"
+            class="item mx-auto my-2 py-1 rounded d-flex"
+            style="background-color: rgba(0, 150, 150, 0.1)"
+            (click)="addMember(item._id)"
+          >
+            <div class="w-25 flex-center">
+              <img
+                loading="lazy"
+                class="rounded-circle w-50"
+                [src]="item.avatar"
+                alt=""
+              />
+            </div>
+            <div class="d-flex w-75">
+              <div class="name d-flex flex-column gap-1">
+                <div class="text-start fw-bold truncated-text">
+                  {{ item.name }}
+                </div>
+
+                <div class="text-start fst-italic truncated-text">
+                  {{ item.email }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

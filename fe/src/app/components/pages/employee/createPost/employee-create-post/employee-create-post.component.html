@@ -1,0 +1,162 @@
+<div>
+  <p class="text-center text-uppercase fs-1 my-5">Create post</p>
+
+  <div>
+    <form [formGroup]="myForm" class="row w-100">
+      <div class="col-xl-10 mx-auto">
+        <div for="name" class="fs-4 fw-bold mb-2">Main image</div>
+        <div class="d-flex flex-wrap">
+          <div class="">
+            <img
+              [src]="mainImage"
+              alt="Image"
+              width="250"
+              height="140"
+              *ngIf="mainImage"
+              class="m-1 border border-2 rounded"
+            />
+          </div>
+
+          <label class="m-1 border bg-transparent border-2 rounded">
+            <input
+              class="d-none"
+              type="file"
+              accept=".png, .jpg, .jpeg"
+              name="images"
+              (change)="onMainFileSelect($event)"
+              single
+            />
+            <i class="bi bi-cloud-upload"></i>
+            Upload
+          </label>
+        </div>
+        <div class="error-list text-danger" *ngIf="!mainImage && isSubmitted">
+          <div class="textWarning">*Cannot be left blank</div>
+        </div>
+      </div>
+
+      <div class="col-xl-10 mx-auto my-3">
+        <div for="name" class="fs-4 fw-bold mb-2">Title</div>
+        <textarea
+          class="col-12 p-2 border border-2 rounded"
+          formControlName="title"
+          type="text"
+          placeholder="Type the title here"
+          name=""
+          id=""
+          rows="5"
+        ></textarea>
+        <div
+          class="error-list text-danger"
+          *ngIf="fc['title'].errors && isSubmitted"
+        >
+          <div *ngIf="fc['title'].errors['required']" class="textWarning">
+            *Cannot be left blank
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-10 mx-auto my-3">
+        <div for="name" class="fs-4 fw-bold mb-2">Preview</div>
+        <textarea
+          class="col-12 p-2 border border-2 rounded"
+          formControlName="preview"
+          type="text"
+          placeholder="Type the preview here"
+          name=""
+          id=""
+          rows="5"
+        ></textarea>
+        <div
+          class="error-list text-danger"
+          *ngIf="fc['preview'].errors && isSubmitted"
+        >
+          <div *ngIf="fc['preview'].errors['required']" class="textWarning">
+            *Cannot be left blank
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-10 mx-auto">
+        <div for="name" class="fs-4 fw-bold mb-2">Images</div>
+        <div class="d-flex flex-wrap">
+          <div class="d-flex flex-wrap">
+            <div *ngFor="let url of uploadedImages; let i = index" class="mt-2">
+              <div class="parents">
+                <img
+                  (click)="clickCopyUrl()"
+                  [src]="url.url"
+                  alt="Image"
+                  [cdkCopyToClipboard]="url.url"
+                  width="250"
+                  height="150"
+                  class="mx-1 border border-2 rounded"
+                  style="cursor: pointer"
+                />
+                <mat-icon
+                  class="children bg-dark text-light flex-center rounded p-3"
+                  (click)="removeImage(url)"
+                  >delete_forever</mat-icon
+                >
+              </div>
+            </div>
+          </div>
+          <label class="m-1 border bg-transparent border-2 rounded">
+            <input
+              class="d-none"
+              type="file"
+              accept=".png, .jpg, .jpeg"
+              name="images"
+              (change)="onFileSelect($event)"
+              multiple
+            />
+            <i class="bi bi-cloud-upload"></i>
+            Upload
+          </label>
+        </div>
+      </div>
+
+      <div class="col-xl-10 mx-auto my-3" id="editor">
+        <div for="name" class="fs-4 fw-bold mb-2">Content</div>
+
+        <form [formGroup]="myForm" class="mx-auto my-3">
+          <div class="editor">
+            <ngx-editor-menu [editor]="editor" [toolbar]="toolbar">
+            </ngx-editor-menu>
+            <ngx-editor [editor]="editor" formControlName="editorContent">
+            </ngx-editor>
+          </div>
+        </form>
+
+        <div
+          class="error-list text-danger"
+          *ngIf="fc['editorContent'].errors && isSubmitted"
+        >
+          <div
+            *ngIf="fc['editorContent'].errors['required']"
+            class="textWarning"
+          >
+            *Cannot be left blank
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="d-flex justify-content-center row gap-3 my-5 w-100">
+      <button
+        type="button"
+        (click)="reset()"
+        class="col-4 col-md-2 btn btn-danger fw-bold"
+      >
+        Reset
+      </button>
+      <button
+        type="button"
+        (click)="submit()"
+        class="col-4 col-md-2 btn btn-primary fw-bold"
+      >
+        Submit
+      </button>
+    </div>
+  </div>
+</div>

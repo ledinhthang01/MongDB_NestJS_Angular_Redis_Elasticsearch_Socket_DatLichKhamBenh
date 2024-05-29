@@ -1,0 +1,148 @@
+<div class="p-3">
+    <div class="d-flex justify-content-center">
+        <div class="w-75 bg-info border rounded">
+            <carousel>
+                <slide>
+                    <img class="w-100" loading="lazy" src="../../../../assets/Data/background01.png" alt="first slide">
+                </slide>
+                <slide>
+                    <img class="w-100" loading="lazy" src="../../../../assets/Data/background02.jpg" alt="second slide">
+                </slide>
+                <slide>
+                    <img class="w-100" loading="lazy" src="../../../../assets/Data/background03.jpg" alt="third slide">
+                </slide>
+            </carousel>
+        </div>
+    </div>
+
+    <!-- All services -->
+    <div>
+        <div class="mt-5 d-flex justify-content-center">
+            <div class="">
+                <h2 class="text px-5 py-2 d-flex justify-content-center">All Services<div class="text-underline w-25">
+                    </div>
+                </h2>
+            </div>
+        </div>
+        <div>
+            <div class="container options mt-5">
+                <div class="row">
+                    <a href="/health-services"
+                        class="col-6 my-5 col-lg-4 d-flex flex-column justify-content-center text-dark">
+                        <img loading="lazy" class="mx-auto" src="../../../../assets/Data/examination.jpg" alt="">
+                        <h4 class="text-center mt-3">Specialist examination</h4>
+                    </a>
+
+                    <a href="hospital" class="col-6 my-5 col-lg-4 d-flex flex-column justify-content-center text-dark">
+                        <img loading="lazy" class="mx-auto" src="../../../../assets/Data/hospitalospital.png" alt="">
+                        <h4 class="text-center mt-3">Hospital</h4>
+                    </a>
+
+                    <a href="schedule-medical-examination"
+                        class="col-6 my-5 col-lg-4 d-flex flex-column justify-content-center text-dark">
+                        <img loading="lazy" class="mx-auto" src="../../../../assets/Data/report.png" alt="">
+                        <h4 class="text-center mt-3">Schedule medical examination</h4>
+                    </a>
+
+                    <a href="service-reviews"
+                        class="col-6 my-5 col-lg-4 d-flex flex-column justify-content-center text-dark">
+                        <img loading="lazy" class="mx-auto" src="../../../../assets/Data/review.jpg" alt="">
+                        <h4 class="text-center mt-3">Service reviews</h4>
+                    </a>
+
+                    <a href="#" class="col-6 my-5 col-lg-4 d-flex flex-column justify-content-center text-dark">
+                        <img loading="lazy" class="mx-auto" src="../../../../assets/Data/phone.png" alt="">
+                        <h4 class="text-center mt-3">Remote examination</h4>
+                    </a>
+
+                    <a href="#" class="col-6 my-5 col-lg-4 d-flex flex-column justify-content-center text-dark">
+                        <img loading="lazy" class="mx-auto" src="../../../../assets/Data/general.jpg" alt="">
+                        <h4 class="text-center mt-3">General examination</h4>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Specialist -->
+    <app-special-list [title]="'Specialist'" [data]="dataSpecialist"></app-special-list>
+
+    <!-- hot news -->
+    <div *ngIf="data && data.data" class="w-75 mx-auto">
+        <div class="mt-5  d-flex justify-content-center">
+            <div class="">
+                <h2 class="text px-5 py-2 d-flex justify-content-center">Hot news<div class="text-underline w-25"></div>
+                </h2>
+            </div>
+        </div>
+
+        <a [routerLink]="['/news/detail-post', data.data._id]" class="d-flex justify-content-center row">
+            <div class="col-sm-8 col-md-6 p-5" *ngIf="data && data.data.avatar">
+                <img loading="lazy" [src]="data.data.avatar" class="w-100 rounded" alt="">
+            </div>
+            <div class="col-sm-8 col-md-6 d-flex flex-column justify-content-center px-5">
+                <div class="text-dark">
+                    <div class="fs-2 fw-bold my-3 text-break" *ngIf="data && data.data && data.data.title">
+                        {{ data.data.title }}</div>
+                    <div *ngIf="data && data.data && data.data.preview">
+                        <div *ngIf="screenWidth > 768" class="fs-5 text-start fst-italic">{{ data.data.preview }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <!-- Specialist -->
+    <!-- <app-special-list [title]="'Health facilities'" [data]="dataCenter"></app-special-list> -->
+
+    <!-- doctor -->
+    <!-- <app-special-list [title]="'Doctor'" [data]="dataDoctor"></app-special-list> -->
+
+    <!-- medical news -->
+    <div class="parent-list mx-auto">
+        <div class="seemore border rounded px-3 border-2 border-dark-subtle mt-4 shadow-right border-info"
+            style="width: fit-content;">
+            <a routerLink="/news" class="text-dark fs-6 flex-center">
+                <div>See more</div>
+                <mat-icon>arrow_right_alt</mat-icon>
+            </a>
+        </div>
+
+        <div class="my-5 d-flex justify-content-center">
+            <div class="services">
+                <h2 class="text px-5 py-2 d-flex justify-content-center">Medical news<div class="text-underline w-25">
+                    </div>
+                </h2>
+            </div>
+        </div>
+
+
+        <div class="hotnews mx-auto">
+            <div class="row">
+                <a *ngFor="let i of dataNews" [routerLink]="['/news/detail-post/', 123456787]"
+                    class="col-sm-8 col-lg-5 text-dark mx-auto mb-5 rounded p-4 bg-white hotnews-shadow border-info">
+                    <div >
+                        <img loading="lazy" class="rounded w-100" [src]="i.img" alt="">
+                    </div>
+                    <div>
+                        <div class="d-flex gap-2 m-2">
+                            <mat-icon class="mt-1">calendar_today</mat-icon>
+                            <div class="flex-center fs-4">May 01, 2000</div>
+                        </div>
+                        <div class="px-3 py-1">
+                            <div>
+                                <div class="fw-bold fs-3 text-start">{{ i.title }}</div>
+                            </div>
+                            <div *ngIf="screenWidth > 768">
+                                <div class="fst-italic fs-4 text-start">{{ i.preview }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+</div>
