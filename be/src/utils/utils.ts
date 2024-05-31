@@ -1,4 +1,5 @@
 import { Response } from 'express';
+import jwt from 'jsonwebtoken';
 
 export const handleSendRequest = (
   res: Response,
@@ -10,4 +11,12 @@ export const handleSendRequest = (
     message,
     data,
   });
+};
+
+export const decodedToken = (token, secret) => {
+  try {
+    return jwt.verify(token, secret);
+  } catch (error) {
+    return null;
+  }
 };

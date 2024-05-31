@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 import {
-  IsDate,
   IsEmail,
   IsNotEmpty,
   IsString,
@@ -11,8 +10,8 @@ import {
 
 export class SignUpDTO {
   @ApiProperty()
-  @IsNotEmpty()
-  @IsString({ message: 'Name cannot be left blank' })
+  @IsNotEmpty({ message: 'Name cannot be left blank' })
+  @IsString()
   @Expose()
   name: string;
 
@@ -54,12 +53,10 @@ export class SignUpDTO {
   gender: string;
 
   @ApiProperty()
-  @IsString()
   @Expose()
   password: string;
 
   @ApiProperty()
-  @IsString()
   @Expose()
   roleId: string;
 }
