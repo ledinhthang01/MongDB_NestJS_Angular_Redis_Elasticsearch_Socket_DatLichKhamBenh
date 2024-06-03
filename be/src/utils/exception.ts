@@ -25,6 +25,6 @@ export class XAlreadyExists extends ConflictException {
 
 export class ServerError extends InternalServerErrorException {
   constructor(private x: string) {
-    super(`Wrong ${x}`);
+    super(`${x}`);
   }
 }

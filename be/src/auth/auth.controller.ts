@@ -14,7 +14,12 @@ export class AuthController {
   @Post('signup')
   async signUp(@Body() signUpDTO: SignUpDTO, @Res() res: Response) {
     const data = await this.authService.signUp(signUpDTO);
-    handleSendRequest(res, 'Sign up successfully!', 201, data);
+    handleSendRequest(
+      res,
+      'Sign up successfully!, Please check your email to get password.',
+      201,
+      data,
+    );
   }
 
   @Get(':id')
@@ -27,5 +32,17 @@ export class AuthController {
   async signIn(@Body() signInDTO: SignInDTO, @Res() res: Response) {
     const data = await this.authService.signIn(signInDTO);
     handleSendRequest(res, 'Sign in successfully!', 200, data);
+  }
+
+  @Get('get-with-cache/123456789')
+  async setWithCache(@Param('id') id: string, @Res() res: Response) {
+    const data = await this.authService.getWithCache(id);
+    handleSendRequest(res, 'Get cache successfully!', 200, data);
+  }
+
+  @Get('set-with-cache/:id')
+  async getWithCache(@Param('id') id: string, @Res() res: Response) {
+    const data = await this.authService.setWithCache(id);
+    handleSendRequest(res, 'Set cache successfully!', 200, data);
   }
 }

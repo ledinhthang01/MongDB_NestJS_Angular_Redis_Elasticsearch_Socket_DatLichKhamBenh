@@ -5,6 +5,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Users, UsersSchema } from 'src/users/enity/users.enity';
 import { ElasticsearchModule } from '@nestjs/elasticsearch';
 import { RolesSchema, roles } from 'src/role/enity/role.enity';
+import { BullModule } from '@nestjs/bull';
+import { EmailConsumer } from './consumers/email.consumer';
 
 @Module({
   imports: [
@@ -19,8 +21,11 @@ import { RolesSchema, roles } from 'src/role/enity/role.enity';
         requestTimeout: 60000,
       }),
     }),
+    BullModule.registerQueue({
+      name: 'send-mail',
+    }),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, EmailConsumer],
 })
 export class AuthModule {}
