@@ -1,8 +1,8 @@
-import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req, Res } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { SignUpDTO } from './dto/signUp.dto';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { handleSendRequest } from 'src/utils/utils';
 import { SignInDTO } from './dto/signIn.dto';
 
@@ -35,7 +35,12 @@ export class AuthController {
   }
 
   @Get('get-with-cache/123456789')
-  async setWithCache(@Param('id') id: string, @Res() res: Response) {
+  async setWithCache(
+    @Param('id') id: string,
+    @Res() res: Response,
+    @Req() req: Request,
+  ) {
+    console.log('user', req.user);
     const data = await this.authService.getWithCache(id);
     handleSendRequest(res, 'Get cache successfully!', 200, data);
   }

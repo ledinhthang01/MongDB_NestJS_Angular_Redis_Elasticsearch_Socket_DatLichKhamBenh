@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -15,6 +15,7 @@ import { join } from 'path';
 import { CacheModule } from '@nestjs/cache-manager';
 import * as redisStore from 'cache-manager-redis-store';
 import { BullModule } from '@nestjs/bull';
+import { AuthMiddleware } from './middleware/auth.middleware';
 
 @Module({
   imports: [
@@ -72,4 +73,26 @@ import { BullModule } from '@nestjs/bull';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AuthMiddleware)
+      .exclude(
+        '/ImagesUpload/(.*)',
+        '/auth/signin',
+        '/auth/signup',
+        '/employee/signin',
+        '/users/refreshToken',
+        '/post/get-all-posts/(.*)',
+        '/post/get-detail-post/(.*)',
+        '/post/get-latest-post',
+        '/schedule/get-schedules/(.*)',
+        '/booking/get-all/(.*)',
+        '/booking/scheduleBooking/(.*)',
+        '/booking/getDatesAuthed/(.*)',
+        '/doctor/get-detail-infor-doctor-by-user/(.*)',
+        '/center/get-detail-infor-center-by-user/(.*)',
+      )
+      .forRoutes('*');
+  }
+}

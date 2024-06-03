@@ -15,5 +15,6 @@ import {
   ],
   controllers: [PermissionResourcesController],
   providers: [PermissionResourcesService],
+  exports: [PermissionResourcesService],
 })
 export class PermissionResourcesModule {}

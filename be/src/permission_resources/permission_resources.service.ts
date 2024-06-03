@@ -77,4 +77,8 @@ export class PermissionResourcesService {
       throw new BadRequestException(error);
     }
   }
+
+  async find(data: any): Promise<any> {
+    return await this.permissionResourcesModel.find(data);
+  }
 }

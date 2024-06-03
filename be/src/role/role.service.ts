@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { roles } from './enity/role.enity';
 import { Model, Types } from 'mongoose';
 import { RolesDTO } from './dto/roles.dto';
+import { XNotFound } from 'src/utils/exception';
 
 @Injectable()
 export class RoleService {
@@ -48,6 +49,18 @@ export class RoleService {
   async deleteRoles(id: string): Promise<roles> {
     try {
       return await this.rolesModel.findByIdAndDelete(id);
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
+  }
+
+  async findById(id: string): Promise<roles> {
+    try {
+      const data = await this.rolesModel.findById(id);
+      if (!data) {
+        throw new XNotFound('Role');
+      }
+      return data;
     } catch (error) {
       throw new BadRequestException(error);
     }

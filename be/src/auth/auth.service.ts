@@ -80,21 +80,6 @@ export class AuthService {
       //   },
       // );
 
-      // const dataMail = await this.mailerService.sendMail({
-      //   from: 'ledinhthang.work@gmail.com',
-      //   to: signUpDTO.email,
-      //   subject: '🌻 Take care of your health with SHIELD 🌻',
-      //   template: '../../../../src/templates/email/welcome',
-      //   context: {
-      //     name: signUpDTO.name,
-      //     password: password,
-      //   },
-      // });
-
-      // if (!dataMail) {
-      //   throw new ServerError('Something went wrong!');
-      // }
-
       return true;
     } catch (error) {
       throw new BadRequestException(error);

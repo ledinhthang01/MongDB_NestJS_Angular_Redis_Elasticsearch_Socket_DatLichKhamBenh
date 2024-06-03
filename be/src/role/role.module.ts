@@ -10,5 +10,6 @@ import { RolesSchema, roles } from './enity/role.enity';
   ],
   controllers: [RoleController],
   providers: [RoleService],
+  exports: [RoleService],
 })
 export class RoleModule {}
