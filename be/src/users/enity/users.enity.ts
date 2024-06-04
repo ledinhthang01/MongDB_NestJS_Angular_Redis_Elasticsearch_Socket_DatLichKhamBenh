@@ -61,8 +61,8 @@ export class Users {
   @Prop({})
   refreshToken: string;
 
-  @Prop({})
-  centerId: string;
+  @Prop({ type: Types.ObjectId, ref: 'Users' })
+  centerId: Types.ObjectId;
 }
 
 export const UsersSchema = SchemaFactory.createForClass(Users);

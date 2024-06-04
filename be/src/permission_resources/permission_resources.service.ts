@@ -19,63 +19,43 @@ export class PermissionResourcesService {
   async createPermissionResources(
     permissionResourcesDTO: PermissionResourcesDTO,
   ): Promise<permission_resources> {
-    try {
-      return await this.permissionResourcesModel.create(permissionResourcesDTO);
-    } catch (error) {
-      throw new BadRequestException(error);
-    }
+    return await this.permissionResourcesModel.create(permissionResourcesDTO);
   }
 
   async editPermissionResources(
     id: string,
     permissionResourcesDTO: PermissionResourcesDTO,
   ): Promise<permission_resources> {
-    try {
-      const data = await this.permissionResourcesModel
-        .findByIdAndUpdate(id, permissionResourcesDTO, { new: true })
-        .exec();
-      if (!data) {
-        throw new XNotFound('Permission resource');
-      }
-
-      return data;
-    } catch (error) {
-      throw new BadRequestException(error);
+    const data = await this.permissionResourcesModel
+      .findByIdAndUpdate(id, permissionResourcesDTO, { new: true })
+      .exec();
+    if (!data) {
+      throw new XNotFound('Permission resource');
     }
+
+    return data;
   }
 
   async getAllPermissionResources(): Promise<permission_resources[]> {
-    try {
-      return await this.permissionResourcesModel.find().exec();
-    } catch (error) {
-      throw new BadRequestException(error);
-    }
+    return await this.permissionResourcesModel.find().exec();
   }
 
   async getPermissionResourcesById(id: string): Promise<permission_resources> {
-    try {
-      const data = await this.permissionResourcesModel.findById(id).exec();
-      if (!data) {
-        throw new XNotFound(id);
-      }
-      return data;
-    } catch (error) {
-      throw new BadRequestException(error);
+    const data = await this.permissionResourcesModel.findById(id).exec();
+    if (!data) {
+      throw new XNotFound(id);
     }
+    return data;
   }
 
   async deletePermissionResources(id: string): Promise<permission_resources> {
-    try {
-      const data = await this.permissionResourcesModel
-        .findByIdAndDelete(id)
-        .exec();
-      if (!data) {
-        throw new XNotFound(id);
-      }
-      return data;
-    } catch (error) {
-      throw new BadRequestException(error);
+    const data = await this.permissionResourcesModel
+      .findByIdAndDelete(id)
+      .exec();
+    if (!data) {
+      throw new XNotFound(id);
     }
+    return data;
   }
 
   async find(data: any): Promise<any> {

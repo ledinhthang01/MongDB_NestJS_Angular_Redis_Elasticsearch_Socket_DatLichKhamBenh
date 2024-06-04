@@ -11,7 +11,7 @@ import {
 import { PermissionResourcesService } from './permission_resources.service';
 import { ApiTags } from '@nestjs/swagger';
 import { PermissionResourcesDTO } from './dto/permissionResources.dto';
-import { handleSendRequest } from 'src/utils/utils';
+import { HttpStatusCode, handleSendRequest } from 'src/utils/utils';
 import { Response } from 'express';
 
 @ApiTags('permission-resources')
@@ -24,16 +24,20 @@ export class PermissionResourcesController {
     @Body() permissionResourcesDTO: PermissionResourcesDTO,
     @Res() res: Response,
   ) {
-    const data =
-      await this.permissionResourcesService.createPermissionResources(
-        permissionResourcesDTO,
+    try {
+      const data =
+        await this.permissionResourcesService.createPermissionResources(
+          permissionResourcesDTO,
+        );
+      handleSendRequest(
+        res,
+        'Create permission resource successfully!',
+        HttpStatusCode.INSERT_OK,
+        data,
       );
-    handleSendRequest(
-      res,
-      'Create permission resource successfully!',
-      201,
-      data,
-    );
+    } catch (error) {
+      res.status(HttpStatusCode.BAD_REQUEST).send({ message: error.message });
+    }
   }
 
   @Put(':id')
@@ -42,28 +46,37 @@ export class PermissionResourcesController {
     @Param('id') id: string,
     @Res() res: Response,
   ) {
-    const data = await this.permissionResourcesService.editPermissionResources(
-      id,
-      permissionResourcesDTO,
-    );
-    handleSendRequest(
-      res,
-      'Update permission resource successfully!',
-      200,
-      data,
-    );
+    try {
+      const data =
+        await this.permissionResourcesService.editPermissionResources(
+          id,
+          permissionResourcesDTO,
+        );
+      handleSendRequest(
+        res,
+        'Update permission resource successfully!',
+        HttpStatusCode.OK,
+        data,
+      );
+    } catch (error) {
+      res.status(HttpStatusCode.BAD_REQUEST).send({ message: error.message });
+    }
   }
 
   @Get()
   async getAllPermissionResources(@Res() res: Response) {
-    const data =
-      await this.permissionResourcesService.getAllPermissionResources();
-    handleSendRequest(
-      res,
-      'Get all permission resource successfully!',
-      200,
-      data,
-    );
+    try {
+      const data =
+        await this.permissionResourcesService.getAllPermissionResources();
+      handleSendRequest(
+        res,
+        'Get all permission resource successfully!',
+        HttpStatusCode.OK,
+        data,
+      );
+    } catch (error) {
+      res.status(HttpStatusCode.BAD_REQUEST).send({ message: error.message });
+    }
   }
 
   @Get(':id')
@@ -71,9 +84,18 @@ export class PermissionResourcesController {
     @Param('id') id: string,
     @Res() res: Response,
   ) {
-    const data =
-      await this.permissionResourcesService.getPermissionResourcesById(id);
-    handleSendRequest(res, 'Get permission resource successfully!', 200, data);
+    try {
+      const data =
+        await this.permissionResourcesService.getPermissionResourcesById(id);
+      handleSendRequest(
+        res,
+        'Get permission resource successfully!',
+        HttpStatusCode.OK,
+        data,
+      );
+    } catch (error) {
+      res.status(HttpStatusCode.BAD_REQUEST).send({ message: error.message });
+    }
   }
 
   @Delete(':id')
@@ -81,13 +103,17 @@ export class PermissionResourcesController {
     @Param('id') id: string,
     @Res() res: Response,
   ) {
-    const data =
-      await this.permissionResourcesService.deletePermissionResources(id);
-    handleSendRequest(
-      res,
-      'Delete permission resource successfully!',
-      200,
-      data,
-    );
+    try {
+      const data =
+        await this.permissionResourcesService.deletePermissionResources(id);
+      handleSendRequest(
+        res,
+        'Delete permission resource successfully!',
+        200,
+        data,
+      );
+    } catch (error) {
+      res.status(HttpStatusCode.BAD_REQUEST).send({ message: error.message });
+    }
   }
 }

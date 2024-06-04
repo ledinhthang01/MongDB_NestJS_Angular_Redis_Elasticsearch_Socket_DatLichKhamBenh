@@ -30,146 +30,125 @@ export class AuthService {
   ) {}
 
   async signUp(signUpDTO: SignUpDTO): Promise<any> {
-    try {
-      const existingUser = await this.usersModel
-        .findOne({ email: signUpDTO.email })
-        .exec();
-      if (existingUser) {
-        throw new XAlreadyExists('Email');
-      }
-
-      // const password = Math.floor(Math.random() * Date.now()).toString(36);
-      const password = '123456';
-
-      signUpDTO.password = await bcrypt.hash(
-        password,
-        parseInt(process.env.SALT_ROUNDS),
-      );
-
-      signUpDTO.roleId = ID_ROLE_USER;
-
-      const data = JSON.parse(
-        JSON.stringify(await this.usersModel.create(signUpDTO)),
-      );
-
-      if (!data) {
-        throw new ServerError('Something went wrong!');
-      }
-
-      const id = data['_id'];
-      delete data['_id'];
-
-      const dataElastic = await this.elasticService.create({
-        index: 'users',
-        id,
-        body: data,
-      });
-
-      if (!dataElastic) {
-        throw new ServerError('Something went wrong!');
-      }
-
-      // await this.sendMail.add(
-      //   'signUp',
-      //   {
-      //     to: signUpDTO.email,
-      //     name: signUpDTO.name,
-      //     password: password,
-      //   },
-      //   {
-      //     removeOnComplete: true,
-      //   },
-      // );
-
-      return true;
-    } catch (error) {
-      throw new BadRequestException(error);
+    const existingUser = await this.usersModel
+      .findOne({ email: signUpDTO.email })
+      .exec();
+    if (existingUser) {
+      throw new XAlreadyExists('Email');
     }
+
+    // const password = Math.floor(Math.random() * Date.now()).toString(36);
+    const password = '123456';
+
+    signUpDTO.password = await bcrypt.hash(
+      password,
+      parseInt(process.env.SALT_ROUNDS),
+    );
+
+    signUpDTO.roleId = ID_ROLE_USER;
+
+    const data = JSON.parse(
+      JSON.stringify(await this.usersModel.create(signUpDTO)),
+    );
+
+    if (!data) {
+      throw new ServerError('Something went wrong!');
+    }
+
+    const id = data['_id'];
+    delete data['_id'];
+
+    const dataElastic = await this.elasticService.create({
+      index: 'users',
+      id,
+      body: data,
+    });
+
+    if (!dataElastic) {
+      throw new ServerError('Something went wrong!');
+    }
+
+    // await this.sendMail.add(
+    //   'signUp',
+    //   {
+    //     to: signUpDTO.email,
+    //     name: signUpDTO.name,
+    //     password: password,
+    //   },
+    //   {
+    //     removeOnComplete: true,
+    //   },
+    // );
+
+    return true;
   }
 
   async signIn(signInDTO: SignInDTO): Promise<any> {
-    try {
-      let existingUser = await this.usersModel
-        .findOne({ email: signInDTO.email })
-        .exec();
+    let existingUser = await this.usersModel
+      .findOne({ email: signInDTO.email })
+      .exec();
 
-      if (existingUser.active === 'active') {
-        let isMatch = await bcrypt.compare(
-          signInDTO.password,
-          existingUser.password,
-        );
+    if (existingUser.active === 'active') {
+      let isMatch = await bcrypt.compare(
+        signInDTO.password,
+        existingUser.password,
+      );
 
-        if (isMatch) {
-          const payloadRefresh = {
-            id: existingUser._id,
-            name: existingUser.name,
-            phoneNumber: existingUser.phoneNumber,
-            roleId: existingUser.roleId,
-          };
+      if (isMatch) {
+        const payloadRefresh = {
+          id: existingUser._id,
+          name: existingUser.name,
+          phoneNumber: existingUser.phoneNumber,
+          roleId: existingUser.roleId,
+        };
 
-          const refreshToken = this.generateToken(payloadRefresh, '1y');
+        const refreshToken = this.generateToken(payloadRefresh, '1y');
 
-          const payloadAccess = {
-            id: existingUser._id,
-            roleId: existingUser.roleId,
-          };
+        const payloadAccess = {
+          id: existingUser._id,
+          roleId: existingUser.roleId,
+        };
 
-          const accessToken = this.generateToken(payloadAccess, '4.5h');
+        const accessToken = this.generateToken(payloadAccess, '4.5h');
 
-          const url = (
-            await this.rolesModel.findById(existingUser.roleId).exec()
-          ).roleName;
+        const url = (await this.rolesModel.findById(existingUser.roleId).exec())
+          .roleName;
 
-          existingUser.refreshToken =
-            (await refreshToken) ?? existingUser.refreshToken;
-          await existingUser.save();
+        existingUser.refreshToken =
+          (await refreshToken) ?? existingUser.refreshToken;
+        await existingUser.save();
 
-          return {
-            _id: existingUser._id,
-            name: existingUser.name,
-            email: existingUser.email,
-            avatar: existingUser.avatar,
-            url: url,
-            accessToken: await accessToken,
-            refreshToken: await refreshToken,
-          };
-        } else {
-          throw new ServerError('Wrong email or password!');
-        }
+        return {
+          _id: existingUser._id,
+          name: existingUser.name,
+          email: existingUser.email,
+          avatar: existingUser.avatar,
+          url: url,
+          accessToken: await accessToken,
+          refreshToken: await refreshToken,
+        };
       } else {
-        throw new ServerError('You cannot sign in, please contact to admin!');
+        throw new ServerError('Wrong email or password!');
       }
-    } catch (error) {
-      throw new BadRequestException(error);
+    } else {
+      throw new ServerError('You cannot sign in, please contact to admin!');
     }
   }
 
   async get(id): Promise<any> {
-    try {
-      return await this.elasticService.get({
-        index: 'users',
-        id: id,
-      });
-    } catch (error) {
-      throw new BadRequestException(error);
-    }
+    return await this.elasticService.get({
+      index: 'users',
+      id: id,
+    });
   }
 
   async getWithCache(id: string): Promise<any> {
-    try {
-      return await this.cacheManager.get('abc');
-    } catch (error) {
-      throw new BadRequestException(error);
-    }
+    return await this.cacheManager.get('abc');
   }
 
   async setWithCache(id): Promise<any> {
-    try {
-      await this.cacheManager.set('abc', id);
-      return true;
-    } catch (error) {
-      throw new BadRequestException(error);
-    }
+    await this.cacheManager.set('abc', id);
+    return true;
   }
 
   async generateToken(payload, time): Promise<string> {
@@ -238,5 +217,11 @@ export class AuthService {
     } else {
       return false;
     }
+  }
+
+  async logOut(req: Request): Promise<any> {
+    await this.usersModel
+      .findByIdAndUpdate(req.user['_id'], { refreshToken: '' })
+      .exec();
   }
 }
