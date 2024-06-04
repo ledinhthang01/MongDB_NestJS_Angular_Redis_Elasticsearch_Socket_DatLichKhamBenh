@@ -1,10 +1,20 @@
-import { Body, Controller, Get, Param, Post, Req, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { SignUpDTO } from './dto/signUp.dto';
 import { Request, Response } from 'express';
 import { handleSendRequest } from 'src/utils/utils';
 import { SignInDTO } from './dto/signIn.dto';
+import { PermissionsGuard } from 'src/guard/permissions.guard';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -35,12 +45,12 @@ export class AuthController {
   }
 
   @Get('get-with-cache/123456789')
+  @UseGuards(PermissionsGuard)
   async setWithCache(
     @Param('id') id: string,
     @Res() res: Response,
     @Req() req: Request,
   ) {
-    console.log('user', req.user);
     const data = await this.authService.getWithCache(id);
     handleSendRequest(res, 'Get cache successfully!', 200, data);
   }
@@ -49,5 +59,11 @@ export class AuthController {
   async getWithCache(@Param('id') id: string, @Res() res: Response) {
     const data = await this.authService.setWithCache(id);
     handleSendRequest(res, 'Set cache successfully!', 200, data);
+  }
+
+  @Post('refreshToken')
+  async refreshToken(@Res() res: Response, @Req() req: Request) {
+    const data = await this.authService.refreshToken(req);
+    handleSendRequest(res, 'Successfully!', 200, data);
   }
 }

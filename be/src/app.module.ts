@@ -82,7 +82,7 @@ export class AppModule implements NestModule {
         '/auth/signin',
         '/auth/signup',
         '/employee/signin',
-        '/users/refreshToken',
+        '/auth/refreshToken',
         '/post/get-all-posts/(.*)',
         '/post/get-detail-post/(.*)',
         '/post/get-latest-post',

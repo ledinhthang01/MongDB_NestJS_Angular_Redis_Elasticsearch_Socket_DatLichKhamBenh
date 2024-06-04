@@ -7,9 +7,13 @@ import { ElasticsearchModule } from '@nestjs/elasticsearch';
 import { RolesSchema, roles } from 'src/role/enity/role.enity';
 import { BullModule } from '@nestjs/bull';
 import { EmailConsumer } from './consumers/email.consumer';
+import { RoleModule } from 'src/role/role.module';
+import { PermissionResourcesModule } from 'src/permission_resources/permission_resources.module';
 
 @Module({
   imports: [
+    RoleModule,
+    PermissionResourcesModule,
     MongooseModule.forFeature([
       { name: Users.name, schema: UsersSchema },
       { name: roles.name, schema: RolesSchema },

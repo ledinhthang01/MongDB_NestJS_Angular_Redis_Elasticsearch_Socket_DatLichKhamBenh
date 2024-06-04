@@ -3,7 +3,7 @@ import { SignUpDTO } from './dto/signUp.dto';
 import { Users } from 'src/users/enity/users.enity';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { ServerError, XAlreadyExists } from 'src/utils/exception';
+import { ServerError, XAlreadyExists, XNotFound } from 'src/utils/exception';
 import * as bcrypt from 'bcrypt';
 import { ID_ROLE_USER } from 'src/utils/constants';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
@@ -15,6 +15,7 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
+import { Request } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -174,5 +175,68 @@ export class AuthService {
   async generateToken(payload, time): Promise<string> {
     const options: JwtSignOptions = { expiresIn: time };
     return await this.jwtService.signAsync(payload, options);
+  }
+
+  async refreshToken(req: Request): Promise<any> {
+    const token = req.headers.refreshtoken;
+    if (token) {
+      const result = await this.checkToken(token);
+      if (result) {
+        return await this.handleNewToken(token);
+      } else {
+        throw new ServerError('Sign in, please!');
+      }
+    } else {
+      throw new XNotFound('Refresh token');
+    }
+  }
+
+  async handleNewToken(token): Promise<any> {
+    const jwtObject = this.jwtService.verify(token, {
+      secret: process.env.JWT_SECRET_TOKEN,
+    });
+
+    if (!jwtObject) {
+      throw new ServerError('Something went wrong');
+    } else {
+      let expiresIn = jwtObject.exp - Math.floor(Date.now() / 1000);
+
+      delete jwtObject.exp;
+      const newRefreshToken = await this.generateToken(jwtObject, expiresIn);
+
+      let newAccessToken = await this.generateToken(
+        { id: jwtObject.id, roleId: jwtObject.roleId },
+        '4.5h',
+      );
+      await this.usersModel.updateOne(
+        { _id: jwtObject.id },
+        { $set: { refreshToken: newRefreshToken } },
+      );
+      return {
+        newRefreshToken,
+        newAccessToken,
+      };
+    }
+  }
+
+  async checkToken(token): Promise<any> {
+    const existingUser = await this.usersModel.findOne({
+      refreshToken: { $eq: token },
+    });
+    if (existingUser) {
+      const jwtObject = this.jwtService.verify(token, {
+        secret: process.env.JWT_SECRET_TOKEN,
+      });
+      if (!jwtObject) {
+        const data = await this.usersModel.findById(existingUser._id);
+        data.refreshToken = '';
+        await data.save();
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return false;
+    }
   }
 }
