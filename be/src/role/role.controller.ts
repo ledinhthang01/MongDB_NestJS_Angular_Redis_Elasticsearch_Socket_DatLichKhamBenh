@@ -11,7 +11,7 @@ import {
 import { RoleService } from './role.service';
 import { RolesDTO } from './dto/roles.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { handleSendRequest } from 'src/utils/utils';
+import { HttpStatusCode, handleSendRequest } from 'src/utils/utils';
 import { Response } from 'express';
 
 @ApiTags('role')
@@ -21,8 +21,17 @@ export class RoleController {
 
   @Post()
   async createRoles(@Body() rolesDTO: RolesDTO, @Res() res: Response) {
-    const data = await this.roleService.createRoles(rolesDTO);
-    handleSendRequest(res, 'Create role successfully!', 201, data);
+    try {
+      const data = await this.roleService.createRoles(rolesDTO);
+      handleSendRequest(
+        res,
+        'Create role successfully!',
+        HttpStatusCode.INSERT_OK,
+        data,
+      );
+    } catch (error) {
+      res.status(HttpStatusCode.BAD_REQUEST).send({ message: error.message });
+    }
   }
 
   @Put(':id')
@@ -31,25 +40,56 @@ export class RoleController {
     @Body() rolesDTO: RolesDTO,
     @Res() res: Response,
   ) {
-    const data = await this.roleService.editRoles(id, rolesDTO);
-    handleSendRequest(res, 'Edit role successfully!', 200, data);
+    try {
+      const data = await this.roleService.editRoles(id, rolesDTO);
+      handleSendRequest(
+        res,
+        'Edit role successfully!',
+        HttpStatusCode.OK,
+        data,
+      );
+    } catch (error) {
+      res.status(HttpStatusCode.BAD_REQUEST).send({ message: error.message });
+    }
   }
 
   @Get()
   async getAllRoles(@Res() res: Response) {
-    const data = await this.roleService.getAllRoles();
-    handleSendRequest(res, 'Get all roles successfully!', 200, data);
+    try {
+      const data = await this.roleService.getAllRoles();
+      handleSendRequest(
+        res,
+        'Get all roles successfully!',
+        HttpStatusCode.OK,
+        data,
+      );
+    } catch (error) {
+      res.status(HttpStatusCode.BAD_REQUEST).send({ message: error.message });
+    }
   }
 
   @Get(':id')
   async getRolesById(@Param('id') id: string, @Res() res: Response) {
-    const data = await this.roleService.getRolesById(id);
-    handleSendRequest(res, 'Get role successfully!', 200, data);
+    try {
+      const data = await this.roleService.getRolesById(id);
+      handleSendRequest(res, 'Get role successfully!', HttpStatusCode.OK, data);
+    } catch (error) {
+      res.status(HttpStatusCode.BAD_REQUEST).send({ message: error.message });
+    }
   }
 
   @Delete(':id')
   async deleteRoles(@Param('id') id: string, @Res() res: Response) {
-    const data = await this.roleService.deleteRoles(id);
-    handleSendRequest(res, 'Delete role successfully!', 200, data);
+    try {
+      const data = await this.roleService.deleteRoles(id);
+      handleSendRequest(
+        res,
+        'Delete role successfully!',
+        HttpStatusCode.OK,
+        data,
+      );
+    } catch (error) {
+      res.status(HttpStatusCode.BAD_REQUEST).send({ message: error.message });
+    }
   }
 }

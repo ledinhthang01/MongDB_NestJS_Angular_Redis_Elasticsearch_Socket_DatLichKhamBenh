@@ -12,6 +12,7 @@ import { ServerError, XAlreadyExists, XNotFound } from 'src/utils/exception';
 import { CreateCenterDTO } from './dto/createNewCenter.dto';
 import * as bcrypt from 'bcrypt';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
+import { EditCenterDTO } from './dto/editCenter.dto';
 
 @Injectable()
 export class UsersService {
@@ -42,18 +43,19 @@ export class UsersService {
       throw new ServerError('Something went wrong!');
     }
 
-    // const id = data['_id'];
-    // delete data['_id'];
+    const id = data['_id'];
+    delete data['_id'];
 
-    // const dataElastic = await this.elasticService.create({
-    //   index: 'users',
-    //   id,
-    //   body: data,
-    // });
+    const dataElastic = await this.elasticService.create({
+      index: 'users',
+      id,
+      body: data,
+    });
 
-    // if (!dataElastic) {
-    //   throw new ServerError('Something went wrong!');
-    // }
+    if (!dataElastic) {
+      throw new ServerError('Something went wrong!');
+    }
+    data._id = id;
     return data;
   }
 
@@ -67,5 +69,104 @@ export class UsersService {
     } catch (error) {
       throw new BadRequestException(error);
     }
+  }
+
+  async findUserById(id: string): Promise<any> {
+    const search = await this.elasticService.search({
+      index: 'users',
+      body: {
+        query: {
+          term: {
+            _id: id,
+          },
+        },
+        _source: {
+          excludes: ['password'],
+        },
+      },
+    });
+
+    let result = search.hits.hits[0];
+
+    if (!result._source) {
+      const data = await this.usersModel.findById(id);
+      if (!data) {
+        throw new XNotFound('User');
+      }
+      delete data.password;
+      return data;
+    }
+
+    return result;
+  }
+
+  async editInfor(dataDto: EditCenterDTO): Promise<Users> {
+    const search = await this.elasticService.search({
+      index: 'users',
+      body: {
+        query: {
+          term: {
+            _id: dataDto.id,
+          },
+        },
+        _source: {
+          excludes: ['password'],
+        },
+      },
+    });
+    let result = search.hits.hits[0];
+
+    if (!result._source) {
+      throw new XNotFound('User');
+    }
+
+    if (result._source['email'] !== dataDto.email) {
+      const email = dataDto.email;
+      const existingUser = await this.usersModel.findOne({ email });
+      if (existingUser) {
+        throw new XAlreadyExists('Email');
+      }
+    }
+
+    const id = dataDto.id;
+    delete dataDto.id;
+
+    const updateElastic = await this.elasticService.update({
+      index: 'users',
+      id: id,
+      body: {
+        doc: dataDto,
+      },
+    });
+
+    if (!updateElastic) {
+      throw new ServerError('Something went wrong update!');
+    }
+
+    const updateDB = await this.usersModel
+      .findByIdAndUpdate(id, dataDto, {
+        new: true,
+      })
+      .select('-password');
+    if (!updateDB) {
+      throw new ServerError('Something went wrong update!');
+    }
+
+    return updateDB;
+  }
+
+  async deleteData(id: string): Promise<any> {
+    const data = await this.usersModel.findByIdAndDelete(id).exec();
+    if (!data) {
+      throw new ServerError('Something went wrong delete!');
+    }
+    const dataElastic = await this.elasticService.delete({
+      index: 'users',
+      id: id,
+    });
+    if (!dataElastic) {
+      throw new ServerError('Something went wrong delete!');
+    }
+    return dataElastic;
   }
 }

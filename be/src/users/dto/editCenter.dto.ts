@@ -7,9 +7,14 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { ObjectId, Types } from 'mongoose';
 
-export class CreateCenterDTO {
+export class EditCenterDTO {
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  @Expose()
+  id: string;
+
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
@@ -22,10 +27,6 @@ export class CreateCenterDTO {
   @IsEmail()
   @Expose()
   email: string;
-
-  @ApiProperty()
-  @Expose()
-  password: string;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -61,8 +62,4 @@ export class CreateCenterDTO {
   @IsString()
   @Expose()
   active: string;
-
-  @ApiProperty()
-  @Expose()
-  roleId: Types.ObjectId;
 }

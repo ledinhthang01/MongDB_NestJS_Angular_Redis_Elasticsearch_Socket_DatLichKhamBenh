@@ -55,8 +55,8 @@ export class Users {
   @Prop({ default: '/uploads/avatardefault.jpg' })
   avatar: string;
 
-  @Prop({ required: true })
-  roleId: string;
+  @Prop({ type: Types.ObjectId, ref: 'roles' })
+  roleId: Types.ObjectId;
 
   @Prop({})
   refreshToken: string;

@@ -1,9 +1,9 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { roles } from './enity/role.enity';
 import { Model, Types } from 'mongoose';
 import { RolesDTO } from './dto/roles.dto';
-import { XNotFound } from 'src/utils/exception';
+import { ServerError, XNotFound } from 'src/utils/exception';
 
 @Injectable()
 export class RoleService {
@@ -13,56 +13,52 @@ export class RoleService {
   ) {}
 
   async createRoles(rolesDTO: RolesDTO): Promise<roles> {
-    try {
-      return await this.rolesModel.create(rolesDTO);
-    } catch (error) {
-      throw new BadRequestException(error);
+    const data = await this.rolesModel.create(rolesDTO);
+    if (!data) {
+      throw new ServerError('Something went wrong!');
     }
+    return data;
   }
 
   async editRoles(id: string, rolesDTO: RolesDTO): Promise<roles> {
-    try {
-      return await this.rolesModel
-        .findByIdAndUpdate(id, rolesDTO, { new: true })
-        .exec();
-    } catch (error) {
-      throw new BadRequestException(error);
+    const data = await this.rolesModel
+      .findByIdAndUpdate(id, rolesDTO, { new: true })
+      .exec();
+    if (!data) {
+      throw new ServerError('Something went wrong!');
     }
+    return data;
   }
 
   async getAllRoles(): Promise<roles[]> {
-    try {
-      return await this.rolesModel.find().exec();
-    } catch (error) {
-      throw new BadRequestException(error);
+    const data = await this.rolesModel.find().exec();
+    if (!data) {
+      throw new ServerError('Something went wrong!');
     }
+    return data;
   }
 
   async getRolesById(id: string): Promise<roles> {
-    try {
-      return await this.rolesModel.findById(id);
-    } catch (error) {
-      throw new BadRequestException(error);
+    const data = await this.rolesModel.findById(id);
+    if (!data) {
+      throw new ServerError('Something went wrong!');
     }
+    return data;
   }
 
   async deleteRoles(id: string): Promise<roles> {
-    try {
-      return await this.rolesModel.findByIdAndDelete(id);
-    } catch (error) {
-      throw new BadRequestException(error);
+    const data = await this.rolesModel.findByIdAndDelete(id);
+    if (!data) {
+      throw new ServerError('Something went wrong!');
     }
+    return data;
   }
 
   async findById(id: string): Promise<roles> {
-    try {
-      const data = await this.rolesModel.findById(id);
-      if (!data) {
-        throw new XNotFound('Role');
-      }
-      return data;
-    } catch (error) {
-      throw new BadRequestException(error);
+    const data = await this.rolesModel.findById(id);
+    if (!data) {
+      throw new XNotFound('Role');
     }
+    return data;
   }
 }
