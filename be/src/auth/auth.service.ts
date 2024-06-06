@@ -207,9 +207,11 @@ export class AuthService {
         secret: process.env.JWT_SECRET_TOKEN,
       });
       if (!jwtObject) {
-        const data = await this.usersModel.findById(existingUser._id);
-        data.refreshToken = '';
-        await data.save();
+        await this.usersModel.findByIdAndUpdate(
+          existingUser._id,
+          { refreshToken: '' },
+          { new: true },
+        );
         return false;
       } else {
         return true;

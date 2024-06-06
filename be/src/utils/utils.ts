@@ -4,12 +4,18 @@ export const handleSendRequest = (
   res: Response,
   message: string,
   httpStatus: number,
-  data: any,
+  data?: any,
 ) => {
-  res.status(httpStatus).json({
-    message,
-    data,
-  });
+  if (data !== undefined) {
+    res.status(httpStatus).json({
+      message,
+      data,
+    });
+  } else {
+    res.status(httpStatus).json({
+      message,
+    });
+  }
 };
 
 export const HttpStatusCode = {

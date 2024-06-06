@@ -16,6 +16,8 @@ import { CacheModule } from '@nestjs/cache-manager';
 import * as redisStore from 'cache-manager-redis-store';
 import { BullModule } from '@nestjs/bull';
 import { AuthMiddleware } from './middleware/auth.middleware';
+import { SchedulesModule } from './schedules/schedules.module';
+import { OverviewScheduleModule } from './overview-schedule/overview-schedule.module';
 
 @Module({
   imports: [
@@ -69,6 +71,10 @@ import { AuthMiddleware } from './middleware/auth.middleware';
         port: 6379,
       },
     }),
+
+    SchedulesModule,
+
+    OverviewScheduleModule,
   ],
   controllers: [AppController],
   providers: [AppService],

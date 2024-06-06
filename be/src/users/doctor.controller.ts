@@ -7,36 +7,39 @@ import {
   Post,
   Put,
   Query,
+  Req,
   Res,
   UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { ApiTags } from '@nestjs/swagger';
 import { HttpStatusCode, handleSendRequest } from 'src/utils/utils';
-import { Response } from 'express';
-import { CreateCenterDTO } from './dto/createNewCenter.dto';
-import { ID_ROLE_CENTER } from 'src/utils/constants';
+import { Request, Response } from 'express';
+import { ID_ROLE_DOCTOR } from 'src/utils/constants';
 import { PermissionsGuard } from 'src/guard/permissions.guard';
 import { Types } from 'mongoose';
-import { EditCenterDTO } from './dto/editCenter.dto';
+import { CreateDoctorDTO } from './dto/createDoctor.dto';
+import { EditDoctorDTO } from './dto/editDoctor.dto';
 
-@ApiTags('center')
-@Controller('center')
-export class CenterController {
+@ApiTags('doctor')
+@Controller('doctor')
+export class DoctorController {
   constructor(private usersService: UsersService) {}
 
-  @Post('create-new-center')
+  @Post('create-new-doctor')
   @UseGuards(PermissionsGuard)
-  async createCenter(
-    @Body() createCenterDTO: CreateCenterDTO,
+  async createDoctor(
+    @Body() createDoctorDTO: CreateDoctorDTO,
     @Res() res: Response,
+    @Req() req: Request,
   ) {
     try {
-      createCenterDTO.roleId = new Types.ObjectId(ID_ROLE_CENTER);
-      const data = await this.usersService.create(createCenterDTO);
+      createDoctorDTO.roleId = new Types.ObjectId(ID_ROLE_DOCTOR);
+      createDoctorDTO.centerId = req.user['_id'];
+      const data = await this.usersService.create(createDoctorDTO);
       handleSendRequest(
         res,
-        'Create new center successfully!',
+        'Create new doctor successfully!',
         HttpStatusCode.INSERT_OK,
         data,
       );
@@ -45,25 +48,33 @@ export class CenterController {
     }
   }
 
-  @Get('get-all-center/')
+  @Get('get-all-doctor')
   @UseGuards(PermissionsGuard)
-  async getAllCenters(@Query() query: any, @Res() res: Response) {
+  async getAllDoctors(
+    @Query() query: any,
+    @Res() res: Response,
+    @Req() req: Request,
+  ) {
     try {
-      const data = await this.usersService.getAll(query, ID_ROLE_CENTER);
-      handleSendRequest(res, 'All centers!', HttpStatusCode.OK, data);
+      const data = await this.usersService.getAll(
+        query,
+        ID_ROLE_DOCTOR,
+        req.user['_id'],
+      );
+      handleSendRequest(res, 'All doctors!', HttpStatusCode.OK, data);
     } catch (error) {
       res.status(HttpStatusCode.BAD_REQUEST).send({ message: error.message });
     }
   }
 
-  @Put('edit-infor-center')
+  @Put('edit-infor-doctor')
   @UseGuards(PermissionsGuard)
-  async editInforCenter(
-    @Body() editCenterDTO: EditCenterDTO,
+  async editInforDoctor(
+    @Body() editDoctorDTO: EditDoctorDTO,
     @Res() res: Response,
   ) {
     try {
-      const data = await this.usersService.editInfor(editCenterDTO);
+      const data = await this.usersService.editInfor(editDoctorDTO);
       handleSendRequest(
         res,
         'Edit center successfully!',
@@ -75,14 +86,14 @@ export class CenterController {
     }
   }
 
-  @Get('get-detail-infor-center/:id')
+  @Get('get-detail-infor-doctor/:id')
   @UseGuards(PermissionsGuard)
-  async getDetailInforCenter(@Res() res: Response, @Param('id') id: string) {
+  async getDetailInforDoctor(@Res() res: Response, @Param('id') id: string) {
     try {
       const data = await this.usersService.findUserById(id);
       handleSendRequest(
         res,
-        'Get detail infor center successfully!',
+        'Get detail infor doctor successfully!',
         HttpStatusCode.OK,
         data,
       );
@@ -91,26 +102,35 @@ export class CenterController {
     }
   }
 
-  @Delete('delete-center/:id')
+  @Delete('delete-doctor/:id')
   @UseGuards(PermissionsGuard)
-  async deleteCenter(@Res() res: Response, @Param('id') id: string) {
+  async deleteDoctor(@Res() res: Response, @Param('id') id: string) {
     try {
       await this.usersService.deleteData(id);
-      handleSendRequest(res, 'Delete center successfully!', HttpStatusCode.OK);
+      handleSendRequest(res, 'Delete doctor successfully!', HttpStatusCode.OK);
     } catch (error) {
       res.status(HttpStatusCode.BAD_REQUEST).send({ message: error.message });
     }
   }
 
-  @Get('get-detail-infor-center-by-user/:id')
-  async getDetailInforCenterbyUser(
+  @Get('get-detail-infor-doctor-by-user/:id')
+  async getDetailInforDoctorByUser(
     @Res() res: Response,
     @Param('id') id: string,
   ) {
     try {
       const data = await this.usersService.findUserById(id);
-      const { email, joiningDate, active, roleId, refreshToken, ...filtered } =
-        data._source;
+      const {
+        active,
+        dateOfBirth,
+        email,
+        gender,
+        joiningDate,
+        password,
+        refreshToken,
+        roleId,
+        ...filtered
+      } = data._source;
       handleSendRequest(
         res,
         'Get detail infor center successfully!',

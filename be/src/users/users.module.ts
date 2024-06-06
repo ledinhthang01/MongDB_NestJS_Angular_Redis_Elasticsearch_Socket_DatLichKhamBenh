@@ -6,6 +6,8 @@ import { Users, UsersSchema } from './enity/users.enity';
 import { ElasticsearchModule } from '@nestjs/elasticsearch';
 import { RoleModule } from 'src/role/role.module';
 import { PermissionResourcesModule } from 'src/permission_resources/permission_resources.module';
+import { EmployeeController } from './employee.controller';
+import { DoctorController } from './doctor.controller';
 
 @Module({
   imports: [
@@ -20,7 +22,7 @@ import { PermissionResourcesModule } from 'src/permission_resources/permission_r
       }),
     }),
   ],
-  controllers: [CenterController],
+  controllers: [CenterController, EmployeeController, DoctorController],
   providers: [UsersService],
   exports: [UsersService],
 })
