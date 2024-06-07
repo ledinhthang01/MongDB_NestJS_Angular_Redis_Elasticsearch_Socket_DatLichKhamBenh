@@ -10,7 +10,6 @@ import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { SignInDTO } from './dto/signIn.dto';
 import { roles } from 'src/role/enity/role.enity';
 import { JwtService, JwtSignOptions } from '@nestjs/jwt';
-import { MailerService } from '@nestjs-modules/mailer';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { InjectQueue } from '@nestjs/bull';
@@ -137,7 +136,7 @@ export class AuthService {
 
   async get(id): Promise<any> {
     return await this.elasticService.get({
-      index: 'users',
+      index: 'overview_schedules',
       id: id,
     });
   }

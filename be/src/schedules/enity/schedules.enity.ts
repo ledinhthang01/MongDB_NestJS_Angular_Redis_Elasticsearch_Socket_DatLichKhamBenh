@@ -28,7 +28,7 @@ export class Schedules {
   @Prop({ required: true, type: Types.ObjectId, ref: 'Users' })
   idCenter: Types.ObjectId;
 
-  @Prop({ required: true, type: Types.ObjectId, ref: 'Users' })
+  @Prop({ required: false, type: Types.ObjectId, ref: 'Users' })
   idSubscriber: Types.ObjectId;
 
   @Prop({ required: false, default: false })

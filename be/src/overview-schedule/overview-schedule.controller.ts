@@ -1,4 +1,16 @@
-import { Body, Controller, Post, Req, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { OverviewScheduleService } from './overview-schedule.service';
 import { PermissionsGuard } from 'src/guard/permissions.guard';
@@ -26,6 +38,62 @@ export class OverviewScheduleController {
         res,
         'Successfully registered for medical examination appointment!',
         HttpStatusCode.INSERT_OK,
+        data,
+      );
+    } catch (error) {
+      res.status(HttpStatusCode.BAD_REQUEST).send({ message: error.message });
+    }
+  }
+
+  @Get('get-all-schedules-by-doctor/')
+  @UseGuards(PermissionsGuard)
+  async getSchedulesByDoctor(
+    @Res() res: Response,
+    @Req() req: Request,
+    @Query() query: any,
+  ) {
+    try {
+      const data = await this.overviewScheduleService.getOverviewSchedules(
+        query,
+        req.user['_id'],
+      );
+      handleSendRequest(
+        res,
+        'Get all schedules successfully!',
+        HttpStatusCode.OK,
+        data,
+      );
+    } catch (error) {
+      res.status(HttpStatusCode.BAD_REQUEST).send({ message: error.message });
+    }
+  }
+
+  @Put('auth-schedule/:id')
+  @UseGuards(PermissionsGuard)
+  async authSchedule(@Res() res: Response, @Param('id') id: string) {
+    try {
+      const data = await this.overviewScheduleService.authSchedule(id);
+      handleSendRequest(
+        res,
+        'Auth schedule successfully!',
+        HttpStatusCode.OK,
+        data,
+      );
+    } catch (error) {
+      res.status(HttpStatusCode.BAD_REQUEST).send({ message: error.message });
+    }
+  }
+
+  @Delete('delete-schedule-by-doctor/:id')
+  @UseGuards(PermissionsGuard)
+  async deleteScheduleByDoctor(@Res() res: Response, @Param('id') id: string) {
+    try {
+      const data =
+        await this.overviewScheduleService.deleteScheduleByDoctor(id);
+      handleSendRequest(
+        res,
+        'Delete schedule successfully!',
+        HttpStatusCode.OK,
         data,
       );
     } catch (error) {

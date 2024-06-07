@@ -73,7 +73,6 @@ import { OverviewScheduleModule } from './overview-schedule/overview-schedule.mo
     }),
 
     SchedulesModule,
-
     OverviewScheduleModule,
   ],
   controllers: [AppController],

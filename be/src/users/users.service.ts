@@ -74,8 +74,6 @@ export class UsersService {
     page = parseInt(page);
     size = parseInt(size);
 
-    console.log(centerId);
-
     size = size >= MAX_RECORDS ? MAX_RECORDS : size;
 
     const query = {

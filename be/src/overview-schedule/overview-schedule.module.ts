@@ -9,11 +9,15 @@ import {
   OverViewSchedules,
   OverViewSchedulesSchema,
 } from './enity/overview-schedule.enity';
+import { SchedulesModule } from 'src/schedules/schedules.module';
+import { BullModule } from '@nestjs/bull';
+import { AuthConsumer } from './consumers/auth.consumer';
 
 @Module({
   imports: [
     RoleModule,
     PermissionResourcesModule,
+    SchedulesModule,
     MongooseModule.forFeature([
       { name: OverViewSchedules.name, schema: OverViewSchedulesSchema },
     ]),
@@ -24,9 +28,11 @@ import {
         requestTimeout: 60000,
       }),
     }),
+    BullModule.registerQueue({
+      name: 'auth-schedules',
+    }),
   ],
   controllers: [OverviewScheduleController],
-  providers: [OverviewScheduleService],
-  exports: [OverviewScheduleService],
+  providers: [OverviewScheduleService, AuthConsumer],
 })
 export class OverviewScheduleModule {}

@@ -23,4 +23,8 @@ export class CreateScheduleDTO {
   @IsNotEmpty()
   @Expose()
   dateEnd: Date;
+
+  @ApiProperty()
+  @Expose()
+  idCenter: Types.ObjectId;
 }
