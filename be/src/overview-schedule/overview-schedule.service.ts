@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { OverViewSchedules } from './enity/overview-schedule.enity';
 import { Model, Types } from 'mongoose';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
-import { CreateScheduleDTO } from './dto/createSchedule.dto';
+import { ScheduleDTO } from './dto/schedule.dto';
 import { ServerError, XAlreadyExists, XNotFound } from 'src/utils/exception';
 import {
   MAX_RECORDS,
@@ -13,6 +13,7 @@ import {
 } from 'src/utils/constants';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
+import { EditScheduleDTO } from './dto/editSchedule.dto';
 
 @Injectable()
 export class OverviewScheduleService {
@@ -24,12 +25,12 @@ export class OverviewScheduleService {
     private auth: Queue,
   ) {}
 
-  async registerSchedule(createScheduleDTO: CreateScheduleDTO): Promise<any> {
+  async registerSchedule(scheduleDTO: ScheduleDTO): Promise<any> {
     const dataDoctor = await this.elasticService.search({
       index: 'users',
       body: {
         query: {
-          term: { _id: createScheduleDTO.idDoctor },
+          term: { _id: scheduleDTO.idDoctor },
         },
       },
     });
@@ -38,8 +39,8 @@ export class OverviewScheduleService {
       throw new XNotFound('User');
     }
 
-    const DateStart = new Date(createScheduleDTO.dateStart);
-    const DateEnd = new Date(createScheduleDTO.dateEnd);
+    const DateStart = new Date(scheduleDTO.dateStart);
+    const DateEnd = new Date(scheduleDTO.dateEnd);
     const now = new Date();
 
     if (
@@ -55,7 +56,7 @@ export class OverviewScheduleService {
         query: {
           bool: {
             must: [
-              { term: { idDoctor: createScheduleDTO.idDoctor.toString() } },
+              { term: { idDoctor: scheduleDTO.idDoctor.toString() } },
               {
                 bool: {
                   should: [
@@ -65,8 +66,8 @@ export class OverviewScheduleService {
                           {
                             range: {
                               dateStart: {
-                                lte: createScheduleDTO.dateEnd.toString(),
-                                gt: createScheduleDTO.dateStart.toString(),
+                                lte: scheduleDTO.dateEnd.toString(),
+                                gt: scheduleDTO.dateStart.toString(),
                               },
                             },
                           },
@@ -79,8 +80,8 @@ export class OverviewScheduleService {
                           {
                             range: {
                               dateEnd: {
-                                gte: createScheduleDTO.dateStart.toString(),
-                                lt: createScheduleDTO.dateEnd.toString(),
+                                gte: scheduleDTO.dateStart.toString(),
+                                lt: scheduleDTO.dateEnd.toString(),
                               },
                             },
                           },
@@ -93,14 +94,14 @@ export class OverviewScheduleService {
                           {
                             range: {
                               dateStart: {
-                                lt: createScheduleDTO.dateStart.toString(),
+                                lt: scheduleDTO.dateStart.toString(),
                               },
                             },
                           },
                           {
                             range: {
                               dateEnd: {
-                                gt: createScheduleDTO.dateEnd.toString(),
+                                gt: scheduleDTO.dateEnd.toString(),
                               },
                             },
                           },
@@ -112,12 +113,12 @@ export class OverviewScheduleService {
                         must: [
                           {
                             term: {
-                              dateStart: createScheduleDTO.dateStart.toString(),
+                              dateStart: scheduleDTO.dateStart.toString(),
                             },
                           },
                           {
                             term: {
-                              dateEnd: createScheduleDTO.dateEnd.toString(),
+                              dateEnd: scheduleDTO.dateEnd.toString(),
                             },
                           },
                         ],
@@ -136,14 +137,12 @@ export class OverviewScheduleService {
       throw new XAlreadyExists('Schedules');
     }
 
-    createScheduleDTO.idCenter = new Types.ObjectId(
+    scheduleDTO.idCenter = new Types.ObjectId(
       dataDoctor.hits.hits[0]._source['centerId'],
     );
 
     const data = JSON.parse(
-      JSON.stringify(
-        await this.overViewSchedulesModel.create(createScheduleDTO),
-      ),
+      JSON.stringify(await this.overViewSchedulesModel.create(scheduleDTO)),
     );
 
     if (!data) {
@@ -217,6 +216,189 @@ export class OverviewScheduleService {
       data: search.hits.hits,
       total,
     };
+  }
+
+  async editScheduleByDoctor(
+    editScheduleDTO: EditScheduleDTO,
+    idDoctor: any,
+  ): Promise<any> {
+    const data = await this.elasticService.search({
+      index: 'overview_schedules',
+      body: {
+        query: {
+          term: {
+            _id: editScheduleDTO.id,
+          },
+        },
+      },
+    });
+    if (data.hits.total['value'] === 0) {
+      throw new XNotFound('Schedule');
+    }
+
+    if (data.hits.hits[0]._source['auth'] === true) {
+      throw new ServerError('You cannot change it!');
+    }
+
+    const DateStart = new Date(editScheduleDTO.dateStart);
+    const DateEnd = new Date(editScheduleDTO.dateEnd);
+    const now = new Date();
+
+    if (
+      DateStart.getDate() < now.getDate() + 2 ||
+      DateEnd.getDate() > now.getDate() + 11
+    ) {
+      throw new ServerError('Input incorect');
+    }
+
+    const schedules = await this.elasticService.search({
+      index: 'overview_schedules',
+      body: {
+        query: {
+          bool: {
+            must: [
+              { term: { idDoctor: idDoctor.toString() } },
+              {
+                bool: {
+                  should: [
+                    {
+                      bool: {
+                        must: [
+                          {
+                            range: {
+                              dateStart: {
+                                lte: editScheduleDTO.dateEnd.toString(),
+                                gt: editScheduleDTO.dateStart.toString(),
+                              },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      bool: {
+                        must: [
+                          {
+                            range: {
+                              dateEnd: {
+                                gte: editScheduleDTO.dateStart.toString(),
+                                lt: editScheduleDTO.dateEnd.toString(),
+                              },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      bool: {
+                        must: [
+                          {
+                            range: {
+                              dateStart: {
+                                lt: editScheduleDTO.dateStart.toString(),
+                              },
+                            },
+                          },
+                          {
+                            range: {
+                              dateEnd: {
+                                gt: editScheduleDTO.dateEnd.toString(),
+                              },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      bool: {
+                        must: [
+                          {
+                            term: {
+                              dateStart: editScheduleDTO.dateStart.toString(),
+                            },
+                          },
+                          {
+                            term: {
+                              dateEnd: editScheduleDTO.dateEnd.toString(),
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            must_not: { term: { _id: editScheduleDTO.id.toString() } },
+          },
+        },
+      },
+    });
+
+    if (schedules) {
+      throw new XAlreadyExists('Schedule');
+    }
+
+    const id = editScheduleDTO.id;
+    delete editScheduleDTO.id;
+    const updateDB = await this.overViewSchedulesModel.findByIdAndUpdate(
+      id,
+      editScheduleDTO,
+      { new: true },
+    );
+
+    if (!updateDB) {
+      throw new ServerError('Something went wrong update!');
+    }
+
+    const updateElastic = await this.elasticService.update({
+      index: 'overview_schedules',
+      id: id.toString(),
+      body: {
+        doc: editScheduleDTO,
+      },
+    });
+
+    if (!updateElastic) {
+      throw new ServerError('Something went wrong update!');
+    }
+
+    return updateDB;
+  }
+
+  async getDetailScheduleByDoctor(id: string): Promise<any> {
+    const search = await this.elasticService.search({
+      index: 'overview_schedules',
+      body: {
+        query: {
+          term: {
+            _id: id,
+          },
+        },
+      },
+    });
+
+    let result = search.hits.hits[0];
+
+    if (!result) {
+      throw new XNotFound('Schedule');
+    }
+    return result;
+  }
+
+  async deleteSchedule(id: string): Promise<any> {
+    const data = await this.overViewSchedulesModel.findByIdAndDelete(id).exec();
+    if (!data) {
+      throw new ServerError('Something went wrong delete!');
+    }
+    const dataElastic = await this.elasticService.delete({
+      index: 'overview_schedules',
+      id: id,
+    });
+    if (!dataElastic) {
+      throw new ServerError('Something went wrong delete!');
+    }
+    return dataElastic;
   }
 
   async authSchedule(id: string): Promise<any> {
@@ -305,11 +487,11 @@ export class OverviewScheduleService {
     return true;
   }
 
-  async deleteScheduleByDoctor(id: string): Promise<any> {
-    const data = await this.elasticService.delete({
-      index: 'overview_schedules',
-      id: id,
-    });
-    return data;
-  }
+  // async deleteScheduleByDoctorTest(id: string): Promise<any> {
+  //   const data = await this.elasticService.delete({
+  //     index: 'overview_schedules',
+  //     id: id,
+  //   });
+  //   return data;
+  // }
 }

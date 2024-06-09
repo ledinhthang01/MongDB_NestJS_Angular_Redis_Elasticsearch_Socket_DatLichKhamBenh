@@ -3,10 +3,11 @@ import { Expose } from 'class-transformer';
 import { IsNotEmpty, IsString } from 'class-validator';
 import { ObjectId, Types } from 'mongoose';
 
-export class CreateScheduleDTO {
+export class EditScheduleDTO {
   @ApiProperty()
   @Expose()
-  idDoctor: Types.ObjectId;
+  @IsNotEmpty()
+  id: Types.ObjectId;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -23,8 +24,4 @@ export class CreateScheduleDTO {
   @IsNotEmpty()
   @Expose()
   dateEnd: Date;
-
-  @ApiProperty()
-  @Expose()
-  idCenter: Types.ObjectId;
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Res } from '@nestjs/common';
+import { Controller, Get, Param, Query, Res } from '@nestjs/common';
 import { SchedulesService } from './schedules.service';
 import { ApiTags } from '@nestjs/swagger';
 import { HttpStatusCode, handleSendRequest } from 'src/utils/utils';
@@ -13,6 +13,21 @@ export class SchedulesController {
   async getAllSchedule(@Res() res: Response, @Param('id') id: string) {
     try {
       const data = await this.schedulesService.getAllSchedule(id);
+      handleSendRequest(
+        res,
+        'Get all schedules successfully!',
+        HttpStatusCode.OK,
+        data,
+      );
+    } catch (error) {
+      res.status(HttpStatusCode.BAD_REQUEST).send({ message: error.message });
+    }
+  }
+
+  @Get('get-schedules/')
+  async getSchedules(@Res() res: Response, @Query() query: any) {
+    try {
+      const data = await this.schedulesService.getAllSchedule(query);
       handleSendRequest(
         res,
         'Get all schedules successfully!',
