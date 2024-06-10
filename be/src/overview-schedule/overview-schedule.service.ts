@@ -487,6 +487,79 @@ export class OverviewScheduleService {
     return true;
   }
 
+  async getSchedules(data: any): Promise<any> {
+    let {
+      page = '',
+      size = '',
+      subscribed = '',
+      idDoctor = '',
+      idCenter = '',
+      date = '',
+      currentTime = '',
+    } = data;
+
+    page = parseInt(page);
+    size = parseInt(size);
+
+    size = size >= MAX_RECORDS ? MAX_RECORDS : size;
+
+    const query = {
+      bool: {
+        must: [],
+      },
+    };
+
+    if (subscribed) {
+      query.bool.must.push({
+        match: { subscribed: subscribed === 'false' ? false : true },
+      });
+    }
+
+    if (idDoctor) {
+      query.bool.must.push({ term: { idDoctor: idDoctor } });
+    }
+
+    if (idCenter) {
+      query.bool.must.push({ term: { idCenter: idCenter } });
+    }
+
+    if (date) {
+      query.bool.must.push({
+        match: { date: date },
+      });
+    }
+
+    if (currentTime) {
+      query.bool.must.push({
+        range: {
+          timeStart: { gt: currentTime },
+        },
+      });
+    }
+
+    const search = await this.elasticService.search({
+      index: 'schedules',
+      body: {
+        query: query,
+        from: (page - 1) * size,
+        size: size,
+      },
+    });
+
+    const total = search.hits.total['value'];
+
+    return {
+      page,
+      size: search.hits.hits.length,
+      subscribed,
+      idDoctor,
+      idCenter,
+      date,
+      data: search.hits.hits,
+      total,
+    };
+  }
+
   // async deleteScheduleByDoctorTest(id: string): Promise<any> {
   //   const data = await this.elasticService.delete({
   //     index: 'overview_schedules',

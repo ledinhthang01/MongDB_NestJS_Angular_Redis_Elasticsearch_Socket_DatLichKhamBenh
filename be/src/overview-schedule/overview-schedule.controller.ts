@@ -183,6 +183,20 @@ export class OverviewScheduleController {
     }
   }
 
+  @Get('get-schedules/')
+  async getSchedules(@Res() res: Response, @Query() query: any) {
+    try {
+      const data = await this.overviewScheduleService.getSchedules(query);
+      handleSendRequest(
+        res,
+        'Get all schedules successfully!',
+        HttpStatusCode.OK,
+        data,
+      );
+    } catch (error) {
+      res.status(HttpStatusCode.BAD_REQUEST).send({ message: error.message });
+    }
+  }
   // @Delete('delete-schedule-by-doctor-test/:id')
   // @UseGuards(PermissionsGuard)
   // async deleteScheduleByDoctorTest(

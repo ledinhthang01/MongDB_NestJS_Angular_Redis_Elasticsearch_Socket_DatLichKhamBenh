@@ -5,10 +5,10 @@ import { ServerError } from 'src/utils/exception';
 
 @Processor('auth-schedules')
 export class AuthConsumer {
-  constructor(private mailerService: SchedulesService) {}
+  constructor(private schedulesService: SchedulesService) {}
   @Process('generate')
   async generateSchedule(job: Job<unknown>) {
-    const data = await this.mailerService.createSchedule(
+    const data = await this.schedulesService.createSchedule(
       job.data['time'],
       job.data['data'],
       job.data['idParent'],

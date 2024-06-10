@@ -1,27 +1,23 @@
 import { Module } from '@nestjs/common';
-import { OverviewScheduleController } from './overview-schedule.controller';
-import { OverviewScheduleService } from './overview-schedule.service';
+import { BookingController } from './booking.controller';
+import { BookingService } from './booking.service';
 import { RoleModule } from 'src/role/role.module';
 import { PermissionResourcesModule } from 'src/permission_resources/permission_resources.module';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ElasticsearchModule } from '@nestjs/elasticsearch';
 import {
   OverViewSchedules,
   OverViewSchedulesSchema,
-} from './enity/overview-schedule.enity';
-import { SchedulesModule } from 'src/schedules/schedules.module';
-import { BullModule } from '@nestjs/bull';
-import { AuthConsumer } from './consumers/auth.consumer';
+} from 'src/overview-schedule/enity/overview-schedule.enity';
 import {
   Schedules,
   SchedulesSchema,
 } from 'src/schedules/enity/schedules.enity';
+import { ElasticsearchModule } from '@nestjs/elasticsearch';
 
 @Module({
   imports: [
     RoleModule,
     PermissionResourcesModule,
-    SchedulesModule,
     MongooseModule.forFeature([
       { name: OverViewSchedules.name, schema: OverViewSchedulesSchema },
       { name: Schedules.name, schema: SchedulesSchema },
@@ -33,11 +29,8 @@ import {
         requestTimeout: 60000,
       }),
     }),
-    BullModule.registerQueue({
-      name: 'auth-schedules',
-    }),
   ],
-  controllers: [OverviewScheduleController],
-  providers: [OverviewScheduleService, AuthConsumer],
+  controllers: [BookingController],
+  providers: [BookingService],
 })
-export class OverviewScheduleModule {}
+export class BookingModule {}

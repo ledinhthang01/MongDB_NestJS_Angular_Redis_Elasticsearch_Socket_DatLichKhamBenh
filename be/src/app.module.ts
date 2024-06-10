@@ -18,6 +18,7 @@ import { BullModule } from '@nestjs/bull';
 import { AuthMiddleware } from './middleware/auth.middleware';
 import { SchedulesModule } from './schedules/schedules.module';
 import { OverviewScheduleModule } from './overview-schedule/overview-schedule.module';
+import { BookingModule } from './booking/booking.module';
 
 @Module({
   imports: [
@@ -74,6 +75,7 @@ import { OverviewScheduleModule } from './overview-schedule/overview-schedule.mo
 
     SchedulesModule,
     OverviewScheduleModule,
+    BookingModule,
   ],
   controllers: [AppController],
   providers: [AppService],
