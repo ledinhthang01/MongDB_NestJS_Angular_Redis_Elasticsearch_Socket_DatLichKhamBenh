@@ -12,6 +12,13 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
+
+  app.enableCors({
+    // origin: '*',
+    origin: 'http://localhost:4200',
+    credentials: true,
+  });
+
   await app.listen(process.env.PORT, () => {
     console.log('Server listen on port', process.env.PORT);
   });

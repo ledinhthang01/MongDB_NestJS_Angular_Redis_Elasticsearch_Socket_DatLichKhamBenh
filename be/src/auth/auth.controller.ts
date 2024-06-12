@@ -37,16 +37,6 @@ export class AuthController {
     }
   }
 
-  @Get(':id')
-  async get(@Param('id') id: string, @Res() res: Response) {
-    try {
-      const data = await this.authService.get(id);
-      handleSendRequest(res, 'Get successfully!', HttpStatusCode.OK, data);
-    } catch (error) {
-      res.status(HttpStatusCode.BAD_REQUEST).send({ message: error.message });
-    }
-  }
-
   @Post('signin')
   async signIn(@Body() signInDTO: SignInDTO, @Res() res: Response) {
     try {

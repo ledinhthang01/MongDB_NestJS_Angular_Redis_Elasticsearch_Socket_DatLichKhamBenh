@@ -31,5 +31,6 @@ import { PermissionResourcesModule } from 'src/permission_resources/permission_r
   ],
   controllers: [AuthController],
   providers: [AuthService, EmailConsumer],
+  exports: [AuthService],
 })
 export class AuthModule {}

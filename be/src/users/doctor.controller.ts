@@ -48,7 +48,7 @@ export class DoctorController {
     }
   }
 
-  @Get('get-all-doctor')
+  @Get('get-all-doctor/')
   @UseGuards(PermissionsGuard)
   async getAllDoctors(
     @Query() query: any,

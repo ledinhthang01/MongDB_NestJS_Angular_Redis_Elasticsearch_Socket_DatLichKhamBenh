@@ -197,23 +197,4 @@ export class OverviewScheduleController {
       res.status(HttpStatusCode.BAD_REQUEST).send({ message: error.message });
     }
   }
-  // @Delete('delete-schedule-by-doctor-test/:id')
-  // @UseGuards(PermissionsGuard)
-  // async deleteScheduleByDoctorTest(
-  //   @Res() res: Response,
-  //   @Param('id') id: string,
-  // ) {
-  //   try {
-  //     const data =
-  //       await this.overviewScheduleService.deleteScheduleByDoctorTest(id);
-  //     handleSendRequest(
-  //       res,
-  //       'Delete schedule successfully!',
-  //       HttpStatusCode.OK,
-  //       data,
-  //     );
-  //   } catch (error) {
-  //     res.status(HttpStatusCode.BAD_REQUEST).send({ message: error.message });
-  //   }
-  // }
 }

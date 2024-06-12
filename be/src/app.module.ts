@@ -19,6 +19,7 @@ import { AuthMiddleware } from './middleware/auth.middleware';
 import { SchedulesModule } from './schedules/schedules.module';
 import { OverviewScheduleModule } from './overview-schedule/overview-schedule.module';
 import { BookingModule } from './booking/booking.module';
+import { EventGateway } from './event.gateway';
 
 @Module({
   imports: [
@@ -78,7 +79,7 @@ import { BookingModule } from './booking/booking.module';
     BookingModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, EventGateway],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

@@ -1,4 +1,9 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { SignUpDTO } from './dto/signUp.dto';
 import { Users } from 'src/users/enity/users.enity';
 import { InjectModel } from '@nestjs/mongoose';
@@ -134,13 +139,6 @@ export class AuthService {
     }
   }
 
-  async get(id): Promise<any> {
-    return await this.elasticService.get({
-      index: 'overview_schedules',
-      id: id,
-    });
-  }
-
   async getWithCache(id: string): Promise<any> {
     return await this.cacheManager.get('abc');
   }
@@ -224,5 +222,14 @@ export class AuthService {
     await this.usersModel
       .findByIdAndUpdate(req.user['_id'], { refreshToken: '' })
       .exec();
+  }
+
+  async handleVerifyToken(token) {
+    try {
+      const payload = this.jwtService.verify(token);
+      return payload['id'];
+    } catch (error) {
+      throw new UnauthorizedException('Token is expired');
+    }
   }
 }

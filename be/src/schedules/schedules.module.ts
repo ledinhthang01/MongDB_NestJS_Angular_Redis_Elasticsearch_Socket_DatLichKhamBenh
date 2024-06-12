@@ -5,7 +5,6 @@ import { RoleModule } from 'src/role/role.module';
 import { PermissionResourcesModule } from 'src/permission_resources/permission_resources.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Schedules, SchedulesSchema } from './enity/schedules.enity';
-import { ElasticsearchModule } from '@nestjs/elasticsearch';
 
 @Module({
   imports: [
@@ -14,13 +13,6 @@ import { ElasticsearchModule } from '@nestjs/elasticsearch';
     MongooseModule.forFeature([
       { name: Schedules.name, schema: SchedulesSchema },
     ]),
-    ElasticsearchModule.registerAsync({
-      useFactory: () => ({
-        node: 'http://localhost:9200',
-        maxRetries: 10,
-        requestTimeout: 60000,
-      }),
-    }),
   ],
   controllers: [SchedulesController],
   providers: [SchedulesService],
