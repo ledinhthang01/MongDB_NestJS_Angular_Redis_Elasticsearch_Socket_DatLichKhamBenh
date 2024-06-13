@@ -20,6 +20,7 @@ import { SchedulesModule } from './schedules/schedules.module';
 import { OverviewScheduleModule } from './overview-schedule/overview-schedule.module';
 import { BookingModule } from './booking/booking.module';
 import { EventGateway } from './event.gateway';
+import { MediaModule } from './media/media.module';
 
 @Module({
   imports: [
@@ -77,6 +78,7 @@ import { EventGateway } from './event.gateway';
     SchedulesModule,
     OverviewScheduleModule,
     BookingModule,
+    MediaModule,
   ],
   controllers: [AppController],
   providers: [AppService, EventGateway],
@@ -86,7 +88,6 @@ export class AppModule implements NestModule {
     consumer
       .apply(AuthMiddleware)
       .exclude(
-        '/ImagesUpload/(.*)',
         '/auth/signin',
         '/auth/signup',
         '/employee/signin',

@@ -13,8 +13,8 @@ import { ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { HttpStatusCode, handleSendRequest } from 'src/utils/utils';
 import { BookingService } from './booking.service';
-import { PermissionsGuard } from 'src/guard/permissions.guard';
 import { EventGateway } from 'src/event.gateway';
+import { PermissionsGuard } from 'src/guard/permissions.guard';
 
 @ApiTags('booking')
 @Controller('booking')
@@ -65,9 +65,54 @@ export class BookingController {
         idSubscriber: req.user['_id'],
         idSchedule: idSchedule,
       });
-      console.log(data['_id']);
-
+      this.eventGateway.handleEmiSocket(data['id'], 'BookingSuccessfully');
       handleSendRequest(res, 'Booking successfully', HttpStatusCode.OK, data);
+    } catch (error) {
+      res.status(HttpStatusCode.BAD_REQUEST).send({ message: error.message });
+    }
+  }
+
+  @Get('get-schedule-by-user/')
+  async getScheduleByUser(
+    @Res() res: Response,
+    @Query() query: any,
+    @Req() req: Request,
+  ) {
+    try {
+      const data = await this.bookingService.getScheduleByUser(
+        query,
+        req.user['_id'],
+      );
+      handleSendRequest(res, 'Get successfully!', HttpStatusCode.OK, data);
+    } catch (error) {
+      res.status(HttpStatusCode.BAD_REQUEST).send({ message: error.message });
+    }
+  }
+
+  @Get('get-schedule-by-doctor/')
+  @UseGuards(PermissionsGuard)
+  async getScheduleByDoctor(
+    @Res() res: Response,
+    @Query() query: any,
+    @Req() req: Request,
+  ) {
+    try {
+      const data = await this.bookingService.getScheduleByDoctor(
+        query,
+        req.user['_id'],
+      );
+      handleSendRequest(res, 'Get successfully!', HttpStatusCode.OK, data);
+    } catch (error) {
+      res.status(HttpStatusCode.BAD_REQUEST).send({ message: error.message });
+    }
+  }
+
+  @Put('done-schedule/:id')
+  @UseGuards(PermissionsGuard)
+  async doneSchedule(@Res() res: Response, @Param('id') idSchedule: string) {
+    try {
+      const data = await this.bookingService.doneSchedule(idSchedule);
+      handleSendRequest(res, 'Auth successfully!', HttpStatusCode.OK, data);
     } catch (error) {
       res.status(HttpStatusCode.BAD_REQUEST).send({ message: error.message });
     }

@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { OverViewSchedules } from 'src/overview-schedule/enity/overview-schedule.enity';
@@ -147,5 +146,149 @@ export class BookingService {
       throw new ServerError('Something went wrong!');
     }
     return dataUpdate;
+  }
+
+  async getScheduleByUser(query, _id): Promise<any> {
+    let { page = '', size = '', done = '' } = query;
+
+    page = parseInt(page);
+    size = parseInt(size);
+
+    size = size >= MAX_RECORDS ? MAX_RECORDS : size;
+
+    const search = {
+      idSubscriber: _id,
+      done: done === 'true',
+      subscribed: true,
+    };
+
+    const total = await this.schedulesModel.countDocuments(search);
+
+    const data = await this.schedulesModel.aggregate([
+      { $match: search },
+      {
+        $lookup: {
+          // Thực hiện lookup để kết nối idDoctor và idCenter với bảng users và lấy ra thông tin chi tiết tương ứng.
+          from: 'users',
+          localField: 'idDoctor',
+          foreignField: '_id',
+          as: 'doctorInfo',
+          pipeline: [
+            //  Sử dụng pipeline trong lookup để chỉ lấy ra các trường cần thiết từ idDoctor.
+            {
+              $project: {
+                name: 1,
+                specialties: 1,
+                degree: 1,
+                academic: 1,
+              },
+            },
+          ],
+        },
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'idCenter',
+          foreignField: '_id',
+          as: 'centerInfo',
+          pipeline: [
+            // Sử dụng pipeline trong lookup để chỉ lấy ra các trường cần thiết từ idCenter.
+            {
+              $project: {
+                name: 1,
+                address: 1,
+              },
+            },
+          ],
+        },
+      },
+      { $unwind: '$doctorInfo' }, //Chuyển đổi các kết quả lookup từ dạng mảng sang dạng đối tượng.
+      { $unwind: '$centerInfo' },
+      { $sort: { date: 1, timeStart: 1 } },
+      {
+        $project: {
+          _id: 1,
+          time: 1,
+          type: 1,
+          date: { $dateToString: { format: '%Y-%m-%d', date: '$date' } },
+          price: 1,
+          doctorInfo: 1,
+          centerInfo: 1,
+        },
+      },
+      { $skip: (page - 1) * size },
+      { $limit: size },
+    ]);
+    return { page, size, done, total, data };
+  }
+
+  async getScheduleByDoctor(query, _id): Promise<any> {
+    let { page = '', size = '', done = '' } = query;
+
+    page = parseInt(page);
+    size = parseInt(size);
+
+    size = size >= MAX_RECORDS ? MAX_RECORDS : size;
+
+    const search = {
+      idDoctor: _id,
+      done: done === 'true',
+      subscribed: true,
+    };
+
+    const total = await this.schedulesModel.countDocuments(search);
+
+    const data = await this.schedulesModel.aggregate([
+      { $match: search },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'idSubscriber',
+          foreignField: '_id',
+          as: 'userInfo',
+          pipeline: [
+            {
+              $project: {
+                name: 1,
+                gender: 1,
+                dateOfBirth: {
+                  $dateToString: { format: '%Y-%m-%d', date: '$dateOfBirth' },
+                },
+                phoneNumber: 1,
+                address: 1,
+              },
+            },
+          ],
+        },
+      },
+      { $unwind: '$userInfo' },
+      { $sort: { timeStart: 1 } },
+      {
+        $project: {
+          _id: 1,
+          time: 1,
+          type: 1,
+          date: { $dateToString: { format: '%Y-%m-%d', date: '$date' } },
+          userInfo: 1,
+        },
+      },
+      { $skip: (page - 1) * size },
+      { $limit: size },
+    ]);
+    return { page, size, done, total, data };
+  }
+
+  async doneSchedule(idSchedule: string): Promise<any> {
+    const data = await this.schedulesModel.findByIdAndUpdate(
+      idSchedule,
+      { done: true },
+      { new: true },
+    );
+
+    if (!data) {
+      throw new XNotFound('Schedule');
+    }
+    return data._id;
   }
 }

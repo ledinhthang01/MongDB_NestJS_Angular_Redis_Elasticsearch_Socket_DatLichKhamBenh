@@ -12,25 +12,20 @@ import {
   Schedules,
   SchedulesSchema,
 } from 'src/schedules/enity/schedules.enity';
-import { ElasticsearchModule } from '@nestjs/elasticsearch';
+import { AuthModule } from 'src/auth/auth.module';
+import { EventGateway } from 'src/event.gateway';
 
 @Module({
   imports: [
     RoleModule,
     PermissionResourcesModule,
+    AuthModule,
     MongooseModule.forFeature([
       { name: OverViewSchedules.name, schema: OverViewSchedulesSchema },
       { name: Schedules.name, schema: SchedulesSchema },
     ]),
-    ElasticsearchModule.registerAsync({
-      useFactory: () => ({
-        node: 'http://localhost:9200',
-        maxRetries: 10,
-        requestTimeout: 60000,
-      }),
-    }),
   ],
   controllers: [BookingController],
-  providers: [BookingService],
+  providers: [BookingService, EventGateway],
 })
 export class BookingModule {}

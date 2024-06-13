@@ -26,21 +26,21 @@ export class EventGateway
   server: Server;
   constructor(private readonly authService: AuthService) {}
 
-  handleEmiSocket({ data, event, to }) {
+  handleEmiSocket(data: any, event: any, to?: any) {
     if (to) {
       this.server.to(to.map((el) => String(el))).emit(event, data);
     } else {
-      this.server.emit(event, data);
+      this.server.emit(event, String(data));
     }
   }
 
-  @SubscribeMessage('abc')
-  async handleMessage(@ConnectedSocket() socket: Socket, @MessageBody() data) {
-    console.log('abc: ', data);
-    setTimeout(() => {
-      this.server.to(socket.data.id).emit('abc', data);
-    }, 2000);
-  }
+  // @SubscribeMessage('abc')
+  // async handleMessage(@ConnectedSocket() socket: Socket, @MessageBody() data) {
+  //   console.log('abc: ', data);
+  //   setTimeout(() => {
+  //     this.server.to(socket.data.id).emit('abc', data);
+  //   }, 2000);
+  // }
 
   async handleConnection(socket: Socket) {
     const authHeader = socket.handshake.headers.authorization;
@@ -49,8 +49,7 @@ export class EventGateway
         socket.data.id = await this.authService.handleVerifyToken(
           socket.handshake.headers.authorization,
         );
-
-        socket.join(socket.data.id);
+        socket.join(String(socket.data.id));
       } catch (error) {
         socket.disconnect();
       }
@@ -60,7 +59,7 @@ export class EventGateway
   }
 
   handleDisconnect(socket: Socket) {
-    console.log(socket.id, socket.data.id);
+    // console.log(socket.id, socket.data.id);
   }
 
   afterInit(socket: Socket) {}
