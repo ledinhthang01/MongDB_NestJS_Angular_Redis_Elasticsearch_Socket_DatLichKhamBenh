@@ -21,6 +21,9 @@ import { OverviewScheduleModule } from './overview-schedule/overview-schedule.mo
 import { BookingModule } from './booking/booking.module';
 import { EventGateway } from './event.gateway';
 import { MediaModule } from './media/media.module';
+import { PostModule } from './post/post.module';
+import { ChatModule } from './chat/chat.module';
+import { MessageModule } from './message/message.module';
 
 @Module({
   imports: [
@@ -79,6 +82,9 @@ import { MediaModule } from './media/media.module';
     OverviewScheduleModule,
     BookingModule,
     MediaModule,
+    PostModule,
+    ChatModule,
+    MessageModule,
   ],
   controllers: [AppController],
   providers: [AppService, EventGateway],

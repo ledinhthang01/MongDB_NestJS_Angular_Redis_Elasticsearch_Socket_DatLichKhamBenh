@@ -13,7 +13,7 @@ import axios from 'axios';
 export class MediaService {
   constructor(@InjectModel(Media.name) private mediaModel: Model<Media>) {}
 
-  fileToAttachment(
+  fileToMedia(
     uploadMediaDTO: UploadMediaDTO,
     files: Array<Express.Multer.File>,
   ): any {
@@ -28,7 +28,7 @@ export class MediaService {
     uploadMediaDTO: UploadMediaDTO,
     files: Array<Express.Multer.File>,
   ): Promise<Media> {
-    const data = this.fileToAttachment(uploadMediaDTO, files);
+    const data = this.fileToMedia(uploadMediaDTO, files);
     return await this.mediaModel.create(data);
   }
 
@@ -39,11 +39,9 @@ export class MediaService {
       throw new XNotFound('Image');
     }
 
-    const fileName = data.url.split('/').pop();
-
     const uploadDir = path.join(__dirname, '..', '..', 'uploads');
 
-    const filePath = path.join(uploadDir, fileName);
+    const filePath = path.join(uploadDir, data.url);
 
     if (await fs.pathExists(filePath)) {
       await fs.remove(filePath);
@@ -63,20 +61,35 @@ export class MediaService {
     return data;
   }
 
-  async downloadImage(downloadImageDTO: DownloadImageDTO): Promise<any> {
+  async downloadImage(downloadImageDTO: DownloadImageDTO): Promise<Media> {
     const uploadDir = path.join(__dirname, '..', '..', 'uploads');
     const response = await axios.get(downloadImageDTO.url, {
       responseType: 'stream',
     });
-    const filePath = path.join(uploadDir, `media-${new Date().getTime()}.jpg`);
+    downloadImageDTO.url = `media-${new Date().getTime()}.jpg`;
+    const filePath = path.join(uploadDir, downloadImageDTO.url);
     await fs.ensureDir(uploadDir);
     const writer = fs.createWriteStream(filePath);
 
     response.data.pipe(writer);
 
-    return new Promise((resolve, reject) => {
+    new Promise((resolve, reject) => {
       writer.on('finish', resolve);
       writer.on('error', reject);
     });
+
+    const data = await this.mediaModel.create(downloadImageDTO);
+    if (!data) {
+      const uploadDir = path.join(__dirname, '..', '..', 'uploads');
+      const filePath = path.join(uploadDir, downloadImageDTO.url);
+
+      if (await fs.pathExists(filePath)) {
+        await fs.remove(filePath);
+      } else {
+        throw new ServerError('Something went wrong!');
+      }
+      throw new ServerError('Something went wrong!');
+    }
+    return data;
   }
 }

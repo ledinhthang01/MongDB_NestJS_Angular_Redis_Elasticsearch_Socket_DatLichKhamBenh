@@ -14,5 +14,6 @@ import { Media, MediaSchema } from './enity/media.enity';
   ],
   providers: [MediaService],
   controllers: [MediaController],
+  exports: [MediaService],
 })
 export class MediaModule {}
