@@ -3,7 +3,7 @@ import { Expose } from 'class-transformer';
 import { IsNotEmpty, IsString } from 'class-validator';
 import { Types } from 'mongoose';
 
-export class CreateGroupChat {
+export class RenameGroupDTO {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
@@ -13,13 +13,5 @@ export class CreateGroupChat {
   @ApiProperty()
   @IsNotEmpty()
   @Expose()
-  users: Array<Types.ObjectId>;
-
-  @ApiProperty()
-  @Expose()
-  isGroupChat: Boolean;
-
-  @ApiProperty()
-  @Expose()
-  groupAdmin: any;
+  chatId: Types.ObjectId;
 }

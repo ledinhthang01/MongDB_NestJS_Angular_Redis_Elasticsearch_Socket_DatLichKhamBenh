@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Chat } from './enity/chat.enity';
-import { Model, Types } from 'mongoose';
+import { Model, ObjectId, Types } from 'mongoose';
 import { AccessChatDTO } from './dto/accessChat.dto';
-import { ServerError } from 'src/utils/exception';
+import { ServerError, XNotFound } from 'src/utils/exception';
 import { Users } from 'src/users/enity/users.enity';
+import { CreateGroupChat } from './dto/createGroupChat.dto';
+import { RenameGroupDTO } from './dto/reNameGroup.dto';
 
 @Injectable()
 export class ChatService {
@@ -91,5 +93,69 @@ export class ChatService {
     return data;
   }
 
-  async createGroupChat(): Promise<any> {}
+  async createGroupChat(
+    createGroupChat: CreateGroupChat,
+    user: any,
+  ): Promise<any> {
+    createGroupChat.users = createGroupChat.users.map(
+      (item) => new Types.ObjectId(item),
+    );
+
+    if (createGroupChat.users.length < 2) {
+      throw new ServerError(
+        'More than 2 users are required to form a group chat!',
+      );
+    }
+
+    createGroupChat.users.push(user['_id']);
+
+    createGroupChat.groupAdmin = user;
+    createGroupChat.isGroupChat = true;
+
+    const groupChat = await this.chatModel.create(createGroupChat);
+
+    const fullGroupChat = await this.chatModel
+      .findOne({ _id: groupChat._id })
+      .populate({
+        path: 'users',
+        model: 'Users',
+        select: '_id name email avatar',
+      })
+      .populate({
+        path: 'groupAdmin',
+        model: 'Users',
+        select: '_id name email avatar',
+      });
+
+    if (!fullGroupChat) {
+      throw new ServerError('Create group chat!');
+    }
+    return fullGroupChat;
+  }
+
+  async renameGroup(
+    renameGroupDTO: RenameGroupDTO,
+    _id: Types.ObjectId,
+  ): Promise<any> {
+    const groupChat = await this.chatModel.findById(renameGroupDTO.chatId);
+
+    if (!groupChat) {
+      throw new XNotFound('Group chat');
+    }
+
+    if (_id.toString() !== groupChat.groupAdmin._id.toString()) {
+      throw new ServerError('You do not have access!');
+    }
+
+    const updateChat = await this.chatModel.findByIdAndUpdate(
+      renameGroupDTO.chatId,
+      { chatName: renameGroupDTO.chatName },
+      { new: true },
+    );
+
+    if (!updateChat) {
+      throw new ServerError('Somethinf went wrong');
+    }
+    return updateChat.chatName;
+  }
 }
