@@ -3,7 +3,11 @@
     class="header border-bottom d-flex justify-content-between align-items-center px-5"
   >
     <div class="h-100 d-flex align-items-center gap-3">
-      <img class="h-75 rounded-circle" [src]="dataChat.avatar" alt="" />
+      <img
+        class="h-75 rounded-circle"
+        [src]="getFullImagePath(dataChat.avatar)"
+        alt=""
+      />
       <div class="fw-bold fs-5">{{ dataChat.chatName }}</div>
     </div>
     <div *ngIf="dataChat.isGroupChat" style="cursor: pointer">
@@ -36,7 +40,7 @@
           <img
             loading="lazy"
             class="rounded-circle my-auto"
-            [src]="item.sender.avatar"
+            [src]="getFullImagePath(item.sender.avatar)"
             alt=""
             [style.order]="item.sender._id === idCurrent ? '2' : '1'"
           />
@@ -47,6 +51,14 @@
           >
             {{ item.content }}
           </span>
+          <div class="flex-center">
+            <button mat-button [matMenuTriggerFor]="menu">
+              <i class="bi bi-three-dots"></i>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item>Delete</button>
+            </mat-menu>
+          </div>
         </div>
       </div>
     </div>

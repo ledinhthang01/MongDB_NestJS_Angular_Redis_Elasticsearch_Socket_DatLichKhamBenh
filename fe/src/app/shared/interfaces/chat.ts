@@ -1,6 +1,6 @@
 interface ICreateGroupChat {
-  name: string;
-  users: string;
+  chatName: string;
+  users: Array<string>;
 }
 
 interface IAccessChat {

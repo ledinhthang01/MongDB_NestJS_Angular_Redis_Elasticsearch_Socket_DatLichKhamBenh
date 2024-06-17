@@ -78,7 +78,7 @@ export class GalleryInfoComponent implements OnInit {
         this.toastr.success(res.message, '', {
           timeOut: 2000,
         });
-        this.allMember.data = res.data.users;
+        this.allMember.data.users = res.data.users;
       });
   }
 
@@ -98,8 +98,12 @@ export class GalleryInfoComponent implements OnInit {
         this.toastr.success(res.message, '', {
           timeOut: 2000,
         });
-        this.allMember.data = res.data.users;
+        this.allMember.data.users = res.data.users;
       });
+  }
+
+  getFullImagePath(imageName: string): string {
+    return `http://localhost:3003/${imageName}`;
   }
 
   findUser(value: string) {
@@ -125,7 +129,10 @@ export class GalleryInfoComponent implements OnInit {
 
   changeNameGroup() {
     this.mainService.chat
-      .renameGroupChat({ chatId: this.idGroupChat, name: this.form.value.name })
+      .renameGroupChat({
+        chatId: this.idGroupChat,
+        chatName: this.form.value.name,
+      })
       .pipe(
         untilDestroyed(this),
         catchError((err) => {

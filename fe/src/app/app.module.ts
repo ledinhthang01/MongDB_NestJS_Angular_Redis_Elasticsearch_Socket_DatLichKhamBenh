@@ -21,7 +21,7 @@ import { LoadingComponent } from './components/pages/common/loading/loading.comp
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { MatIconModule } from '@angular/material/icon';
 
-const config: SocketIoConfig = { url: 'http://localhost:3002', options: {} };
+const config: SocketIoConfig = { url: 'http://localhost:3003', options: {} };
 
 @NgModule({
   declarations: [

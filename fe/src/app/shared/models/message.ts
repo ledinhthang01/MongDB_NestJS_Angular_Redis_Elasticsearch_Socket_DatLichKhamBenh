@@ -6,14 +6,9 @@ interface MMessage {
   content: string;
   chat: {
     _id: string;
-    chatName: string;
-    isGroupChat: boolean;
-    users: Array<MChat>;
     groupAdmin: string;
-    createdAt: Date;
-    updatedAt: Date;
-    latestMessage: string;
   };
+  status: string;
   createdAt: Date;
   updatedAt: Date;
 }

@@ -1,18 +1,11 @@
-const ROOT_URL = 'http://localhost:3002';
+const ROOT_URL = 'http://localhost:3003';
 
 // user
-const SIGN_IN = ROOT_URL + '/users/signin';
-const SIGN_UP = ROOT_URL + '/users/signup';
-const REFRESH_TOKEN = ROOT_URL + '/users/refreshToken';
-const LOGOUT = ROOT_URL + '/users/logout/';
-const GET_INFO = ROOT_URL + '/users/getInforUser/';
-
-// google
-const GOOGLE_FAILED = ROOT_URL + '/google/failed';
-const GOOGLE_SUCCESS = ROOT_URL + '/google/success';
-const GOOGLE_GOOGLE = ROOT_URL + '/google//google';
-const GOOGLE_CALLBACK = ROOT_URL + '/google/callback';
-const GOOGLE_LOGOUT = ROOT_URL + '/google/logout';
+const SIGN_IN = ROOT_URL + '/auth/signin';
+const SIGN_UP = ROOT_URL + '/auth/signup';
+const REFRESH_TOKEN = ROOT_URL + '/auth/refreshToken';
+const LOGOUT = ROOT_URL + '/auth/logout/';
+const GET_INFO = ROOT_URL + '/auth/getInforUser/';
 
 // employee
 const CREATE_NEW_EMPLOYEE = ROOT_URL + '/employee/create-new-employee';
@@ -89,6 +82,7 @@ const GET_ALL_MESSAGES = ROOT_URL + '/message/get-all-message/';
 const SEND_MESSAGE = ROOT_URL + '/message/send-message';
 
 export {
+  GET_INFO,
   RENAME_GROUP_CHAT,
   REMOVE_MEMBER,
   GET_ALL_MEMBER,
@@ -111,12 +105,6 @@ export {
   SIGN_IN,
   SIGN_UP,
   LOGOUT,
-  GOOGLE_CALLBACK,
-  GOOGLE_FAILED,
-  GET_INFO,
-  GOOGLE_GOOGLE,
-  GOOGLE_LOGOUT,
-  GOOGLE_SUCCESS,
   CREATE_NEW_EMPLOYEE,
   GET_ALL_EMPLOYEES,
   GET_DETAIL_INFOR_EMPLOYEE,

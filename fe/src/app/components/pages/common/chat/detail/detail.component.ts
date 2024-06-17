@@ -143,4 +143,8 @@ export class DetailComponent implements OnInit, OnChanges {
     });
     dialogRef.afterClosed().subscribe((res) => {});
   }
+
+  getFullImagePath(imageName: string): string {
+    return `http://localhost:3003/${imageName}`;
+  }
 }

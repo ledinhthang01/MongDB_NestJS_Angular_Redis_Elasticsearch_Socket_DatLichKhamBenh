@@ -29,14 +29,14 @@
     <div class="listMember overflow-auto">
       <p class="my-2 fs-5 fw-bold ms-5">List member</p>
       <div
-        *ngFor="let item of allMember.data"
+        *ngFor="let item of allMember.data.users"
         class="flex-center w-75 mx-auto my-2"
       >
         <div class="" style="width: 15%">
           <img
             loading="lazy"
             class="rounded-circle w-75 my-auto"
-            [src]="item.avatar"
+            [src]="getFullImagePath(item.avatar)"
             alt=""
           />
         </div>
@@ -84,7 +84,7 @@
               <img
                 loading="lazy"
                 class="rounded-circle w-50"
-                [src]="item.avatar"
+                [src]="getFullImagePath(item.avatar)"
                 alt=""
               />
             </div>

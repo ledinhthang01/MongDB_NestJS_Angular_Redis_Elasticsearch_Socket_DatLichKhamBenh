@@ -39,6 +39,10 @@ export class GalleryComponent {
       });
   }
 
+  getFullImagePath(imageName: string): string {
+    return `http://localhost:3003/${imageName}`;
+  }
+
   findUser(value: string) {
     this.mainService.chat
       .findUser(value)

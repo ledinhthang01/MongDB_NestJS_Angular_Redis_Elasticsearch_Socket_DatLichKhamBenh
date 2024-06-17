@@ -80,8 +80,8 @@ export class ListComponent implements OnInit {
 
         this.mainService.chat
           .createGroupChat({
-            name: res.name,
-            users: JSON.stringify(memberIds),
+            chatName: res.name,
+            users: memberIds,
           })
           .pipe(
             untilDestroyed(this),
@@ -247,5 +247,9 @@ export class ListComponent implements OnInit {
           timeOut: 2000,
         });
       });
+  }
+
+  getFullImagePath(imageName: string): string {
+    return `http://localhost:3003/${imageName}`;
   }
 }

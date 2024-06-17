@@ -28,6 +28,14 @@
 
     .message {
       justify-content: end;
+
+      .optionContent {
+        display: none;
+      }
+
+      &:hover .optionContent {
+        display: block;
+      }
     }
   }
 
@@ -51,4 +59,10 @@
     left: 2%;
     width: 6%;
   }
+}
+
+button {
+  outline: none;
+  border: 0;
+  background: transparent;
 }

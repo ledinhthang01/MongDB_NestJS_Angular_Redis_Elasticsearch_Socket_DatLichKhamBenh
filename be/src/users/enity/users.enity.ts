@@ -52,7 +52,7 @@ export class Users {
   @Prop({})
   describe: string;
 
-  @Prop({ default: '/uploads/avatardefault.jpg' })
+  @Prop({ default: 'avatardefault.jpg' })
   avatar: string;
 
   @Prop({ type: Types.ObjectId, ref: 'roles' })

@@ -15,7 +15,7 @@ interface IMember {
 
 interface IGroup {
   chatId: string;
-  name: string;
+  chatName: string;
 }
 
 export { ISendMessage, IGetAllMessage, IMember, IGroup };

@@ -13,8 +13,8 @@ export class Message {
   @Prop({ type: Types.ObjectId, ref: 'Chat' })
   chat: Types.ObjectId;
 
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'Users' }] })
-  readBy: Types.ObjectId[];
+  @Prop({ default: 'send', required: false })
+  status: string;
 }
 
 export const MessageSchema = SchemaFactory.createForClass(Message);

@@ -7,7 +7,6 @@ interface MChat {
 
 interface MFindUser {
   message: string;
-  keyword: string;
   data: Array<MChat>;
 }
 
@@ -67,7 +66,12 @@ interface MMemberToGroup {
 
 interface MGetAllMemberInGroupChat {
   message: string;
-  data: Array<MChat>;
+  data: {
+    _id: string;
+    chatName: string;
+    isGroupChat: boolean;
+    users: Array<MChat>;
+  };
 }
 
 interface MRenameGroupChat {

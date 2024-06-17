@@ -1,11 +1,23 @@
-import { Body, Controller, Get, Post, Put, Req, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  Req,
+  Res,
+} from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { ApiTags } from '@nestjs/swagger';
-import { Request, Response } from 'express';
+import { Request, Response, query } from 'express';
 import { HttpStatusCode, handleSendRequest } from 'src/utils/utils';
 import { AccessChatDTO } from './dto/accessChat.dto';
 import { CreateGroupChat } from './dto/createGroupChat.dto';
 import { RenameGroupDTO } from './dto/reNameGroup.dto';
+import { GroupChatDTO } from './dto/removeMember.dto';
 
 @ApiTags('chat')
 @Controller('chat')
@@ -82,6 +94,106 @@ export class ChatController {
       handleSendRequest(
         res,
         'Rename group chat successfully!',
+        HttpStatusCode.OK,
+        data,
+      );
+    } catch (error) {
+      res.status(HttpStatusCode.BAD_REQUEST).send({ message: error.message });
+    }
+  }
+
+  @Put('remove-member-in-group')
+  async removeMemberInGroup(
+    @Res() res: Response,
+    @Req() req: Request,
+    @Body() groupChatDTO: GroupChatDTO,
+  ) {
+    try {
+      const data = await this.chatService.removeMemberInGroup(
+        groupChatDTO,
+        req.user['_id'],
+      );
+      handleSendRequest(
+        res,
+        'Remove member in group chat successfully!',
+        HttpStatusCode.OK,
+        data,
+      );
+    } catch (error) {
+      res.status(HttpStatusCode.BAD_REQUEST).send({ message: error.message });
+    }
+  }
+
+  @Put('add-member-to-group')
+  async addMemberToGroup(
+    @Res() res: Response,
+    @Body() groupChatDTO: GroupChatDTO,
+  ) {
+    try {
+      const data = await this.chatService.addMemberToGroup(groupChatDTO);
+      handleSendRequest(
+        res,
+        'Add member in group chat successfully!',
+        HttpStatusCode.OK,
+        data,
+      );
+    } catch (error) {
+      res.status(HttpStatusCode.BAD_REQUEST).send({ message: error.message });
+    }
+  }
+
+  @Get('find-member')
+  async findMember(
+    @Res() res: Response,
+    @Req() req: Request,
+    @Query() query: any,
+  ) {
+    try {
+      const data = await this.chatService.findMember(
+        query,
+        req.user['roleId'],
+        req.user['_id'],
+      );
+      handleSendRequest(
+        res,
+        'Find user successfully!',
+        HttpStatusCode.OK,
+        data,
+      );
+    } catch (error) {
+      res.status(HttpStatusCode.BAD_REQUEST).send({ message: error.message });
+    }
+  }
+
+  @Delete('delete-chat/:id')
+  async deleteChat(
+    @Res() res: Response,
+    @Req() req: Request,
+    @Param('id') idChat: string,
+  ) {
+    try {
+      const data = await this.chatService.deleteChat(idChat, req.user['_id']);
+      handleSendRequest(
+        res,
+        'Delete chat successfully!',
+        HttpStatusCode.OK,
+        data,
+      );
+    } catch (error) {
+      res.status(HttpStatusCode.BAD_REQUEST).send({ message: error.message });
+    }
+  }
+
+  @Get('get-all-member-in-group-chat/:id')
+  async getAllMemberInGroupChat(
+    @Res() res: Response,
+    @Param('id') idChat: string,
+  ) {
+    try {
+      const data = await this.chatService.getAllMemberInGroupChat(idChat);
+      handleSendRequest(
+        res,
+        'Get all member in group chat successfully!',
         HttpStatusCode.OK,
         data,
       );
