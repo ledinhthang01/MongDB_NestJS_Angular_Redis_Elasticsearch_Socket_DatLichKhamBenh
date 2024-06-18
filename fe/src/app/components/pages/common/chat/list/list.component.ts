@@ -47,13 +47,13 @@ export class ListComponent implements OnInit {
   ngOnInit() {
     this.idCurrent = this.storageService.cookie.get('id');
     this.fetchChat();
-    this.socket.getMessage('messageRecievedForList').subscribe((res: any) => {
+    this.socket.getMessage('messageRecieved').subscribe((res: any) => {
       const data = {
-        _id: res.message.chat._id,
-        senderName: res.message.sender.name,
-        content: res.message.content,
-        createdAt: res.message.createdAt,
-        updatedAt: res.message.updatedAt,
+        _id: res.chat._id,
+        senderName: res.sender.name,
+        content: res.content,
+        createdAt: res.createdAt,
+        updatedAt: res.updatedAt,
       };
       const index = this.dataFetchChat.findIndex(
         (item) => item._id === data._id

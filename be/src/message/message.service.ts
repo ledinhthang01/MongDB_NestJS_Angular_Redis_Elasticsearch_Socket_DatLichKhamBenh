@@ -62,7 +62,7 @@ export class MessageService {
     ).populate({
       path: 'chat',
       model: 'Chat',
-      select: '_id chatName users groupAdmin',
+      select: '_id chatName isGroupChat users groupAdmin',
     });
 
     if (!message) {
@@ -74,28 +74,6 @@ export class MessageService {
     });
 
     return data;
-  }
-
-  async checkMessage(idMessage: string, _id: Types.ObjectId): Promise<any> {
-    const message = await this.messageModel.findById(idMessage);
-    if (!message) {
-      throw new XNotFound('Message');
-    }
-
-    if (message['sender'].toString() !== _id.toString()) {
-      return 'You cannot edit this message!';
-    }
-
-    const createAt: Date = new Date(message['createdAt']);
-    const now: Date = new Date();
-
-    const time: number = now.getTime() - createAt.getTime();
-    const thirtyMinutesMs: number = 30 * 60 * 1000;
-
-    if (time > thirtyMinutesMs) {
-      return "It's past time to edit!";
-    }
-    return true;
   }
 
   async editMessage(

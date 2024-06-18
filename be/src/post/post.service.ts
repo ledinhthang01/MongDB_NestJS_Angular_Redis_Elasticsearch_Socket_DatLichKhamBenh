@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Post } from './enity/post.enity';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
@@ -9,12 +9,15 @@ import { MAX_RECORDS } from 'src/utils/constants';
 import * as path from 'path';
 import * as fs from 'fs-extra';
 import { Media } from 'src/media/enity/media.enity';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class PostService {
   constructor(
     @InjectModel(Post.name) private postModel: Model<Post>,
     @InjectModel(Media.name) private mediaModel: Model<Media>,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private elasticService: ElasticsearchService,
   ) {}
 
@@ -45,6 +48,7 @@ export class PostService {
       ),
     );
 
+    await this.cacheManager.set('post', data);
     delete data._id;
 
     try {
@@ -157,30 +161,35 @@ export class PostService {
   }
 
   async getLatestPost(): Promise<any> {
-    const data: any = await this.elasticService.search({
-      index: 'post',
-      body: {
-        query: {
-          match_all: {},
-        },
-        sort: [
-          {
-            createTime: {
-              order: 'desc',
-            },
+    const dataCache = await this.cacheManager.get('abc');
+    if (dataCache) {
+      return dataCache;
+    } else {
+      const data: any = await this.elasticService.search({
+        index: 'post',
+        body: {
+          query: {
+            match_all: {},
           },
-        ],
-        size: 1,
-        _source: {
-          exclude: ['content'],
+          sort: [
+            {
+              createTime: {
+                order: 'desc',
+              },
+            },
+          ],
+          size: 1,
+          _source: {
+            exclude: ['content'],
+          },
         },
-      },
-    });
+      });
 
-    return {
-      ...data.hits.hits[0]._source,
-      _id: data.hits.hits[0]._id,
-    };
+      return {
+        ...data.hits.hits[0]._source,
+        _id: data.hits.hits[0]._id,
+      };
+    }
   }
 
   async deletePost(id: string): Promise<any> {

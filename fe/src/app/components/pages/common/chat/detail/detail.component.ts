@@ -44,7 +44,10 @@ export class DetailComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.idCurrent = this.storageService.cookie.get('id');
     this.socket.getMessage('messageRecieved').subscribe((res: any) => {
-      this.messages.data.push(res.message);
+      const lastMessage = this.messages.data[0];
+      if (lastMessage.chat._id === res.chat._id) {
+        this.messages.data.push(res);
+      }
     });
 
     this.socket.getMessage('typing').subscribe((res: any) => {
@@ -53,6 +56,36 @@ export class DetailComponent implements OnInit, OnChanges {
 
     this.socket.getMessage('stopTyping').subscribe((res: any) => {
       this.isTyping = false;
+    });
+
+    this.socket.getMessage('editMessage').subscribe((res: any) => {
+      const index = this.messages.data.findIndex(
+        (item) => item._id === res._id
+      );
+
+      if (index !== -1) {
+        this.messages.data[index] = {
+          ...this.messages.data[index],
+          content: res.content,
+          status: res.status,
+          updatedAt: res.updatedAt,
+        };
+      }
+    });
+
+    this.socket.getMessage('deleteMessage').subscribe((res: any) => {
+      const index = this.messages.data.findIndex(
+        (item) => item._id === res._id
+      );
+
+      if (index !== -1) {
+        this.messages.data[index] = {
+          ...this.messages.data[index],
+          content: res.content,
+          status: res.status,
+          updatedAt: res.updatedAt,
+        };
+      }
     });
   }
 
@@ -123,7 +156,7 @@ export class DetailComponent implements OnInit, OnChanges {
     setTimeout(() => {
       var timeNow = new Date().getTime();
       var timeDiff = timeNow - lastTypingTime;
-      if (timeDiff >= 3000) {
+      if (timeDiff >= 2000) {
         this.socket.sendMessage('stopTyping', this.dataChat._id);
       }
     }, 3000);
@@ -162,22 +195,7 @@ export class DetailComponent implements OnInit, OnChanges {
           return of(null);
         })
       )
-      .subscribe((res: any) => {
-        if (res && res.data) {
-          const index = this.messages.data.findIndex(
-            (item) => item._id === res.data._id
-          );
-
-          if (index !== -1) {
-            this.messages.data[index] = {
-              ...this.messages.data[index],
-              content: res.data.content,
-              status: res.data.status,
-              updatedAt: res.data.updatedAt,
-            };
-          }
-        }
-      });
+      .subscribe((res: any) => {});
   }
 
   handleEdit(message: MMessage) {
@@ -202,22 +220,7 @@ export class DetailComponent implements OnInit, OnChanges {
             return of(null);
           })
         )
-        .subscribe((res) => {
-          if (res && res.data) {
-            const index = this.messages.data.findIndex(
-              (item) => item._id === res.data._id
-            );
-
-            if (index !== -1) {
-              this.messages.data[index] = {
-                ...this.messages.data[index],
-                content: res.data.content,
-                status: res.data.status,
-                updatedAt: res.data.updatedAt,
-              };
-            }
-          }
-        });
+        .subscribe((res) => {});
       this.cancelEdit();
     } else {
       this.toastr.error('Cannot be left blank!', '', {

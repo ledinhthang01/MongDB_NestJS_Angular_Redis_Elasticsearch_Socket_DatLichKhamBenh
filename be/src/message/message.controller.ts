@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Inject,
   Param,
   Post,
   Put,
@@ -16,11 +17,15 @@ import { Request, Response } from 'express';
 import { HttpStatusCode, handleSendRequest } from 'src/utils/utils';
 import { SendMessageDTO } from './dto/sendMessage.dto';
 import { EditMessageDTO } from './dto/editMessage.dto';
+import { EventGateway } from 'src/event.gateway';
 
 @ApiTags('message')
 @Controller('message')
 export class MessageController {
-  constructor(private messageService: MessageService) {}
+  constructor(
+    private messageService: MessageService,
+    @Inject(EventGateway) private eventGateway: EventGateway,
+  ) {}
 
   @Get('get-all-message/')
   async getAllMessages(@Res() res: Response, @Query() query: any) {
@@ -48,6 +53,18 @@ export class MessageController {
         sendMessageDTO,
         req.user['_id'],
       );
+
+      if (data.chat.isGroupChat === true) {
+        this.eventGateway.handleEmiSocket(
+          data,
+          'messageRecieved',
+          String(data.chat._id),
+        );
+      } else {
+        data.chat.users.map((user) => {
+          this.eventGateway.handleEmiSocket(data, 'messageRecieved', user);
+        });
+      }
       handleSendRequest(
         res,
         'Send message successfully!',
@@ -70,29 +87,17 @@ export class MessageController {
         editMessageDTO,
         req.user['_id'],
       );
+      this.eventGateway.handleEmiSocket(
+        data,
+        'editMessage',
+        String(data.chat._id),
+      );
       handleSendRequest(
         res,
         'Edit message successfully!',
         HttpStatusCode.OK,
         data,
       );
-    } catch (error) {
-      res.status(HttpStatusCode.BAD_REQUEST).send({ message: error.message });
-    }
-  }
-
-  @Get('check-message/:id')
-  async checkMessage(
-    @Res() res: Response,
-    @Req() req: Request,
-    @Param('id') idMessage: string,
-  ) {
-    try {
-      const data = await this.messageService.checkMessage(
-        idMessage,
-        req.user['_id'],
-      );
-      handleSendRequest(res, '', HttpStatusCode.OK, data);
     } catch (error) {
       res.status(HttpStatusCode.BAD_REQUEST).send({ message: error.message });
     }
@@ -109,7 +114,17 @@ export class MessageController {
         idMessage,
         req.user['_id'],
       );
-      handleSendRequest(res, 'Delete message successfully!', HttpStatusCode.OK, data);
+      this.eventGateway.handleEmiSocket(
+        data,
+        'deleteMessage',
+        String(data.chat._id),
+      );
+      handleSendRequest(
+        res,
+        'Delete message successfully!',
+        HttpStatusCode.OK,
+        data,
+      );
     } catch (error) {
       res.status(HttpStatusCode.BAD_REQUEST).send({ message: error.message });
     }

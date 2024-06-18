@@ -1,8 +1,6 @@
 import {
   ConnectedSocket,
   MessageBody,
-  OnGatewayDisconnect,
-  OnGatewayInit,
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
@@ -23,40 +21,34 @@ export class EventGateway {
 
   handleEmiSocket(data: any, event: any, to?: any) {
     if (to) {
-      this.server.in(String(to)).emit(event, data);
+      this.server.to(String(to)).emit(event, data);
     } else {
       this.server.emit(event, String(data));
     }
   }
 
   @SubscribeMessage('stopTyping')
-  async handleStopTyping(
-    @ConnectedSocket() socket: Socket,
-    @MessageBody() data,
-  ) {
-    this.server.in(String(data.message));
+  handleStopTyping(@ConnectedSocket() socket: Socket, @MessageBody() data) {
+    socket.to(String(data.message)).emit('stopTyping');
   }
 
   @SubscribeMessage('typing')
-  async handleTyping(@ConnectedSocket() socket: Socket, @MessageBody() data) {
-    this.server.in(String(data.message));
+  handleTyping(@ConnectedSocket() socket: Socket, @MessageBody() data) {
+    socket.to(String(data.message)).emit('typing');
   }
 
   @SubscribeMessage('joinChat')
-  async handleJoinChat(@ConnectedSocket() socket: Socket, @MessageBody() data) {
+  handleJoinChat(@ConnectedSocket() socket: Socket, @MessageBody() data) {
     socket.join(String(data.message));
   }
 
   @SubscribeMessage('signIn')
-  async handleMessage(@ConnectedSocket() socket: Socket, @MessageBody() data) {
+  handleMessage(@ConnectedSocket() socket: Socket, @MessageBody() data) {
     socket.join(String(data.message));
   }
 
   @SubscribeMessage('leaveRoom')
-  async handleLeaveRoom(
-    @ConnectedSocket() socket: Socket,
-    @MessageBody() data,
-  ) {
+  handleLeaveRoom(@ConnectedSocket() socket: Socket, @MessageBody() data) {
     socket.leave(String(data.message));
   }
 }
