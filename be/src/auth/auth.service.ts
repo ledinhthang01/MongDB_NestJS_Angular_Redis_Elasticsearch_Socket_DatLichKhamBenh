@@ -43,8 +43,7 @@ export class AuthService {
       throw new XAlreadyExists('Email');
     }
 
-    // const password = Math.floor(Math.random() * Date.now()).toString(36);
-    const password = '123456';
+    const password = Math.floor(Math.random() * Date.now()).toString(36);
 
     signUpDTO.password = await bcrypt.hash(
       password,
@@ -74,17 +73,17 @@ export class AuthService {
       throw new ServerError('Something went wrong!');
     }
 
-    // await this.sendMail.add(
-    //   'signUp',
-    //   {
-    //     to: signUpDTO.email,
-    //     name: signUpDTO.name,
-    //     password: password,
-    //   },
-    //   {
-    //     removeOnComplete: true,
-    //   },
-    // );
+    await this.sendMail.add(
+      'signUp',
+      {
+        to: signUpDTO.email,
+        name: signUpDTO.name,
+        password: password,
+      },
+      {
+        removeOnComplete: true,
+      },
+    );
 
     return true;
   }
