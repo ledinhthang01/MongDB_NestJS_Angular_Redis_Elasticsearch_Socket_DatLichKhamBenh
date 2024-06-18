@@ -15,7 +15,7 @@ import { catchError, of } from 'rxjs';
 import { SocketService } from 'src/app/services/socket/socket.service';
 import { StorageService } from 'src/app/services/storage/storage.service';
 import { MainService } from 'src/app/services/user/main.service';
-import { MGetAllMessages } from 'src/app/shared/models/message';
+import { MGetAllMessages, MMessage } from 'src/app/shared/models/message';
 import { GalleryInfoComponent } from '../gallery-info/gallery-info.component';
 
 @UntilDestroy()
@@ -30,6 +30,8 @@ export class DetailComponent implements OnInit, OnChanges {
   idCurrent!: string;
   @ViewChild('scrollBottom') private scrollBottom!: ElementRef;
   isTyping: Boolean = false;
+  isSend: Boolean = true;
+  messageId!: string;
 
   constructor(
     private mainService: MainService,
@@ -49,7 +51,7 @@ export class DetailComponent implements OnInit, OnChanges {
       this.isTyping = true;
     });
 
-    this.socket.getMessage('StopTyping').subscribe((res: any) => {
+    this.socket.getMessage('stopTyping').subscribe((res: any) => {
       this.isTyping = false;
     });
   }
@@ -69,7 +71,7 @@ export class DetailComponent implements OnInit, OnChanges {
       )
       .subscribe((res: any) => {
         this.messages = res;
-        this.socket.sendMessage('join chat', idChat);
+        this.socket.sendMessage('joinChat', idChat);
       });
   }
 
@@ -78,7 +80,7 @@ export class DetailComponent implements OnInit, OnChanges {
   });
 
   keyFunction(event: any) {
-    if (event.key == 'Enter') {
+    if (event.key == 'Enter' && this.isSend === true) {
       this.send();
     }
   }
@@ -104,7 +106,7 @@ export class DetailComponent implements OnInit, OnChanges {
         .subscribe((res: any) => {
           // this.messages.data.push(res.data);
           this.socket.sendMessage('new message', res.data);
-          this.socket.sendMessage('StopTyping', this.dataChat._id);
+          this.socket.sendMessage('stopTyping', this.dataChat._id);
         });
       this.form.reset();
     }
@@ -122,7 +124,7 @@ export class DetailComponent implements OnInit, OnChanges {
       var timeNow = new Date().getTime();
       var timeDiff = timeNow - lastTypingTime;
       if (timeDiff >= 3000) {
-        this.socket.sendMessage('StopTyping', this.dataChat._id);
+        this.socket.sendMessage('stopTyping', this.dataChat._id);
       }
     }, 3000);
   }
@@ -146,5 +148,87 @@ export class DetailComponent implements OnInit, OnChanges {
 
   getFullImagePath(imageName: string): string {
     return `http://localhost:3003/${imageName}`;
+  }
+
+  deleteMessage(message: MMessage) {
+    this.mainService.message
+      .deleteMessage(message._id)
+      .pipe(
+        untilDestroyed(this),
+        catchError((err) => {
+          this.toastr.error(err.error.message, '', {
+            timeOut: 2000,
+          });
+          return of(null);
+        })
+      )
+      .subscribe((res: any) => {
+        if (res && res.data) {
+          const index = this.messages.data.findIndex(
+            (item) => item._id === res.data._id
+          );
+
+          if (index !== -1) {
+            this.messages.data[index] = {
+              ...this.messages.data[index],
+              content: res.data.content,
+              status: res.data.status,
+              updatedAt: res.data.updatedAt,
+            };
+          }
+        }
+      });
+  }
+
+  handleEdit(message: MMessage) {
+    this.isSend = false;
+    this.form.get('message')?.setValue(message.content);
+    this.messageId = message._id;
+  }
+
+  edit() {
+    if (this.form.value.message) {
+      this.mainService.message
+        .editMessage({
+          messageId: this.messageId,
+          content: this.form.value.message,
+        })
+        .pipe(
+          untilDestroyed(this),
+          catchError((err) => {
+            this.toastr.error(err.error.message, '', {
+              timeOut: 2000,
+            });
+            return of(null);
+          })
+        )
+        .subscribe((res) => {
+          if (res && res.data) {
+            const index = this.messages.data.findIndex(
+              (item) => item._id === res.data._id
+            );
+
+            if (index !== -1) {
+              this.messages.data[index] = {
+                ...this.messages.data[index],
+                content: res.data.content,
+                status: res.data.status,
+                updatedAt: res.data.updatedAt,
+              };
+            }
+          }
+        });
+      this.cancelEdit();
+    } else {
+      this.toastr.error('Cannot be left blank!', '', {
+        timeOut: 2000,
+      });
+    }
+  }
+
+  cancelEdit() {
+    this.isSend = true;
+    this.form.get('message')?.setValue('');
+    this.messageId = '';
   }
 }

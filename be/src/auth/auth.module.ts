@@ -9,6 +9,7 @@ import { BullModule } from '@nestjs/bull';
 import { EmailConsumer } from './consumers/email.consumer';
 import { RoleModule } from 'src/role/role.module';
 import { PermissionResourcesModule } from 'src/permission_resources/permission_resources.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { PermissionResourcesModule } from 'src/permission_resources/permission_r
       { name: Users.name, schema: UsersSchema },
       { name: roles.name, schema: RolesSchema },
     ]),
+    EventEmitterModule.forRoot(),
     ElasticsearchModule.registerAsync({
       useFactory: () => ({
         node: 'http://localhost:9200',

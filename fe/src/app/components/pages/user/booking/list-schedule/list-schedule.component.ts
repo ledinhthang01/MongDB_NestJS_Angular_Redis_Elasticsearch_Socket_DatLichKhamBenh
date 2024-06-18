@@ -46,6 +46,7 @@ export class ListScheduleComponent implements OnChanges {
     this.socket.getMessage('BookingSuccessfully').subscribe((res: any) => {
       const filteredData = this.data.data.filter((item) => item._id !== res);
       this.data.data = filteredData;
+      console.log(res);
     });
   }
 

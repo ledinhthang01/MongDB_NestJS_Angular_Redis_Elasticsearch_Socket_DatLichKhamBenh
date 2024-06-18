@@ -1,7 +1,6 @@
 import {
   ConnectedSocket,
   MessageBody,
-  OnGatewayConnection,
   OnGatewayDisconnect,
   OnGatewayInit,
   SubscribeMessage,
@@ -9,7 +8,6 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
-import { AuthService } from './auth/auth.service';
 
 const options = {
   cors: {
@@ -19,48 +17,46 @@ const options = {
 };
 
 @WebSocketGateway(options)
-export class EventGateway
-  implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
-{
+export class EventGateway {
   @WebSocketServer()
   server: Server;
-  constructor(private readonly authService: AuthService) {}
 
   handleEmiSocket(data: any, event: any, to?: any) {
     if (to) {
-      this.server.to(to.map((el) => String(el))).emit(event, data);
+      this.server.in(String(to)).emit(event, data);
     } else {
       this.server.emit(event, String(data));
     }
   }
 
-  // @SubscribeMessage('abc')
-  // async handleMessage(@ConnectedSocket() socket: Socket, @MessageBody() data) {
-  //   console.log('abc: ', data);
-  //   setTimeout(() => {
-  //     this.server.to(socket.data.id).emit('abc', data);
-  //   }, 2000);
-  // }
-
-  async handleConnection(socket: Socket) {
-    const authHeader = socket.handshake.headers.authorization;
-    if (authHeader) {
-      try {
-        socket.data.id = await this.authService.handleVerifyToken(
-          socket.handshake.headers.authorization,
-        );
-        socket.join(String(socket.data.id));
-      } catch (error) {
-        socket.disconnect();
-      }
-    } else {
-      socket.disconnect();
-    }
+  @SubscribeMessage('stopTyping')
+  async handleStopTyping(
+    @ConnectedSocket() socket: Socket,
+    @MessageBody() data,
+  ) {
+    this.server.in(String(data.message));
   }
 
-  handleDisconnect(socket: Socket) {
-    // console.log(socket.id, socket.data.id);
+  @SubscribeMessage('typing')
+  async handleTyping(@ConnectedSocket() socket: Socket, @MessageBody() data) {
+    this.server.in(String(data.message));
   }
 
-  afterInit(socket: Socket) {}
+  @SubscribeMessage('joinChat')
+  async handleJoinChat(@ConnectedSocket() socket: Socket, @MessageBody() data) {
+    socket.join(String(data.message));
+  }
+
+  @SubscribeMessage('signIn')
+  async handleMessage(@ConnectedSocket() socket: Socket, @MessageBody() data) {
+    socket.join(String(data.message));
+  }
+
+  @SubscribeMessage('leaveRoom')
+  async handleLeaveRoom(
+    @ConnectedSocket() socket: Socket,
+    @MessageBody() data,
+  ) {
+    socket.leave(String(data.message));
+  }
 }

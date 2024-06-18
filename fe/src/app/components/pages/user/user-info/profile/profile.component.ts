@@ -12,54 +12,60 @@ import { MUser } from 'src/app/shared/models/user';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+  styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent {
-  data!: MUser
-  date!: string
+  data!: MUser;
+  date!: string;
 
   constructor(
     private storageService: StorageService,
     private router: Router,
     private mainService: MainService,
     private toastr: ToastrService
-  ) { }
+  ) {}
 
-  ngOnInit(): void { 
-    this.getMyInfo()
+  ngOnInit(): void {
+    this.getMyInfo();
   }
 
-  getMyInfo(){
-    this.mainService.auth.getInfo(this.storageService.cookie.get('id')).pipe(
-      untilDestroyed(this),
-      catchError(err => {
-        this.toastr.error(err.error.message, "", {
-          timeOut: 2000,
+  getMyInfo() {
+    this.mainService.auth
+      .getInfo(this.storageService.cookie.get('id'))
+      .pipe(
+        untilDestroyed(this),
+        catchError((err) => {
+          this.toastr.error(err.error.message, '', {
+            timeOut: 2000,
+          });
+          return of(null);
         })
-        return of(null)
-      })
-    ).subscribe((res: any) => {
-      this.data = res
-      this.date = moment(this.data.dateOfBirth).format('YYYY-MM-DD')
-    })
+      )
+      .subscribe((res: any) => {
+        this.data = res;
+        this.date = moment(this.data.dateOfBirth).format('YYYY-MM-DD');
+      });
   }
 
   logout() {
-    this.mainService.auth.logOut(this.storageService.cookie.get('id')).pipe(
-      untilDestroyed(this),
-      catchError(err => {
-        this.toastr.error(err.error.message, "", {
-          timeOut: 2000,
+    this.mainService.auth
+      .logOut()
+      .pipe(
+        untilDestroyed(this),
+        catchError((err) => {
+          this.toastr.error(err.error.message, '', {
+            timeOut: 2000,
+          });
+          return of(null);
         })
-        return of(null)
-      })
-    ).subscribe((res: any) => {
-      this.toastr.success(res.message, "", {
-        timeOut: 2000,
-      })
-      this.storageService.cookie.removeAll();
-      this.storageService.local.removeAll();
-      this.router.navigate(['']);
-    })
+      )
+      .subscribe((res: any) => {
+        this.toastr.success(res.message, '', {
+          timeOut: 2000,
+        });
+        this.storageService.cookie.removeAll();
+        this.storageService.local.removeAll();
+        this.router.navigate(['']);
+      });
   }
 }

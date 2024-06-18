@@ -20,6 +20,7 @@ import { Cache } from 'cache-manager';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { Request } from 'express';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class AuthService {
@@ -31,6 +32,7 @@ export class AuthService {
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     @InjectQueue('send-mail')
     private sendMail: Queue,
+    private eventEmitter: EventEmitter2,
   ) {}
 
   async signUp(signUpDTO: SignUpDTO): Promise<any> {
@@ -121,6 +123,7 @@ export class AuthService {
         existingUser.refreshToken =
           (await refreshToken) ?? existingUser.refreshToken;
         await existingUser.save();
+        this.eventEmitter.emit('SignInId', String(existingUser._id));
 
         return {
           _id: existingUser._id,
@@ -219,17 +222,12 @@ export class AuthService {
   }
 
   async logOut(req: Request): Promise<any> {
-    await this.usersModel
+    const data = await this.usersModel
       .findByIdAndUpdate(req.user['_id'], { refreshToken: '' })
       .exec();
-  }
-
-  async handleVerifyToken(token) {
-    try {
-      const payload = this.jwtService.verify(token);
-      return payload['id'];
-    } catch (error) {
-      throw new UnauthorizedException('Token is expired');
+    if (!data) {
+      throw new ServerError('Something went wrong!');
     }
+    return data._id;
   }
 }

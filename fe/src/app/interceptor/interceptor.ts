@@ -43,6 +43,8 @@ export class AuthInterceptor implements HttpInterceptor {
       '/chat/add-member-to-group',
       '/chat/remove-member-in-group',
       '/chat/rename-group-chat',
+      /\/message\/delete-message\/\w+/,
+      '/message/edit-message',
     ];
 
     const showLoading = !excludedUrls.some((url) =>

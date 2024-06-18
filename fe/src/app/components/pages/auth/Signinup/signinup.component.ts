@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { GalleryComponent } from '../gallery/gallery.component';
 import { ISignIn } from 'src/app/shared/interfaces/user';
 import { FogotGalleryComponent } from '../fogot-gallery/fogot-gallery.component';
+import { SocketService } from 'src/app/services/socket/socket.service';
 
 @UntilDestroy()
 @Component({
@@ -28,7 +29,8 @@ export class SigninupComponent {
     private userServiece: MainService,
     private router: Router,
     private dialog: MatDialog,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private socket: SocketService
   ) {
     setTimeout(() => {
       this.input.nativeElement.focus();
@@ -113,6 +115,7 @@ export class SigninupComponent {
           this.toastr.success(res.message, '', {
             timeOut: 2000,
           });
+          this.socket.sendMessage('signIn', res.data._id);
           this.router.navigate([res.data.url]);
         }
       });

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, of } from 'rxjs';
+import { SocketService } from 'src/app/services/socket/socket.service';
 import { StorageService } from 'src/app/services/storage/storage.service';
 import { MainService } from 'src/app/services/user/main.service';
 
@@ -20,7 +21,8 @@ export class HeaderComponent {
     private storageService: StorageService,
     private router: Router,
     private mainService: MainService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private socket: SocketService
   ) {}
 
   ngOnInit(): void {
@@ -31,7 +33,7 @@ export class HeaderComponent {
 
   logout() {
     this.mainService.auth
-      .logOut(this.storageService.cookie.get('id'))
+      .logOut()
       .pipe(
         untilDestroyed(this),
         catchError((err) => {
@@ -45,6 +47,7 @@ export class HeaderComponent {
         this.toastr.success(res.message, '', {
           timeOut: 2000,
         });
+        this.socket.sendMessage('leaveRoom', res.data);
         this.storageService.cookie.delete('id');
         this.storageService.cookie.delete('name');
         this.storageService.cookie.delete('email');

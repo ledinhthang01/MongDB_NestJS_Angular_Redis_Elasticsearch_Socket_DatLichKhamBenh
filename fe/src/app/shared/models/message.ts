@@ -23,4 +23,17 @@ interface MSendMessage {
   data: Array<MMessage>;
 }
 
-export { MMessage, MGetAllMessages, MSendMessage };
+interface MDelEditMessage {
+  message: string;
+  data: {
+    _id: string;
+    sender: string;
+    content: string;
+    chat: string;
+    status: string;
+    createdAt: Date;
+    updatedAt: Date;
+  };
+}
+
+export { MMessage, MGetAllMessages, MSendMessage, MDelEditMessage };

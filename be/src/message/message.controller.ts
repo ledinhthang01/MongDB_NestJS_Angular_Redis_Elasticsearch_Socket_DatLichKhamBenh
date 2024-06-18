@@ -109,7 +109,7 @@ export class MessageController {
         idMessage,
         req.user['_id'],
       );
-      handleSendRequest(res, '', HttpStatusCode.OK, data);
+      handleSendRequest(res, 'Delete message successfully!', HttpStatusCode.OK, data);
     } catch (error) {
       res.status(HttpStatusCode.BAD_REQUEST).send({ message: error.message });
     }

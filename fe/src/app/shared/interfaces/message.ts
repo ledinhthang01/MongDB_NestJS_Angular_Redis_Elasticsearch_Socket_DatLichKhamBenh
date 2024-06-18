@@ -18,4 +18,9 @@ interface IGroup {
   chatName: string;
 }
 
-export { ISendMessage, IGetAllMessage, IMember, IGroup };
+interface IEditMessage {
+  messageId: string;
+  content: string;
+}
+
+export { ISendMessage, IGetAllMessage, IMember, IGroup, IEditMessage };

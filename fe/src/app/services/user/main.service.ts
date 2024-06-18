@@ -57,6 +57,8 @@ import {
   GET_ALL_MEMBER,
   REMOVE_MEMBER,
   RENAME_GROUP_CHAT,
+  DELETE_MESSAGE,
+  EDIT_MESSAGE,
 } from 'src/app/shared/contant/urls';
 import { ISignIn, ISignUp } from 'src/app/shared/interfaces/user';
 import { MSignIn, MSignUp, MUser } from 'src/app/shared/models/user';
@@ -140,8 +142,13 @@ import {
   MRenameGroupChat,
 } from 'src/app/shared/models/chat';
 import { IAccessChat, ICreateGroupChat } from 'src/app/shared/interfaces/chat';
-import { MGetAllMessages, MSendMessage } from 'src/app/shared/models/message';
 import {
+  MDelEditMessage,
+  MGetAllMessages,
+  MSendMessage,
+} from 'src/app/shared/models/message';
+import {
+  IEditMessage,
   IGetAllMessage,
   IGroup,
   IMember,
@@ -182,8 +189,7 @@ export class MainService {
           refreshtoken: `${this.storageService.local.get('refreshToken')}`,
         }),
       }),
-    logOut: (command: Partial<string>) =>
-      this.http.put<string>(LOGOUT + command, null),
+    logOut: () => this.http.put<string>(LOGOUT, null),
     getInfo: (command: Partial<string>) =>
       this.http.get<MUser>(GET_INFO + command),
   };
@@ -443,5 +449,9 @@ export class MainService {
     },
     sendMessage: (command: ISendMessage) =>
       this.http.post<MSendMessage>(SEND_MESSAGE, command),
+    deleteMessage: (command: string) =>
+      this.http.delete<MDelEditMessage>(DELETE_MESSAGE + command),
+    editMessage: (command: IEditMessage) =>
+      this.http.put<MDelEditMessage>(EDIT_MESSAGE, command),
   };
 }

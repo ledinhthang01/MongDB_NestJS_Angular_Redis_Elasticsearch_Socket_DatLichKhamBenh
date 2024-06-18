@@ -66,8 +66,25 @@ export class ListComponent implements OnInit {
       }
       this.dataFetchChat = this.sortByDate(this.dataFetchChat);
     });
-  }
 
+    this.socket.getMessage('accessChat').subscribe((res: any) => {
+      const user = res.users.find((user: MChat) => user._id !== this.idCurrent);
+      if (user) {
+        const newUser = {
+          _id: res._id,
+          chatName: user.name,
+          isGroupChat: res.isGroupChat,
+          avatar: user.avatar,
+          latestMessage: res.latestMessage,
+          createdAt: res.createdAt,
+          updatedAt: res.updatedAt,
+        };
+        this.dataFetchChat = this.sortByDate(
+          this.dataFetchChat.concat(newUser)
+        );
+      }
+    });
+  }
   createGroupChat() {
     const dialogRef = this.dialog.open(GalleryComponent, {
       data: {
@@ -204,23 +221,23 @@ export class ListComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        const user = res.data.users.find(
-          (user: MChat) => user._id !== this.idCurrent
-        );
-        if (user) {
-          const newUser = {
-            _id: res.data._id,
-            chatName: user.name,
-            isGroupChat: res.data.isGroupChat,
-            avatar: user.avatar,
-            latestMessage: res.data.latestMessage,
-            createdAt: res.data.createdAt,
-            updatedAt: res.data.updatedAt,
-          };
-          this.dataFetchChat = this.sortByDate(
-            this.dataFetchChat.concat(newUser)
-          );
-        }
+        // const user = res.data.users.find(
+        //   (user: MChat) => user._id !== this.idCurrent
+        // );
+        // if (user) {
+        //   const newUser = {
+        //     _id: res.data._id,
+        //     chatName: user.name,
+        //     isGroupChat: res.data.isGroupChat,
+        //     avatar: user.avatar,
+        //     latestMessage: res.data.latestMessage,
+        //     createdAt: res.data.createdAt,
+        //     updatedAt: res.data.updatedAt,
+        //   };
+        //   this.dataFetchChat = this.sortByDate(
+        //     this.dataFetchChat.concat(newUser)
+        //   );
+        // }
         this.toastr.success(res.message, '', {
           timeOut: 2000,
         });

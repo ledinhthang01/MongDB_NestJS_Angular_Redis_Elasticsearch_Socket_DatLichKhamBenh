@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Inject,
   Param,
   Post,
   Put,
@@ -18,11 +19,15 @@ import { AccessChatDTO } from './dto/accessChat.dto';
 import { CreateGroupChat } from './dto/createGroupChat.dto';
 import { RenameGroupDTO } from './dto/reNameGroup.dto';
 import { GroupChatDTO } from './dto/removeMember.dto';
+import { EventGateway } from 'src/event.gateway';
 
 @ApiTags('chat')
 @Controller('chat')
 export class ChatController {
-  constructor(private chatService: ChatService) {}
+  constructor(
+    private chatService: ChatService,
+    @Inject(EventGateway) private eventGateway: EventGateway,
+  ) {}
 
   @Post('')
   async accessChat(
@@ -32,6 +37,9 @@ export class ChatController {
   ) {
     try {
       const data = await this.chatService.accessChat(accessChatDTO, req.user);
+      data.users.map((user) => {
+        this.eventGateway.handleEmiSocket(data, 'accessChat', user._id);
+      });
       handleSendRequest(
         res,
         'Chat successfully!',

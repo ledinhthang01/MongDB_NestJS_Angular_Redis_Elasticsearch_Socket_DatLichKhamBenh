@@ -4,7 +4,7 @@ const ROOT_URL = 'http://localhost:3003';
 const SIGN_IN = ROOT_URL + '/auth/signin';
 const SIGN_UP = ROOT_URL + '/auth/signup';
 const REFRESH_TOKEN = ROOT_URL + '/auth/refreshToken';
-const LOGOUT = ROOT_URL + '/auth/logout/';
+const LOGOUT = ROOT_URL + '/auth/logout';
 const GET_INFO = ROOT_URL + '/auth/getInforUser/';
 
 // employee
@@ -80,8 +80,12 @@ const RENAME_GROUP_CHAT = ROOT_URL + '/chat/rename-group-chat';
 //Message
 const GET_ALL_MESSAGES = ROOT_URL + '/message/get-all-message/';
 const SEND_MESSAGE = ROOT_URL + '/message/send-message';
+const DELETE_MESSAGE = ROOT_URL + '/message/delete-message/';
+const EDIT_MESSAGE = ROOT_URL + '/message/edit-message';
 
 export {
+  EDIT_MESSAGE,
+  DELETE_MESSAGE,
   GET_INFO,
   RENAME_GROUP_CHAT,
   REMOVE_MEMBER,

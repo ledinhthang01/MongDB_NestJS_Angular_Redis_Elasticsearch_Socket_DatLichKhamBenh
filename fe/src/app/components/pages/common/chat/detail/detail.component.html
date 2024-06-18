@@ -44,19 +44,54 @@
             alt=""
             [style.order]="item.sender._id === idCurrent ? '2' : '1'"
           />
-          <span
-            class="rounded-5 bg-info-subtle text-break px-4 flex-center py-1"
+
+          <div
+            class="px-2 flex-center"
             [style.order]="item.sender._id === idCurrent ? '1' : '2'"
             style="max-width: 75%"
           >
-            {{ item.content }}
-          </span>
-          <div class="flex-center">
+            <div *ngIf="item.content.length > 0; else noMessage">
+              <div
+                *ngIf="item.status === 'edit'"
+                style="font-size: 80%"
+                class="w-f mx-auto"
+              >
+                Edited on {{ item.updatedAt | date : "medium" }}
+              </div>
+
+              <div class="rounded-5 bg-info-subtle text-break px-4 py-1 w-f">
+                {{ item.content }}
+              </div>
+            </div>
+
+            <ng-template #noMessage>
+              <div>
+                <div style="font-size: 80%" class="w-f mx-auto">
+                  Deleted on {{ item.updatedAt | date : "medium" }}
+                </div>
+
+                <div
+                  class="rounded-5 bg-dark-subtle text-break px-4 py-1 w-f fst-italic"
+                >
+                  Message has been deleted!
+                </div>
+              </div>
+            </ng-template>
+          </div>
+
+          <!--  -->
+          <div
+            class="flex-center"
+            *ngIf="item.content.length > 0 && item.sender._id === idCurrent"
+          >
             <button mat-button [matMenuTriggerFor]="menu">
-              <i class="bi bi-three-dots"></i>
+              <i class="bi bi-three-dots optionContent"></i>
             </button>
             <mat-menu #menu="matMenu">
-              <button mat-menu-item>Delete</button>
+              <button mat-menu-item (click)="handleEdit(item)">Edit</button>
+              <button mat-menu-item (click)="deleteMessage(item)">
+                Delete
+              </button>
             </mat-menu>
           </div>
         </div>
@@ -74,7 +109,14 @@
         alt=""
       />
     </div>
+
     <div class="flex-center gap-3 pt-3" [formGroup]="form" (ngSubmit)="send()">
+      <mat-icon
+        *ngIf="isSend === false"
+        class="form-icon"
+        (click)="cancelEdit()"
+        >cancel</mat-icon
+      >
       <input
         type="text"
         formControlName="message"
@@ -83,7 +125,16 @@
         placeholder="Aa ..."
         (keydown)="keyFunction($event)"
       />
-      <mat-icon (ngSubmit)="send()" class="form-icon">send</mat-icon>
+      <mat-icon
+        *ngIf="isSend === true; else isEdit"
+        (ngSubmit)="send()"
+        class="form-icon"
+        >send</mat-icon
+      >
+
+      <ng-template #isEdit>
+        <mat-icon class="form-icon" (click)="edit()">done</mat-icon>
+      </ng-template>
     </div>
   </div>
 </div>
